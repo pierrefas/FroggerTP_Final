@@ -4,9 +4,6 @@
 
 #include <stdlib.h>
 
-#define ADJCOORDFROG(n) (n * 16)
-
-
 void followSupport(frog_player * rana, support_entity * soporte, int speedheight[]);
 int deathOfFrog(frog_player * rana, support_entity * soporte, enemy_entity * enemigos);
 void frogStepUp(frog_player * rana);        

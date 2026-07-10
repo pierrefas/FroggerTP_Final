@@ -29,7 +29,7 @@ int stepEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight[
 
 }
 
-void resetEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight[]){
+int resetEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight[]){
 
     int i;
 
@@ -94,4 +94,9 @@ void resetEntites(enemy_entity* enemigo, support_entity* soporte, int speedheigh
         }
 
     }
+
+    return 0;
+
 }
+
+

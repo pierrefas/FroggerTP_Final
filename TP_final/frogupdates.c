@@ -6,7 +6,7 @@ void followSupport(frog_player * rana, support_entity * soporte, int speedheight
 
     if(soporte == NULL){
 
-        return;
+        return ERROR_NULL_POINTER;
 
     }
 
@@ -16,13 +16,15 @@ void followSupport(frog_player * rana, support_entity * soporte, int speedheight
         rana->endcoord+=speedheight[rana->height];
     }
 
+    return 0;
+
 }
 
 int deathOfFrog(frog_player * rana, support_entity * soporte, enemy_entity * enemigos){
 
     if(soporte == NULL||enemigos == NULL){
 
-        return ERROR_CHECK;
+        return ERROR_NULL_POINTER;
 
     }
 
@@ -37,10 +39,19 @@ int deathOfFrog(frog_player * rana, support_entity * soporte, enemy_entity * ene
 
     }
 
+    return 0;
+
 }
 
 void frogStepUp(frog_player * rana){
 
+   if(rana == NULL){
+
+        return ERROR_NULL_POINTER;
+
+    }
+   
+   
     rana->height++;
 
     if(!isInBounds(rana)){
@@ -49,10 +60,18 @@ void frogStepUp(frog_player * rana){
 
     }
 
+    return 0;
 
 }
 
 void frogStepDown(frog_player * rana){
+
+    if(rana == NULL){   
+
+        return ERROR_NULL_POINTER;
+
+    }
+
 
     rana->height--;
 
@@ -62,9 +81,17 @@ void frogStepDown(frog_player * rana){
 
     }
 
+    return 0;
+
 }
 
 void frogStepRight(frog_player * rana){
+
+    if(rana == NULL){
+
+        return ERROR_NULL_POINTER;
+
+    }
 
 
     rana->startcoord+=ADJCOORDFROG(1);
@@ -77,9 +104,19 @@ void frogStepRight(frog_player * rana){
 
     }
 
+    return 0;
+
+
 }
 
 void frogStepLeft(frog_player * rana){
+
+    if(rana == NULL){
+
+        return ERROR_NULL_POINTER;
+
+    }
+
 
     rana->startcoord-=ADJCOORDFROG(1);
     rana->endcoord-=ADJCOORDFROG(1);
@@ -91,6 +128,8 @@ void frogStepLeft(frog_player * rana){
 
     }
 
+
+    return 0;
 
 }
 

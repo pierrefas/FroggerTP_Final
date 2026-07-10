@@ -1,7 +1,6 @@
 #ifndef CHECKING-H
 #define CHECKING-H
 
-#define ERROR_CHECK -35
 #define STARTLAKE 7
 #include <stdlib.h>
 

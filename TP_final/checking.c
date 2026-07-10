@@ -6,7 +6,7 @@ int isDeadFromEnemy(frog_player * rana, enemy_entity * enemigos){
 
     if(!enemigos){
 
-        return ERROR_CHECK; //Chequeo que los posibles obstaculos sean validos
+        return ERROR_NULL_POINTER; //Chequeo que los posibles obstaculos sean validos
 
     }
 
@@ -32,7 +32,7 @@ int isDeadLake(frog_player * rana, support_entity * soporte){
 
     if(!soporte){
 
-        return ERROR_CHECK; //Chequeo que los posibles soportes sean validos
+        return ERROR_NULL_POINTER; //Chequeo que los posibles soportes sean validos
 
     }
 
