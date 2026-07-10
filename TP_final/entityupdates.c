@@ -1,3 +1,16 @@
+//////////////////////////////////////////////////////////////////////
+//                                                                  //
+//  Consultas a:  Juanga                                            //
+//                                                                  //
+//  En este archivo van a estar todas las funciones que actualizan  //
+//  el estado de las entidades del juego                            //
+//                                                                  //
+//                                                                  //
+//                                                                  //
+//////////////////////////////////////////////////////////////////////
+
+
+
 #include "entidades.h"
 #include "entityupdates.h"
 

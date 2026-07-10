@@ -1,3 +1,18 @@
+//////////////////////////////////////////////////////////////////////
+//                                                                  //
+//  Consultas a:  Juanga                                            //
+//                                                                  //
+//  En este archivo van a estar todas las funciones que actalizan   //
+//  al jugador y resguardan que este permanezaca en la zona         //
+//  jugable                                                         //
+//                                                                  //
+//                                                                  //
+//////////////////////////////////////////////////////////////////////
+
+
+
+
+
 #include "frogupdates.h"
 #include "checking.h"
 #include "entidades.h"

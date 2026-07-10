@@ -1,5 +1,17 @@
+//////////////////////////////////////////////////////////////////////
+//                                                                  //
+//  Consultas a:  Juanga                                            //
+//                                                                  //
+//  En este archivo van a estar todas las funciones que verfican    //
+//  si el jugador esta vivo o muerto, y si esta en una casilla      //
+//  segura del final                                                //
+//                                                                  //
+//                                                                  //
+//////////////////////////////////////////////////////////////////////
 #include "checking.h"
 #include "entidades.h"
+
+
 
 
 int isDeadFromEnemy(frog_player * rana, enemy_entity * enemigos){
@@ -54,3 +66,5 @@ int isDeadLake(frog_player * rana, support_entity * soporte){
     return 1;
 
 }
+
+//FUNCION PARA VER SI LA RANA LLEGO AL FINAL ENTONCES LA REINICIO Y SUMO PUNTOS

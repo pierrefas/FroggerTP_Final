@@ -1,3 +1,17 @@
+//////////////////////////////////////////////////////////////////////
+//                                                                  //
+//  Consultas a:  Juanga                                            //
+//                                                                  //
+//  En este archivo van a estar todas las funciones que             //
+//  inicilaizan el nivel, sus entidades y el jugador                //
+//  Y tiene en cuenta la dificultad progresiva                      //
+//                                                                  //
+//                                                                  //
+//////////////////////////////////////////////////////////////////////
+
+
+
+
 #include "levelset.h"
 #include "entidades.h"
 
