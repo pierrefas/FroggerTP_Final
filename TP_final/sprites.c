@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
  * sprites.c
  *
@@ -38,3 +39,16 @@ void destroy_sprites(void)
         al_destroy_bitmap(sprites);
     }
 }
+=======
+/*
+ * sprites.c
+ *
+ *  Created on: Jul 9, 2026
+ *      Author: peterfas
+ */
+
+
+int framewidth = 8;
+int frameheight = 8;
+
+>>>>>>> fe8d770eb3902547aa9245293c7435904d2a9a17
