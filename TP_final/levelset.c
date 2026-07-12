@@ -25,37 +25,50 @@ static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightsp
     if(enemigo == NULL){
         return ERROR_NULL_POINTER;
     }
+    else if(tipo < 0 || tipo >= 2){
+        return ERROR_TIPO_INVALIDO;
+    }
+    else if(height < 1 || height > 5){
+        return ERROR_ALTURA_INVALIDA;
+    }
 
-    enemy_entity* temp = enemigo;
+    enemy_entity* new_enemy = enemigo;
 
     int i;
 
-    for(i = 0; temp->type != -1; temp++); //Hago que apunte al ultimo enemigo de la lista
+    for(i = 0; new_enemy->type != -1; new_enemy++); //Hago que apunte al ultimo enemigo de la lista
 
-    temp->type = tipo;
-    temp->height = height;
-    temp->startcoord = rand(time(NULL)) % 186; //Genero un numero aleatorio entre 0 y 186 para que el enemigo no se salga de la pantalla
-    temp->endcoord = temp->startcoord + lentypes[tipo];
+    new_enemy->type = tipo;
+    new_enemy->height = height;
 
-    (temp+1)->type = -1; //Pongo el siguiente enemigo como vacio
+    (new_enemy+1)->type = -1; //Pongo el siguiente enemigo como vacio
 
-    enemy_entity* new_enemy = temp;
+    int supperposition = 1;
 
-    temp = enemigo;
+    while(supperposition){
 
-    for(i = 0; temp->type != -1; temp++){
-    
-        if(temp->height == height && new_enemy->startcoord <= temp->endcoord && new_enemy->endcoord >= temp->startcoord){ //Si hay colision entre enemigos, se desplaza el nuevo enemigo a la derecha del ultimo enemigo que colisiona con el
+        enemy_entity* temp = enemigo;
 
-            new_enemy->startcoord = temp->endcoord + 16;
-            new_enemy->endcoord = new_enemy->startcoord + lentypes[tipo];
+        new_enemy->startcoord = randPos(); //Genero un numero aleatorio entre 0 y ENDWORLD para que el enemigo no se salga de la pantalla
+        new_enemy->endcoord = new_enemy->startcoord + lentypes[tipo];
+
+        for(i = 0; temp->type != -1; temp++){
+        
+            if(temp->height == height && new_enemy->startcoord <= temp->endcoord && new_enemy->endcoord >= temp->startcoord){ //Si hay colision entre enemigos, se desplaza el nuevo enemigo a la derecha del ultimo enemigo que colisiona con el
+
+                supperposition = 1;
+                break;
+
+            }
+            else{
+                supperposition = 0;
+            }
+
         }
 
-
     }
-    
-    return 0;
 
+    return 0;
 }
 
 static int createSupport(support_entity* soporte, int tipo, int height, int heightspeed[]){
@@ -63,35 +76,52 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
     if(soporte == NULL){
         return ERROR_NULL_POINTER;
     }
+    else if(tipo < 2){
+        return ERROR_TIPO_INVALIDO;
+    }
+    else if(height < 7 || height > 11){
+        return ERROR_ALTURA_INVALIDA;
+    }
 
-    support_entity* temp = soporte;
+    support_entity* new_support = soporte;
 
     int i;
 
-    for(i = 0; temp->type != -1; temp++); //Hago que apunte al ultimo soporte de la lista
+    for(i = 0; new_support->type != -1; new_support++); //Hago que apunte al ultimo soporte de la lista
 
-    temp->type = tipo;
-    temp->height = height;
-    temp->startcoord = rand(time(NULL)) % 256;
-    temp->endcoord = temp->startcoord + lentypes[tipo];
+    new_support->type = tipo;
+    new_support->height = height;
 
-    (temp+1)->type = -1; //Pongo el siguiente soporte como vacio
+    (new_support+1)->type = -1; //Pongo el siguiente soporte como vacio
 
-    support_entity* new_support = temp;
+    int supperposition = 1;
 
-    temp = soporte;
+    while(supperposition){
 
-    for(i = 0; temp->type != -1; temp++){
-    
-        if(temp->height == height && new_support->startcoord <= temp->endcoord && new_support->endcoord >= temp->startcoord){ //Si hay colision entre soportes, se desplaza el nuevo soporte a la derecha del ultimo soporte que colisiona con el
+        support_entity* temp = soporte;
 
-            new_support->startcoord = temp->endcoord + 16;
-            new_support->endcoord = new_support->startcoord + lentypes[tipo];
+        new_support->startcoord = randPos(); //Genero un numero aleatorio entre 0 y ENDWORLD para que el soporte no se salga de la pantalla
+        new_support->endcoord = new_support->startcoord + lentypes[tipo];
+
+        for(i = 0; temp->type != -1; temp++){
+        
+            if(temp->height == height && new_support->startcoord <= temp->endcoord && new_support->endcoord >= temp->startcoord){ //Si hay colision entre soportes, se desplaza el nuevo soporte a la derecha del ultimo soporte que colisiona con el
+
+                supperposition = 1;
+                break;
+
+            }
+            else{
+                supperposition = 0;
+            }
+
         }
+
     }
 
     return 0;
 }
+
 
 int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int heightspeed[],frog_player* rana){
 
@@ -137,5 +167,11 @@ int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int h
 
         }
     }
+
+}
+
+int randPos(void){
+
+    return rand(time(NULL)) % (ENDWORLD-3); //Genero un numero aleatorio entre 0 y ENDWORLD para que la entidad no se salga de la pantalla
 
 }
