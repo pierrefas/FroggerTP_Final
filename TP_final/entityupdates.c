@@ -60,8 +60,8 @@ int resetEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight
 
                 int temp = (soporte + i)->startcoord - (soporte + i)->endcoord; 
 
-                (soporte + i)->startcoord = 256;
-                (soporte + i)->endcoord = 256 + temp;
+                (soporte + i)->startcoord = ENDWORLD;
+                (soporte + i)->endcoord = ENDWORLD + temp;
 
 
             }
@@ -89,8 +89,8 @@ int resetEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight
 
                 int temp = (enemigo + i)->startcoord - (enemigo + i)->endcoord; 
 
-                (enemigo + i)->startcoord = 256;
-                (enemigo + i)->endcoord = 256 + temp;
+                (enemigo + i)->startcoord = ENDWORLD;
+                (enemigo + i)->endcoord = ENDWORLD + temp;
             }
         }
         else if(speedheight[(enemigo + i)->height] > 0){
