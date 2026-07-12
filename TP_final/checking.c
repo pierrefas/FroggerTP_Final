@@ -70,5 +70,3 @@ int isDeadLake(frog_player * rana, support_entity * soporte){
 >>>>>>> fe8d770eb3902547aa9245293c7435904d2a9a17
 
 }
-
-//FUNCION PARA VER SI LA RANA LLEGO AL FINAL ENTONCES LA REINICIO Y SUMO PUNTOS

@@ -150,14 +150,7 @@ void frogStepLeft(frog_player * rana){
 
 int isInBounds(frog_player * rana){
 
-    if((rana->startcoord<0)||(rana->endcoord>ENDWORLD)||(rana->height<0)||
-    ((rana->height>11)&&
-    !(((rana->startcoord>=12)&&(rana->endcoord<=28))
-    ||((rana->startcoord>=52)&&(rana->endcoord<=68))) //Si la rana NO esta en una casilla del final y se quiere mover a la ultima fila
-    ||((rana->startcoord>=92)&&(rana->endcoord<=108))
-    ||((rana->startcoord>=132)&&(rana->endcoord<=148))
-    ||((rana->startcoord>=172)&&(rana->endcoord<=188)))){
-
+    if((rana->startcoord<0)||(rana->endcoord>ENDWORLD)||(rana->height<0)||(!ISINSAFEZONE(rana))){
 
         return 0;
 
