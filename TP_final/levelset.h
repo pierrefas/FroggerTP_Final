@@ -1,9 +1,9 @@
-#ifndef LEVELSET-H
-#define LEVELSET-H
+#ifndef LEVELSET_H
+#define LEVELSET_H
 
 int level;
 
-#include <stdlib.h>
+#include "entidades.h"
 
 #define ERROR_NIVEL_INVALIDO -404
 #define ERROR_TIPO_INVALIDO -405

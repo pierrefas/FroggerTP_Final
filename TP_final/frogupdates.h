@@ -1,8 +1,9 @@
-#ifndef FUPDATE-H
-#define FUPDATE-H
+#ifndef FUPDATE_H
+#define FUPDATE_H
 
 
-#include <stdlib.h>
+#include "entidades.h"
+#include "checking.h"
 
 void followSupport(frog_player * rana, support_entity * soporte, int speedheight[]);
 int deathOfFrog(frog_player * rana, support_entity * soporte, enemy_entity * enemigos);

@@ -1,8 +1,8 @@
-#ifndef EUPDATE-H
-#define EUPDATE-H
+#ifndef EUPDATE_H
+#define EUPDATE_H
 
+#include "entidades.h"
 
-#include <stdlib.h>
 
 int stepEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight[]);
 void resetEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight[]);

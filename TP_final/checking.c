@@ -9,9 +9,6 @@
 //                                                                  //
 //////////////////////////////////////////////////////////////////////
 #include "checking.h"
-#include "entidades.h"
-
-
 
 
 int isDeadFromEnemy(frog_player * rana, enemy_entity * enemigos){
@@ -26,9 +23,7 @@ int isDeadFromEnemy(frog_player * rana, enemy_entity * enemigos){
 
     for(i = 0; (enemigos + i)->type != -1; i++){
 
-        if ((rana->height == (enemigos + i)->height)&&
-        ((rana->startcoord <= (enemigos + i)->endcoord)&&(rana->startcoord >= (enemigos + i)->startcoord))
-        ||((rana->endcoord <= (enemigos + i)->endcoord)&&(rana->endcoord >= (enemigos + i)->startcoord))){
+        if ((rana->height == (enemigos + i)->height)&&(rana->endcoord>=enemigos->startcoord)&&(rana->startcoord<=enemigos->endcoord)){
 
             return 1; //Si esta en el mismo lugar qeu un enemigo muere, esto es independiente de donde este en el juego
 

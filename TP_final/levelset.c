@@ -13,7 +13,7 @@
 
 
 #include "levelset.h"
-#include "entidades.h"
+
 
 int lentypes[] = {1,1,2,3,5,7};
 

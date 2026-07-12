@@ -1,5 +1,5 @@
-#ifndef ENTIDADES-H
-#define ENTIDADES-H
+#ifndef ENTIDADES_H
+#define ENTIDADES_H
 
 
 #include <stdlib.h>

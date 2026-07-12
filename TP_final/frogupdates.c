@@ -14,8 +14,6 @@
 
 
 #include "frogupdates.h"
-#include "checking.h"
-#include "entidades.h"
 
 void followSupport(frog_player * rana, support_entity * soporte, int speedheight[]){
 
