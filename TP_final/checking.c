@@ -63,10 +63,6 @@ int isDeadLake(frog_player * rana, support_entity * soporte){
         }
     }
     
-<<<<<<< HEAD
-    return 1; // <- chiche OJO con esto !!!!
-=======
-    return 1;
->>>>>>> fe8d770eb3902547aa9245293c7435904d2a9a17
+    return 1; //Si esta en el lago y no esta sobre un soporte muere
 
 }
