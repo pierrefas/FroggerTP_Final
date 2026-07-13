@@ -17,8 +17,8 @@
 
 int lentypes[] = {1,1,2,3,5,7};
 
-createEnemy(enemy_entity* enemigo, int tipo, int height, int heightspeed[]);
-createSupport(support_entity* soporte, int tipo, int height, int heightspeed[]);
+static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightspeed[]);
+static int createSupport(support_entity* soporte, int tipo, int height, int heightspeed[]);
 
 static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightspeed[]){
 
@@ -121,7 +121,6 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
 
     return 0;
 }
-
 
 int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int heightspeed[],frog_player* rana){
 
