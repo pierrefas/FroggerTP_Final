@@ -13,7 +13,7 @@
 
 
 #include "levelset.h"
-
+#include <time.h>
 
 int lentypes[] = {1,1,2,3,5,7};
 
@@ -124,6 +124,8 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
 
 int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int heightspeed[],frog_player* rana){
 
+    srand(time(NULL));
+
     if(enemigos == NULL || soportes == NULL|| rana == NULL|| heightspeed == NULL){
         return ERROR_NULL_POINTER;
     }
@@ -141,28 +143,28 @@ int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int h
 
     for(i = 0; i < 13; i++){
 
-        heightspeed[i] = rand(time(NULL)) % (level + 5) + level; //Aumento la velocidad de los enemigos y soportes en cada nivel
+        heightspeed[i] = rand() % (level + 5) + level; //Aumento la velocidad de los enemigos y soportes en cada nivel
 
     }
 
     for(i = 0; i < 5; i++){
 
-        int temp = rand(time(NULL)) % 4 + 1; //Genero un numero aleatorio entre 1 y 4 para ver cuantos enemigos genero
+        int temp = rand() % 4 + 1; //Genero un numero aleatorio entre 1 y 4 para ver cuantos enemigos genero
 
         for(i = 0; i < temp; i++){
 
-            createEnemy(enemigos, rand(time(NULL)) % 3, i + 1, heightspeed); //Genero enemigos aleatorios
+            createEnemy(enemigos, rand() % 3, i + 1, heightspeed); //Genero enemigos aleatorios
 
         }
     }
 
     for(i = 0; i < 5; i++){
 
-        int temp = rand(time(NULL)) % 4 + 1; //Genero un numero aleatorio entre 1 y 4 para ver cuantos soportes genero
+        int temp = rand() % 4 + 1; //Genero un numero aleatorio entre 1 y 4 para ver cuantos soportes genero
 
         for(i = 0; i < temp; i++){
 
-            createSupport(soportes, rand(time(NULL)) % 3, i + 6, heightspeed); //Genero soportes aleatorios
+            createSupport(soportes, rand() % 3, i + 6, heightspeed); //Genero soportes aleatorios
 
         }
     }
@@ -171,6 +173,8 @@ int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int h
 
 int randPos(void){
 
-    return rand(time(NULL)) % (ENDWORLD-3); //Genero un numero aleatorio entre 0 y ENDWORLD para que la entidad no se salga de la pantalla
+    srand(time(NULL));
+
+    return ( rand() % (ENDWORLD - 3 )) ; //Genero un numero aleatorio entre 0 y ENDWORLD para que la entidad no se salga de la pantalla
 
 }
