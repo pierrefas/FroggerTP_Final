@@ -9,35 +9,34 @@ C_SRCS += \
 ../a_PC_display.c \
 ../a_sprites.c \
 ../a_map.c \
-../main.c \
 ../checking.c \
 ../entityupdates.c \
 ../frogupdates.c \
 ../joystick.c \
-../levelset.c 
-
+../levelset.c \
+../main.c 
 
 C_DEPS += \
 ./a_PC_display.d \
 ./a_sprites.d \
 ./a_map.d \
-./main.d \
 ./checking.d \
 ./entityupdates.d \
 ./frogupdates.d \
 ./joystick.d \
 ./levelset.d \
-
+./main.d 
 
 OBJS += \
 ./a_PC_display.o \
 ./a_sprites.o \
-./main.o \
+./a_map.d \
 ./checking.o \
 ./entityupdates.o \
 ./frogupdates.o \
 ./joystick.o \
 ./levelset.o \
+./main.o 
 
 # Each subdirectory must supply rules for building sources it contributes
 %.o: ../%.c subdir.mk
