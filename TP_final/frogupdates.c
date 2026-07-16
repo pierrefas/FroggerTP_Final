@@ -66,6 +66,7 @@ int frogStepUp(frog_player * rana){
    
    
     rana->height++;
+    rana->orientation = 0;
 
     if(!isInBounds(rana)){
 
@@ -87,6 +88,7 @@ int frogStepDown(frog_player * rana){
 
 
     rana->height--;
+    rana->orientation = 2;
 
     if(!isInBounds(rana)){
 
@@ -106,7 +108,7 @@ int frogStepRight(frog_player * rana){
 
     }
 
-
+    rana->orientation = 1;
     rana->startcoord+=ADJCOORDFROG(1);
     rana->endcoord+=ADJCOORDFROG(1);
 
@@ -130,7 +132,7 @@ int frogStepLeft(frog_player * rana){
 
     }
 
-
+    rana->orientation = 2;
     rana->startcoord-=ADJCOORDFROG(1);
     rana->endcoord-=ADJCOORDFROG(1);
 

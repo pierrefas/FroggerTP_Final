@@ -38,6 +38,7 @@ typedef struct {
     int endcoord;
     int height;
     int lives;
+    int orientation;
 
 } frog_player;
 
