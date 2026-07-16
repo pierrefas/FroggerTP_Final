@@ -15,7 +15,7 @@
 
 #include "frogupdates.h"
 
-void followSupport(frog_player * rana, support_entity * soporte, int speedheight[]){
+int followSupport(frog_player * rana, support_entity * soporte, int speedheight[]){
 
     if(soporte == NULL){
 
@@ -56,7 +56,7 @@ int deathOfFrog(frog_player * rana, support_entity * soporte, enemy_entity * ene
 
 }
 
-void frogStepUp(frog_player * rana){
+int frogStepUp(frog_player * rana){
 
    if(rana == NULL){
 
@@ -77,7 +77,7 @@ void frogStepUp(frog_player * rana){
 
 }
 
-void frogStepDown(frog_player * rana){
+int frogStepDown(frog_player * rana){
 
     if(rana == NULL){   
 
@@ -98,7 +98,7 @@ void frogStepDown(frog_player * rana){
 
 }
 
-void frogStepRight(frog_player * rana){
+int frogStepRight(frog_player * rana){
 
     if(rana == NULL){
 
@@ -122,7 +122,7 @@ void frogStepRight(frog_player * rana){
 
 }
 
-void frogStepLeft(frog_player * rana){
+int frogStepLeft(frog_player * rana){
 
     if(rana == NULL){
 
