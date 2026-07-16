@@ -48,7 +48,7 @@ int isDeadLake(frog_player * rana, support_entity * soporte){
 
     for(i = 0; (soporte + i)->type != -1; i++){
 
-        if((rana->height < STARTLAKE)||(soporte->supporting)&&(rana->startcoord>=(soporte + i)->startcoord)&&(rana->endcoord<=(soporte + i)->endcoord)&&(rana->height == (soporte + i)->height)){
+        if((rana->height < STARTLAKE)||(soporte->supporting) && (rana->startcoord>=(soporte + i)->startcoord)&&(rana->endcoord<=(soporte + i)->endcoord)&&(rana->height == (soporte + i)->height)){
 
             return 0; //Si estando en el lago esta sobre un soporte vive
 

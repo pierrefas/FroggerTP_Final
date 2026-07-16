@@ -36,7 +36,7 @@ main-build: TP_final
 TP_final: $(OBJS) $(USER_OBJS) makefile $(OPTIONAL_TOOL_DEPS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C Linker'
-	gcc  -o "TP_final" $(OBJS) $(USER_OBJS) $(LIBS) -lallegro -lallegro_font
+	gcc  -o "TP_final" $(OBJS) $(USER_OBJS) $(LIBS) -lallegro -lallegro_font -lallegro_image
 	@echo 'Finished building target: $@'
 	@echo ' '
 
