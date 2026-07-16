@@ -1,0 +1,94 @@
+Building file: ../frogupdates.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"frogupdates.d" -MT"frogupdates.o" -o "frogupdates.o" "../frogupdates.c"
+In file included from ../frogupdates.h:5,
+                 from ../frogupdates.c:16:
+../frogupdates.c: In function ‘followSupport’:
+../entidades.h:10:28: error: ‘return’ with a value, in function returning void [-Wreturn-mismatch]
+   10 | #define ERROR_NULL_POINTER -67 //Esta macro me permite definir un error de puntero nulo, que se usa en las funcioens del backend
+      |                            ^
+../frogupdates.c:22:16: note: in expansion of macro ‘ERROR_NULL_POINTER’
+   22 |         return ERROR_NULL_POINTER;
+      |                ^~~~~~~~~~~~~~~~~~
+../frogupdates.c:18:6: note: declared here
+   18 | void followSupport(frog_player * rana, support_entity * soporte, int speedheight[]){
+      |      ^~~~~~~~~~~~~
+../frogupdates.c:32:12: error: ‘return’ with a value, in function returning void [-Wreturn-mismatch]
+   32 |     return 0;
+      |            ^
+../frogupdates.c:18:6: note: declared here
+   18 | void followSupport(frog_player * rana, support_entity * soporte, int speedheight[]){
+      |      ^~~~~~~~~~~~~
+../frogupdates.c: In function ‘frogStepUp’:
+../entidades.h:10:28: error: ‘return’ with a value, in function returning void [-Wreturn-mismatch]
+   10 | #define ERROR_NULL_POINTER -67 //Esta macro me permite definir un error de puntero nulo, que se usa en las funcioens del backend
+      |                            ^
+../frogupdates.c:63:16: note: in expansion of macro ‘ERROR_NULL_POINTER’
+   63 |         return ERROR_NULL_POINTER;
+      |                ^~~~~~~~~~~~~~~~~~
+../frogupdates.c:59:6: note: declared here
+   59 | void frogStepUp(frog_player * rana){
+      |      ^~~~~~~~~~
+../frogupdates.c:76:12: error: ‘return’ with a value, in function returning void [-Wreturn-mismatch]
+   76 |     return 0;
+      |            ^
+../frogupdates.c:59:6: note: declared here
+   59 | void frogStepUp(frog_player * rana){
+      |      ^~~~~~~~~~
+../frogupdates.c: In function ‘frogStepDown’:
+../entidades.h:10:28: error: ‘return’ with a value, in function returning void [-Wreturn-mismatch]
+   10 | #define ERROR_NULL_POINTER -67 //Esta macro me permite definir un error de puntero nulo, que se usa en las funcioens del backend
+      |                            ^
+../frogupdates.c:84:16: note: in expansion of macro ‘ERROR_NULL_POINTER’
+   84 |         return ERROR_NULL_POINTER;
+      |                ^~~~~~~~~~~~~~~~~~
+../frogupdates.c:80:6: note: declared here
+   80 | void frogStepDown(frog_player * rana){
+      |      ^~~~~~~~~~~~
+../frogupdates.c:97:12: error: ‘return’ with a value, in function returning void [-Wreturn-mismatch]
+   97 |     return 0;
+      |            ^
+../frogupdates.c:80:6: note: declared here
+   80 | void frogStepDown(frog_player * rana){
+      |      ^~~~~~~~~~~~
+../frogupdates.c: In function ‘frogStepRight’:
+../entidades.h:10:28: error: ‘return’ with a value, in function returning void [-Wreturn-mismatch]
+   10 | #define ERROR_NULL_POINTER -67 //Esta macro me permite definir un error de puntero nulo, que se usa en las funcioens del backend
+      |                            ^
+../frogupdates.c:105:16: note: in expansion of macro ‘ERROR_NULL_POINTER’
+  105 |         return ERROR_NULL_POINTER;
+      |                ^~~~~~~~~~~~~~~~~~
+../frogupdates.c:101:6: note: declared here
+  101 | void frogStepRight(frog_player * rana){
+      |      ^~~~~~~~~~~~~
+../frogupdates.c:120:12: error: ‘return’ with a value, in function returning void [-Wreturn-mismatch]
+  120 |     return 0;
+      |            ^
+../frogupdates.c:101:6: note: declared here
+  101 | void frogStepRight(frog_player * rana){
+      |      ^~~~~~~~~~~~~
+../frogupdates.c: In function ‘frogStepLeft’:
+../entidades.h:10:28: error: ‘return’ with a value, in function returning void [-Wreturn-mismatch]
+   10 | #define ERROR_NULL_POINTER -67 //Esta macro me permite definir un error de puntero nulo, que se usa en las funcioens del backend
+      |                            ^
+../frogupdates.c:129:16: note: in expansion of macro ‘ERROR_NULL_POINTER’
+  129 |         return ERROR_NULL_POINTER;
+      |                ^~~~~~~~~~~~~~~~~~
+../frogupdates.c:125:6: note: declared here
+  125 | void frogStepLeft(frog_player * rana){
+      |      ^~~~~~~~~~~~
+../frogupdates.c:145:12: error: ‘return’ with a value, in function returning void [-Wreturn-mismatch]
+  145 |     return 0;
+      |            ^
+../frogupdates.c:125:6: note: declared here
+  125 | void frogStepLeft(frog_player * rana){
+      |      ^~~~~~~~~~~~
+In file included from ../frogupdates.h:6:
+../frogupdates.c: In function ‘isInBounds’:
+../checking.h:6:56: warning: suggest parentheses around ‘&&’ within ‘||’ [-Wparentheses]
+    6 | #define ISINSAFEZONE(rana) (((rana)->height > ENDLAKE) && !((((rana)->startcoord>=12)&&((rana)->endcoord<=28))||(((rana)->startcoord>=52)&&((rana)->endcoord<=68)))||(((rana)->startcoord>=92)&&(rana->endcoord<=108))||(((rana)->startcoord>=132)&&((rana)->endcoord<=148))||(((rana)->startcoord>=172)&&((rana)->endcoord<=188)))
+      |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../frogupdates.c:151:77: note: in expansion of macro ‘ISINSAFEZONE’
+  151 |     if((rana->startcoord<0)||(rana->endcoord>ENDWORLD)||(rana->height<0)||(!ISINSAFEZONE(rana))){
+      |                                                                             ^~~~~~~~~~~~
+make: *** [subdir.mk:45: frogupdates.o] Error 1
