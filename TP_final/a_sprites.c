@@ -30,7 +30,7 @@ int init_sprites(void)
         return 0;
     }
 
-    ALLEGRO_BITMAP* frog_fwd = al_create_sub_bitmap(sprites, 1, 1, framewidth, frameheight);
+    frog_fwd = al_create_sub_bitmap(sprites, 1, 1, framewidth, frameheight);
 
     return 1;
 }
