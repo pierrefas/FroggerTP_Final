@@ -6,7 +6,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../a_PC_display.c \
+../a_PC_display.c \ 
 ../a_sprites.c \
 ../a_map.c \
 ../checking.c \

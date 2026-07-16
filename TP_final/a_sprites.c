@@ -10,8 +10,8 @@
 #include <stdio.h>
 
 // Define the global variables here
-int framewidth = 32;
-int frameheight = 32;
+int framewidth = 16;
+int frameheight = 16;
 ALLEGRO_BITMAP *sprites = NULL;
 ALLEGRO_BITMAP* frog_fwd = NULL;
 
