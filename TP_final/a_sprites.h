@@ -5,14 +5,14 @@
  * Author: peterfas
  */
 
-#ifndef SPRITES_H
-#define SPRITES_H
+#ifndef a_SPRITES_H
+#define a_SPRITES_H
 
 #include <allegro5/allegro.h>
 
 // Global pointer to the sprite sheet (declared as extern so other files can see it)
-extern ALLEGRO_BITMAP *sprites;
-
+extern ALLEGRO_BITMAP* sprites;
+extern ALLEGRO_BITMAP* frog_fwd;
 // Game-specific dimensions
 extern int framewidth;
 extern int frameheight;
@@ -28,4 +28,4 @@ int init_sprites(void);
  */
 void destroy_sprites(void);
 
-#endif /* SPRITES_H */
+#endif /* a_SPRITES_H */

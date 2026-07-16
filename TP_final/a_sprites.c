@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * sprites.c
  *
@@ -6,14 +5,15 @@
  * Author: peterfas
  */
 
-#include "sprites.h"
+#include "a_sprites.h"
 #include <allegro5/allegro_image.h>
 #include <stdio.h>
 
 // Define the global variables here
-int framewidth = 8;
-int frameheight = 8;
+int framewidth = 32;
+int frameheight = 32;
 ALLEGRO_BITMAP *sprites = NULL;
+ALLEGRO_BITMAP* frog_fwd = NULL;
 
 int init_sprites(void)
 {
@@ -30,25 +30,17 @@ int init_sprites(void)
         return 0;
     }
 
+    ALLEGRO_BITMAP* frog_fwd = al_create_sub_bitmap(sprites, 1, 1, framewidth, frameheight);
+
     return 1;
 }
 
 void destroy_sprites(void)
-{
+{   
+
     if (sprites) {
+        al_destroy_bitmap(frog_fwd);
         al_destroy_bitmap(sprites);
+
     }
 }
-=======
-/*
- * sprites.c
- *
- *  Created on: Jul 9, 2026
- *      Author: peterfas
- */
-
-
-int framewidth = 8;
-int frameheight = 8;
-
->>>>>>> fe8d770eb3902547aa9245293c7435904d2a9a17
