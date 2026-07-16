@@ -2,19 +2,11 @@ Building file: ../levelset.c
 Invoking: GCC C Compiler
 gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"levelset.d" -MT"levelset.o" -o "levelset.o" "../levelset.c"
 ../levelset.c: In function ‘createEnemy’:
-../levelset.c:52:33: error: implicit declaration of function ‘randPos’; did you mean ‘random’? [-Wimplicit-function-declaration]
-   52 |         new_enemy->startcoord = randPos(); //Genero un numero aleatorio entre 0 y ENDWORLD para que el enemigo no se salga de la pantalla
-      |                                 ^~~~~~~
-      |                                 random
-../levelset.c:37:9: warning: variable ‘i’ set but not used [-Wunused-but-set-variable]
-   37 |     int i;
-      |         ^
-../levelset.c: In function ‘createSupport’:
-../levelset.c:88:9: warning: variable ‘i’ set but not used [-Wunused-but-set-variable]
-   88 |     int i;
-      |         ^
+../levelset.c:50:32: error: initialization of ‘support_entity *’ from incompatible pointer type ‘enemy_entity *’ [-Wincompatible-pointer-types]
+   50 |         support_entity* temp = enemigo;
+      |                                ^~~~~~~
 ../levelset.c: In function ‘nextLevel’:
-../levelset.c:172:1: warning: control reaches end of non-void function [-Wreturn-type]
-  172 | }
+../levelset.c:188:1: warning: control reaches end of non-void function [-Wreturn-type]
+  188 | }
       | ^
 make: *** [subdir.mk:45: levelset.o] Error 1
