@@ -47,7 +47,7 @@ static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightsp
 
     while(supperposition++ < 50 && supperposition > 0){
 
-        support_entity* temp = enemigo;
+        enemy_entity* temp = enemigo;
 
         new_enemy->startcoord = rand() % (ENDWORLD - 3 ); //Genero un numero aleatorio entre 0 y ENDWORLD para que el soporte no se salga de la pantalla
         new_enemy->endcoord = new_enemy->startcoord + lentypes[tipo];
@@ -184,5 +184,7 @@ int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int h
 
         }
     }
+
+    return 0;
 
 }
