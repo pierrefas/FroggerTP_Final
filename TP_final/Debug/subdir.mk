@@ -6,7 +6,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../a_PC_display.c \ 
+../a_PC_display.c \
 ../a_sprites.c \
 ../a_map.c \
 ../checking.c \
@@ -14,7 +14,7 @@ C_SRCS += \
 ../frogupdates.c \
 ../joystick.c \
 ../levelset.c \
-../main.c 
+../main.c
 
 C_DEPS += \
 ./a_PC_display.d \
@@ -25,18 +25,18 @@ C_DEPS += \
 ./frogupdates.d \
 ./joystick.d \
 ./levelset.d \
-./main.d 
+./main.d
 
 OBJS += \
 ./a_PC_display.o \
 ./a_sprites.o \
-./a_map.d \
+./a_map.o \
 ./checking.o \
 ./entityupdates.o \
 ./frogupdates.o \
 ./joystick.o \
 ./levelset.o \
-./main.o 
+./main.o
 
 # Each subdirectory must supply rules for building sources it contributes
 %.o: ../%.c subdir.mk
