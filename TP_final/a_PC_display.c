@@ -15,7 +15,12 @@
 #define GAME_HEIGHT 256
 #define GAME_WIDTH 224
 
+#define CENTER_X  GAME_WIDTH / 2
+#define CENTER_Y  GAME_HEIGHT / 2
+
 int fullscreen = 0;
+
+// Width center: 224 / 2 = 112, Height center: 256 / 2 = 128
 
 int display(void)
 {
@@ -107,15 +112,12 @@ int display(void)
                     //al_draw_text(font, al_map_rgb(255, 255, 255), 10, 10, 0, "Hello world!");
 
                     // 2. Put a green dot at the exact mathematical center of your game canvas
-                    // Width center: 224 / 2 = 112, Height center: 256 / 2 = 128
-                    int center_x = GAME_WIDTH / 2;
-                    int center_y = GAME_HEIGHT / 2;
                     //al_put_pixel(center_x, center_y, al_map_rgb(0, 255, 0)); // Draws a sharp green pixel
                     
                     // Draw a frog sprite region onto the buffer (16x16 at position 50,50)
                     if (sprites) {
                         //al_draw_bitmap_region(sprites, 0, 0, 16, 16, 50, 50, 0);
-                        al_draw_bitmap(frog_fwd, center_x, center_y, 0);
+                        al_draw_bitmap(frog_fwd, CENTER_X, CENTER_Y, 0);
                     }
 
                     // 3. Switch back to the operating system display window

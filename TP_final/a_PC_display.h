@@ -13,6 +13,9 @@
 #define GAME_HEIGHT 256
 #define GAME_WIDTH 224
 
+#define CENTER_X  (GAME_WIDTH / 2)
+#define CENTER_Y  (GAME_HEIGHT / 2)
+
 /**
  * @brief Initializes Allegro, creates the auto-scaling fullscreen display,
  * and runs the main game loop.

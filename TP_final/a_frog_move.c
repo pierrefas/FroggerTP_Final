@@ -11,6 +11,10 @@
 
 #include "a_sprites.h"
 
+#include "entidades.h"
+
+extern frog;
+
 void frog_move_up (){
 
 }
