@@ -31,8 +31,8 @@ typedef struct {
 
 typedef struct {
 
-    int x;
-    int y;
+    int startcoord;
+    int endcoord;
     int height;
     int lives;
     int orientation;
