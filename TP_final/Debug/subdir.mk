@@ -5,6 +5,18 @@
 #me robe el makefile de eclipse
 
 # Add inputs and outputs from these tool invocations to the build variables 
+
+HDMI1 := $(shell cat /sys/class/drm/card0-HDMI-A-1/status 2>/dev/null)
+HDMI2 := $(shell cat /sys/class/drm/card0-HDMI-A-2/status 2>/dev/null)
+
+ifeq ($(HDMI1),connected)
+    HDMI_CONNECTED := yes
+else ifeq ($(HDMI2),connected)
+    HDMI_CONNECTED := yes
+else
+    HDMI_CONNECTED := no
+endif
+
 C_SRCS += \
 ../a_PC_display.c \
 ../a_sprites.c \
@@ -37,6 +49,13 @@ OBJS += \
 ./joystick.o \
 ./levelset.o \
 ./main.o
+
+# filtro los archivos "a_" si no hay conexion por hdmi
+ifeq ($(HDMI_CONNECTED),no)
+    C_SRCS := $(filter-out ../a_%,$(C_SRCS))
+    C_DEPS := $(filter-out ./a_%,$(C_DEPS))
+    OBJS   := $(filter-out ./a_%,$(OBJS))
+endif
 
 # Each subdirectory must supply rules for building sources it contributes
 %.o: ../%.c subdir.mk
