@@ -37,17 +37,16 @@ void init_alegro(void){
         printf("allegro font falied to initialize \n");
         return 0;
     }
+
+    if (!init_sprites()) {
+        return 0;
+    }
+
 }
 
 int display(void)
 {
     
-
-    // Initialize sprites after Allegro core is ready
-    if (!init_sprites()) {
-        return 0;
-    }
-
     ALLEGRO_MONITOR_INFO info;
         al_get_monitor_info(0, &info);
         int desktop_w = info.x2 - info.x1;
