@@ -7,13 +7,13 @@ RM := rm -rf
 -include sources.mk
 -include subdir.mk
 
-# --- Conditionally apply Allegro flags based on HDMI ---
+# si hay una conexion por hdmi en el raspberry pi permito que se agreguen las librerias de allegro
 ifeq ($(HDMI_CONNECTED),yes)
-    ALLEGRO_LIBS := -lallegro -lallegro_font
+    ALLEGRO_LIBS := -lallegro -lallegro_font -lallegro_image
     @echo "Display detected. Building with Allegro support."
 else
     ALLEGRO_LIBS :=
-    # Optional: Pass a preprocessor flag to your C code (like -DHEADLESS)
+    # paso un flag -DHEADLESS para los codigos que usen allegro que aun asi se compilen, como "main.c"
     CFLAGS += -DHEADLESS 
 endif
 # --------------------------------------------------------
@@ -42,8 +42,7 @@ all: main-build
 # Main-build Target
 main-build: TP_final
 
-# Tool invocations
-# We replaced manual "-lallegro -lallegro_font" with $(ALLEGRO_LIBS)
+# cambie el codigo de eclipse de "-lallegro -lallegro_font" con $(ALLEGRO_LIBS)
 TP_final: $(OBJS) $(USER_OBJS) makefile $(OPTIONAL_TOOL_DEPS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C Linker'
