@@ -13,7 +13,7 @@ ifeq ($(filter yes,$(HDMI_CONNECTED) $(FORCE_ALLEGRO)),yes)
     ALLEGRO_LIBS := -lallegro -lallegro_font -lallegro_image -lallegro_primitives
     CFLAGS := 
 else
-    # paso un flag DHEADLESS para los codigos que usen allegro que aun asi se compilen, como "main.c"
+    # paso un flag DHEADLESS para archivos como "main.c" que puede usar Allegro o no.
     CFLAGS += -DHEADLESS
 endif
 

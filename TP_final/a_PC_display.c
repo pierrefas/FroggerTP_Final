@@ -22,6 +22,8 @@
 extern ALLEGRO_BITMAP* sprites;
 extern ALLEGRO_BITMAP* frog_fwd;
 
+int init_sprites(void);
+void destroy_sprites(void);
 
 int fullscreen = 0;
 
@@ -46,6 +48,8 @@ int init_alegro(void){
     if (!init_sprites()) {
         return 0;
     }
+
+    return 0;
 
 }
 
