@@ -10,12 +10,17 @@
 #include <stdio.h>
 
 // Define the global variables here
+
 int framewidth = 16;
 int frameheight = 16;
-ALLEGRO_BITMAP* sprites = NULL;
-ALLEGRO_BITMAP* frog_fwd = NULL;
-ALLEGRO_BITMAP* background_map = NULL;
 
+ALLEGRO_BITMAP* sprites = NULL;
+
+ALLEGRO_BITMAP* frog_fwd = NULL;
+
+ALLEGRO_BITMAP* bush_0 = NULL;
+ALLEGRO_BITMAP* bush_1 = NULL;
+ALLEGRO_BITMAP* tile_0 = NULL;
 
 int init_sprites(void)
 {
@@ -32,7 +37,25 @@ int init_sprites(void)
         return 0;
     }
 
-    frog_fwd = al_create_sub_bitmap(sprites, 1, 1, framewidth, frameheight);
+    ALLEGRO_COLOR mask_color = al_map_rgb( 64, 64, 64);
+
+    al_convert_mask_to_alpha(sprites, mask_color);
+
+    mask_color = al_map_rgb( 0, 0, 0);
+
+    al_convert_mask_to_alpha( sprites, mask_color);
+
+
+    frog_fwd = al_create_sub_bitmap( sprites, 1, 1, framewidth, frameheight);
+
+    bush_0 = al_create_sub_bitmap( sprites, 1, 188, 32, 24);    
+
+    bush_1 = al_create_sub_bitmap( sprites, 35, 188, 8, 24);
+
+
+
+
+
 
     return 1;
 }
