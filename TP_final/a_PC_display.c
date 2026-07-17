@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "a_map.h"
 #include "a_sprites.h"
 
 #define GAME_HEIGHT 256
@@ -17,6 +18,11 @@
 
 #define CENTER_X  GAME_WIDTH / 2
 #define CENTER_Y  GAME_HEIGHT / 2
+
+
+extern sprites;
+extern frog_fwd;
+
 
 int fullscreen = 0;
 
@@ -129,7 +135,10 @@ int display(void)
                     if (sprites) {
                         //al_draw_bitmap_region(sprites, 0, 0, 16, 16, 50, 50, 0);
                         al_draw_bitmap(frog_fwd, CENTER_X, CENTER_Y, 0);
+
+                        a_disp_map();
                     }
+
 
                     // 3. Switch back to the operating system display window
                     al_set_target_bitmap(al_get_backbuffer(disp));
