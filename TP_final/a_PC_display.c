@@ -113,6 +113,14 @@ int display(void)
 
                     // Draw your text near the top left of the game canvas
                     //al_draw_text(font, al_map_rgb(255, 255, 255), 10, 10, 0, "Hello world!");
+                    
+                    int midpoint_y =  GAME_HEIGHT/ 2;
+    
+                    al_draw_filled_rectangle(
+                    0, 0,                       // Top-left corner (x1, y1)
+                    GAME_WIDTH, midpoint_y,  // Bottom-right corner (x2, y2)
+                    al_map_rgb(0, 0, 150)       // Your blue color
+                    );
 
                     // 2. Put a green dot at the exact mathematical center of your game canvas
                     //al_put_pixel(center_x, center_y, al_map_rgb(0, 255, 0)); // Draws a sharp green pixel

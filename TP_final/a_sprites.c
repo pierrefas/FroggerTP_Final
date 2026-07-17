@@ -12,8 +12,10 @@
 // Define the global variables here
 int framewidth = 16;
 int frameheight = 16;
-ALLEGRO_BITMAP *sprites = NULL;
+ALLEGRO_BITMAP* sprites = NULL;
 ALLEGRO_BITMAP* frog_fwd = NULL;
+ALLEGRO_BITMAP* background_map = NULL;
+
 
 int init_sprites(void)
 {
