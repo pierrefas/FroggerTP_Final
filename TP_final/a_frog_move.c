@@ -19,7 +19,7 @@ void frog_move_up (){
 
 }
 
-int main() {
+int move() {
     al_init();
     al_install_keyboard();
 
