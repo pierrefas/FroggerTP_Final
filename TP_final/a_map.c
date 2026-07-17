@@ -4,8 +4,8 @@
 #include "a_sprites.h"
 #include "a_PC_display.h"
 
-extern bush_0;
-extern bush_1;
+extern ALLEGRO_BITMAP* bush_0;
+extern ALLEGRO_BITMAP* bush_1;
 
 void a_disp_map (void){
 

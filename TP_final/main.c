@@ -19,9 +19,9 @@
 int main (void){
 	#ifndef HEADLESS
 	init_alegro(); // inicializo todo lo de alegro en esta funcion
-	#endif
 
   display();
+	#endif
 	
 	return 0;
 }

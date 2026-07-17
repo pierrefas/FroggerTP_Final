@@ -7,6 +7,8 @@
 
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_primitives.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,19 +18,16 @@
 #define GAME_HEIGHT 256
 #define GAME_WIDTH 224
 
-#define CENTER_X  GAME_WIDTH / 2
-#define CENTER_Y  GAME_HEIGHT / 2
 
-
-extern sprites;
-extern frog_fwd;
+extern ALLEGRO_BITMAP* sprites;
+extern ALLEGRO_BITMAP* frog_fwd;
 
 
 int fullscreen = 0;
 
 // Width center: 224 / 2 = 112, Height center: 256 / 2 = 128
 
-void init_alegro(void){
+int init_alegro(void){
     if (al_init()){
     	printf("allegro initialized successfully \n");
     }
