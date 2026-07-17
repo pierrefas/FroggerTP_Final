@@ -22,8 +22,7 @@ int fullscreen = 0;
 
 // Width center: 224 / 2 = 112, Height center: 256 / 2 = 128
 
-int display(void)
-{
+void init_alegro(void){
     if (al_init()){
     	printf("allegro initialized successfully \n");
     }
@@ -38,6 +37,11 @@ int display(void)
         printf("allegro font falied to initialize \n");
         return 0;
     }
+}
+
+int display(void)
+{
+    
 
     // Initialize sprites after Allegro core is ready
     if (!init_sprites()) {

@@ -11,9 +11,10 @@ RM := rm -rf
 ifeq ($(HDMI_CONNECTED),yes)
     ALLEGRO_LIBS := -lallegro -lallegro_font -lallegro_image
     @echo "Display detected. Building with Allegro support."
+	CFLAGS :=
 else
     ALLEGRO_LIBS :=
-    # paso un flag -DHEADLESS para los codigos que usen allegro que aun asi se compilen, como "main.c"
+    # paso un flag DHEADLESS para los codigos que usen allegro que aun asi se compilen, como "main.c"
     CFLAGS += -DHEADLESS 
 endif
 # --------------------------------------------------------

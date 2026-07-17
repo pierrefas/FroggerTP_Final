@@ -23,4 +23,6 @@
  */
 int display(void);
 
+void init_alegro(void);
+
 #endif /* a_PC_DISPLAY_H */

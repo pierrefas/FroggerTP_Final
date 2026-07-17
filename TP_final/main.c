@@ -7,6 +7,7 @@
 #include "a_PC_display.h"
 
 int main (void){
-	display();
+	#ifdef 
+	init_alegro();
 	return 0;
 }
