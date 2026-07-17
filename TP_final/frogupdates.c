@@ -2,7 +2,7 @@
 //                                                                  //
 //  Consultas a:  Juanga                                            //
 //                                                                  //
-//  En este archivo van a estar todas las funciones que actalizan   //
+//  En este archivo van a estar todas las funciones que actualizan  //
 //  al jugador y resguardan que este permanezaca en la zona         //
 //  jugable                                                         //
 //                                                                  //
