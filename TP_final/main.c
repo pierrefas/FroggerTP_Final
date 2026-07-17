@@ -21,6 +21,7 @@ int main (void){
 	init_alegro(); // inicializo todo lo de alegro en esta funcion
 	#endif
 
+  display();
 	
 	return 0;
 }

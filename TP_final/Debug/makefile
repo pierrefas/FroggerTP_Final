@@ -8,16 +8,14 @@ RM := rm -rf
 -include subdir.mk
 
 # si hay una conexion por hdmi en el raspberry pi permito que se agreguen las librerias de allegro
-ifeq ($(HDMI_CONNECTED),yes)
-    ALLEGRO_LIBS := -lallegro -lallegro_font -lallegro_image
-    @echo "Display detected. Building with Allegro support."
-	CFLAGS :=
+ifeq ($(filter yes,$(HDMI_CONNECTED) $(FORCE_ALLEGRO)),yes)
+    $(info Building with Allegro support (HDMI detected or forced).)
+    ALLEGRO_LIBS := -lallegro -lallegro_font -lallegro_image -lallegro_primitives
+    CFLAGS := 
 else
-    ALLEGRO_LIBS :=
     # paso un flag DHEADLESS para los codigos que usen allegro que aun asi se compilen, como "main.c"
-    CFLAGS += -DHEADLESS 
+    CFLAGS += -DHEADLESS
 endif
-# --------------------------------------------------------
 
 ifneq ($(MAKECMDGOALS),clean)
 ifneq ($(strip $(C_DEPS)),)

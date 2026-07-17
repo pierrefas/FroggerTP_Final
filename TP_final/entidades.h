@@ -39,6 +39,4 @@ typedef struct {
 
 } frog_player;
 
-frog_player frog;
-
 #endif

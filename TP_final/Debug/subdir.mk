@@ -51,7 +51,7 @@ OBJS += \
 ./main.o
 
 # filtro los archivos "a_" si no hay conexion por hdmi
-ifeq ($(HDMI_CONNECTED),no)
+ifeq ($(HDMI_CONNECTED),no and $(FORCE_ALLEGRO),no)
     C_SRCS := $(filter-out ../a_%,$(C_SRCS))
     C_DEPS := $(filter-out ./a_%,$(C_DEPS))
     OBJS   := $(filter-out ./a_%,$(OBJS))

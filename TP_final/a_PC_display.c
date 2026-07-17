@@ -7,6 +7,7 @@
 
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_primitives.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -22,7 +23,7 @@ int fullscreen = 0;
 
 // Width center: 224 / 2 = 112, Height center: 256 / 2 = 128
 
-void init_alegro(void){
+int init_alegro(void){
     if (al_init()){
     	printf("allegro initialized successfully \n");
     }
@@ -39,6 +40,11 @@ void init_alegro(void){
     }
 
     if (!init_sprites()) {
+        return 0;
+    }
+
+    if (!al_init_primitives_addon())
+    {
         return 0;
     }
 
