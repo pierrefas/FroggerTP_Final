@@ -1,71 +1,16 @@
 Building file: ../a_PC_display.c
 Invoking: GCC C Compiler
 gcc -DHEADLESS -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_PC_display.d" -MT"a_PC_display.o" -o "a_PC_display.o" "../a_PC_display.c"
-../a_PC_display.c:19:9: warning: ‘CENTER_X’ redefined
-   19 | #define CENTER_X  GAME_WIDTH / 2
-      |         ^~~~~~~~
-In file included from ../a_map.h:15,
-                 from ../a_PC_display.c:13:
-../a_PC_display.h:16:9: note: this is the location of the previous definition
-   16 | #define CENTER_X  (GAME_WIDTH / 2)
-      |         ^~~~~~~~
-../a_PC_display.c:20:9: warning: ‘CENTER_Y’ redefined
-   20 | #define CENTER_Y  GAME_HEIGHT / 2
-      |         ^~~~~~~~
-../a_PC_display.h:17:9: note: this is the location of the previous definition
-   17 | #define CENTER_Y  (GAME_HEIGHT / 2)
-      |         ^~~~~~~~
-../a_PC_display.c:23:8: error: type defaults to ‘int’ in declaration of ‘sprites’ [-Wimplicit-int]
-   23 | extern sprites;
-      |        ^~~~~~~
-../a_PC_display.c:24:8: error: type defaults to ‘int’ in declaration of ‘frog_fwd’ [-Wimplicit-int]
-   24 | extern frog_fwd;
-      |        ^~~~~~~~
-../a_PC_display.c:31:6: error: conflicting types for ‘init_alegro’; have ‘void(void)’
-   31 | void init_alegro(void){
-      |      ^~~~~~~~~~~
-../a_PC_display.h:26:5: note: previous declaration of ‘init_alegro’ with type ‘int(void)’
-   26 | int init_alegro(void);
-      |     ^~~~~~~~~~~
 ../a_PC_display.c: In function ‘init_alegro’:
-../a_PC_display.c:37:16: error: ‘return’ with a value, in function returning void [-Wreturn-mismatch]
-   37 |         return 0;
-      |                ^
-../a_PC_display.c:31:6: note: declared here
-   31 | void init_alegro(void){
-      |      ^~~~~~~~~~~
-../a_PC_display.c:44:16: error: ‘return’ with a value, in function returning void [-Wreturn-mismatch]
-   44 |         return 0;
-      |                ^
-../a_PC_display.c:31:6: note: declared here
-   31 | void init_alegro(void){
-      |      ^~~~~~~~~~~
-../a_PC_display.c:47:10: error: implicit declaration of function ‘init_sprites’ [-Wimplicit-function-declaration]
-   47 |     if (!init_sprites()) {
+../a_PC_display.c:46:10: error: implicit declaration of function ‘init_sprites’ [-Wimplicit-function-declaration]
+   46 |     if (!init_sprites()) {
       |          ^~~~~~~~~~~~
-../a_PC_display.c:48:16: error: ‘return’ with a value, in function returning void [-Wreturn-mismatch]
-   48 |         return 0;
-      |                ^
-../a_PC_display.c:31:6: note: declared here
-   31 | void init_alegro(void){
-      |      ^~~~~~~~~~~
 ../a_PC_display.c: In function ‘display’:
-../a_PC_display.c:125:21: error: implicit declaration of function ‘al_draw_filled_rectangle’ [-Wimplicit-function-declaration]
-  125 |                     al_draw_filled_rectangle(
-      |                     ^~~~~~~~~~~~~~~~~~~~~~~~
-../a_PC_display.c:137:40: error: passing argument 1 of ‘al_draw_bitmap’ makes pointer from integer without a cast [-Wint-conversion]
-  137 |                         al_draw_bitmap(frog_fwd, CENTER_X, CENTER_Y, 0);
-      |                                        ^~~~~~~~
-      |                                        |
-      |                                        int
-In file included from /usr/include/allegro5/base.h:50,
-                 from /usr/include/allegro5/allegro.h:26,
-                 from /usr/include/allegro5/allegro5.h:1,
-                 from ../a_PC_display.c:8:
-/usr/include/allegro5/bitmap_draw.h:18:1: note: expected ‘ALLEGRO_BITMAP *’ but argument is of type ‘int’
-   18 | AL_FUNC(void, al_draw_bitmap, (ALLEGRO_BITMAP *bitmap, float dx, float dy, int flags));
-      | ^~~~~~~
-../a_PC_display.c:157:5: error: implicit declaration of function ‘destroy_sprites’ [-Wimplicit-function-declaration]
-  157 |     destroy_sprites(); // Clean up your sprites sheet safely
+../a_PC_display.c:156:5: error: implicit declaration of function ‘destroy_sprites’ [-Wimplicit-function-declaration]
+  156 |     destroy_sprites(); // Clean up your sprites sheet safely
       |     ^~~~~~~~~~~~~~~
+../a_PC_display.c: In function ‘init_alegro’:
+../a_PC_display.c:50:1: warning: control reaches end of non-void function [-Wreturn-type]
+   50 | }
+      | ^
 make: *** [subdir.mk:64: a_PC_display.o] Error 1
