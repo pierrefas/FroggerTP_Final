@@ -1,16 +1,11 @@
-Building file: ../a_PC_display.c
+Building with Allegro support (HDMI detected or forced).
+Building file: ../a_map.c
 Invoking: GCC C Compiler
-gcc -DHEADLESS -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_PC_display.d" -MT"a_PC_display.o" -o "a_PC_display.o" "../a_PC_display.c"
-../a_PC_display.c: In function ‘init_alegro’:
-../a_PC_display.c:46:10: error: implicit declaration of function ‘init_sprites’ [-Wimplicit-function-declaration]
-   46 |     if (!init_sprites()) {
-      |          ^~~~~~~~~~~~
-../a_PC_display.c: In function ‘display’:
-../a_PC_display.c:156:5: error: implicit declaration of function ‘destroy_sprites’ [-Wimplicit-function-declaration]
-  156 |     destroy_sprites(); // Clean up your sprites sheet safely
-      |     ^~~~~~~~~~~~~~~
-../a_PC_display.c: In function ‘init_alegro’:
-../a_PC_display.c:50:1: warning: control reaches end of non-void function [-Wreturn-type]
-   50 | }
-      | ^
-make: *** [subdir.mk:64: a_PC_display.o] Error 1
+gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_map.d" -MT"a_map.o" -o "a_map.o" "../a_map.c"
+Finished building: ../a_map.c
+ 
+Building target: TP_final
+Invoking: GCC C Linker
+gcc  -o "TP_final" ./a_PC_display.o ./a_sprites.o ./a_map.o ./checking.o ./entityupdates.o ./frogupdates.o ./joystick.o ./levelset.o ./main.o   -lallegro -lallegro_font -lallegro_image -lallegro_primitives
+Finished building target: TP_final
+ 

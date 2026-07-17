@@ -44,6 +44,11 @@ int init_alegro(void){
         printf("allegro font falied to initialize \n");
         return 0;
     }
+    if (!al_init_primitives_addon()) {
+        // Optional: handle initialization error here
+        fprintf(stderr, "Failed to initialize primitives addon!\n");
+        return -1;
+    }
 
     if (!init_sprites()) {
         return 0;
@@ -137,9 +142,11 @@ int display(void)
                     // Draw a frog sprite region onto the buffer (16x16 at position 50,50)
                     if (sprites) {
                         //al_draw_bitmap_region(sprites, 0, 0, 16, 16, 50, 50, 0);
+                        a_disp_map();
+                        
                         al_draw_bitmap(frog_fwd, CENTER_X, CENTER_Y, 0);
 
-                        a_disp_map();
+                       
                     }
 
 
