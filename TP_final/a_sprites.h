@@ -8,11 +8,19 @@
 #ifndef a_SPRITES_H
 #define a_SPRITES_H
 
+#define FRAMEWIDTH 16
+#define FRAMEHEIGHT 16
+
 #include <allegro5/allegro.h>
 
 // Global pointer to the sprite sheet (declared as extern so other files can see it)
 extern ALLEGRO_BITMAP* sprites;
 extern ALLEGRO_BITMAP* frog_fwd;
+
+ALLEGRO_BITMAP* bush_0 = NULL;
+ALLEGRO_BITMAP* bush_1 = NULL;
+ALLEGRO_BITMAP* tile_0 = NULL;
+
 // Game-specific dimensions
 extern int framewidth;
 extern int frameheight;

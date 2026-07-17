@@ -9,9 +9,6 @@
 #include <allegro5/allegro_image.h>
 #include <stdio.h>
 
-#define FRAMEWIDTH 16
-#define FRAMEHEIGHT 16
-
 // Define the global variables here
 
 ALLEGRO_BITMAP* sprites = NULL;
