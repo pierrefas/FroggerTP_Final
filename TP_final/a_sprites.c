@@ -9,10 +9,10 @@
 #include <allegro5/allegro_image.h>
 #include <stdio.h>
 
-// Define the global variables here
+#define FRAMEWIDTH 16
+#define FRAMEHEIGHT 16
 
-int framewidth = 16;
-int frameheight = 16;
+// Define the global variables here
 
 ALLEGRO_BITMAP* sprites = NULL;
 
@@ -46,13 +46,13 @@ int init_sprites(void)
     al_convert_mask_to_alpha( sprites, mask_color);
 
 
-    frog_fwd = al_create_sub_bitmap( sprites, 1, 1, framewidth, frameheight);
+    frog_fwd = al_create_sub_bitmap( sprites, 1, 1, FRAMEWIDTH, FRAMEHEIGHT);
 
     bush_0 = al_create_sub_bitmap( sprites, 1, 188, 32, 24);    
 
     bush_1 = al_create_sub_bitmap( sprites, 35, 188, 8, 24);
 
-
+    tile_0 = al_create_sub_bitmap( sprites, 135, 196, FRAMEWIDTH, FRAMEHEIGHT);
 
 
 
