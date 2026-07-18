@@ -51,8 +51,6 @@ int index_disp (char * arr, int size, int x, int y, int color){
 
     int row = 0;
 
-    ALLEGRO_BITMAP* sprite_alphanum = NULL;
-
     int i;
 
     int index;
@@ -61,6 +59,11 @@ int index_disp (char * arr, int size, int x, int y, int color){
 
     for (i = 0; i < size; i += 1)   //estoy re gaga, me acabo de dar cuenta que escribi i+=1 en vez de i++, ahora lo dejo porque me da risa
     {
+
+        ALLEGRO_BITMAP* sprite_alphanum = NULL;
+
+        row = 0;
+
         space = 0;
 
         if((arr[i] >= 'a') && (arr[i] <= 'z'))
@@ -77,28 +80,22 @@ int index_disp (char * arr, int size, int x, int y, int color){
         }
         else if( arr[i] == ' ')
         {
+            index = 0;
             space = 1;
         }
-        else if( arr[i] == '\n')
-        {
-            y+=8;
-        }
+        else if (arr[i] == '\n') {
+            x = 0;
+            a = 0;
+            y += 8;
+            continue;
+        }   
         else
         {
             index = 38; // si no encuentro valor para i, entonces devuelvo el cuadradito raro ese que hay en el sprite N39
         }
         
-        if (index > 16 && index <= 32)
-        {
-            index -= 16;
-            row = 1;
-            
-        }
-        else if (index > 32)
-        {
-            index -= 32;
-            row = 2;
-        }
+        row = index / 16;
+        index = index % 16;
 
         if(!space){
 
@@ -106,6 +103,10 @@ int index_disp (char * arr, int size, int x, int y, int color){
 
             al_draw_bitmap(sprite_alphanum, x + a, y, 0);
 
+        }
+
+        if (sprite_alphanum != NULL) {
+            al_destroy_bitmap(sprite_alphanum);
         }
 
         a+= FRAME_WH_8_BIT;
@@ -122,8 +123,6 @@ int index_disp (char * arr, int size, int x, int y, int color){
         }
 
     }
-
-    al_destroy_bitmap(sprite_alphanum);
 
     return 0;
 
