@@ -18,6 +18,7 @@ else
 endif
 
 C_SRCS += \
+../a_alphanum.c \
 ../a_PC_display.c \
 ../a_sprites.c \
 ../a_map.c \
@@ -30,6 +31,7 @@ C_SRCS += \
 ../main.c
 
 C_DEPS += \
+../a_alphanum.d \
 ./a_PC_display.d \
 ./a_sprites.d \
 ./a_map.d \
@@ -42,6 +44,7 @@ C_DEPS += \
 ./main.d
 
 OBJS += \
+../a_alphanum.o \
 ./a_PC_display.o \
 ./a_sprites.o \
 ./a_map.o \
