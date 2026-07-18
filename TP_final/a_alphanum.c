@@ -21,7 +21,7 @@ extern ALLEGRO_BITMAP* sprites;
 // vaya leyendo los ints de ese array, por ejemplo si el valor es 0 en el de 16*16 devuelve o imprime en pantalla el bitmap
 //  de la F. Lo hago vla porque no se cuantas veces lo voy a usar y para que.
 
-int letter_disp (char * arr, int size, int x, int y, int color){
+int index_disp (char * arr, int size, int x, int y, int color){
 
     if ( arr == NULL)
     {
@@ -49,9 +49,13 @@ int letter_disp (char * arr, int size, int x, int y, int color){
 
     int a = 0;
 
+    int row = 0;
+
     ALLEGRO_BITMAP* sprite_alphanum = NULL;
 
     int i;
+
+    int index;
 
     int space;
 
@@ -61,15 +65,15 @@ int letter_disp (char * arr, int size, int x, int y, int color){
 
         if((arr[i] >= 'a') && (arr[i] <= 'z'))
         {
-            i-= 'a' - 10;
+            index = arr[i] - 'a' + 10;
         }
         else if((arr[i] >= 'A') && (arr[i] <= 'Z'))
         {
-            i-= 'A' - 10;
+            index = arr[i] - 'A' + 10;
         }
         else if((arr[i] >= '0') && (arr[i] <= '9'))
         {
-            i-= '0';
+            index = arr[i] - '0';
         }
         else if( arr[i] == ' ')
         {
@@ -81,12 +85,24 @@ int letter_disp (char * arr, int size, int x, int y, int color){
         }
         else
         {
-            i = 38; // si no encuentro valor para i, entonces devuelvo el cuadradito raro ese que hay en el sprite N39
+            index = 38; // si no encuentro valor para i, entonces devuelvo el cuadradito raro ese que hay en el sprite N39
         }
         
-        if(~space){
+        if (index > 16 && index <= 32)
+        {
+            index -= 16;
+            row = 1;
+            
+        }
+        else if (index > 32)
+        {
+            index -= 32;
+            row = 2;
+        }
 
-            sprite_alphanum = al_create_sub_bitmap( sprites, 1 + i*16, POSITION_8_BIT + color * COLOR_OFFSET, FRAME_WH_8_BIT, FRAME_WH_8_BIT);
+        if(!space){
+
+            sprite_alphanum = al_create_sub_bitmap( sprites, 1 + index*8, POSITION_8_BIT + color * COLOR_OFFSET + row * 8, FRAME_WH_8_BIT, FRAME_WH_8_BIT);
 
             al_draw_bitmap(sprite_alphanum, x + a, y, 0);
 
@@ -105,6 +121,10 @@ int letter_disp (char * arr, int size, int x, int y, int color){
             return 0;
         }
 
-
     }
+
+    al_destroy_bitmap(sprite_alphanum);
+
+    return 0;
+
 }
