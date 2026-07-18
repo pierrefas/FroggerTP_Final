@@ -170,8 +170,13 @@ int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int h
         createEnemy(enemigos,3,4,heightspeed);
         createEnemy(enemigos,4,5,heightspeed);
         createSupport(soportes,9,11,heightspeed);
-        createSupport(soportes,7,9,heightspeed);
         createSupport(soportes,6,8,heightspeed);
+
+    }
+
+    for(i = 0; i<2; i++){
+
+        createSupport(soportes,7,9,heightspeed);
 
     }
 

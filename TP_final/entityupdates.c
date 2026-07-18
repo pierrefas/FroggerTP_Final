@@ -12,7 +12,6 @@
 #include "entityupdates.h"
 
 
-
 int stepEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight[]){
 
     int i;
