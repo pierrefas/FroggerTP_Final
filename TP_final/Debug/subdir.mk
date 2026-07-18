@@ -21,6 +21,7 @@ C_SRCS += \
 ../a_PC_display.c \
 ../a_sprites.c \
 ../a_map.c \
+../a_pause.c \
 ../checking.c \
 ../entityupdates.c \
 ../frogupdates.c \
@@ -32,6 +33,7 @@ C_DEPS += \
 ./a_PC_display.d \
 ./a_sprites.d \
 ./a_map.d \
+./a_pause.d \
 ./checking.d \
 ./entityupdates.d \
 ./frogupdates.d \
@@ -43,6 +45,7 @@ OBJS += \
 ./a_PC_display.o \
 ./a_sprites.o \
 ./a_map.o \
+./a_pause.o \
 ./checking.o \
 ./entityupdates.o \
 ./frogupdates.o \
