@@ -14,8 +14,14 @@
 #include "entidades.h"
 
 extern frog;
+extern MovedUp; 
+extern MovedDOWN;
+extern MovedLEFT;
+extern MovedRIGHT;
+extern FollowingSupp;
+extern FlagDied;
 
-void frog_move_up (){
+void frog_move_up (){  //Esto no es, hayq hacer if cases con los flags de movimiento / muerte para cambiar los sprites//
 
 }
 
