@@ -20,7 +20,8 @@ int lentypes[] = {1,1,2,3,5,7};
 
 static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightspeed[]);
 static int createSupport(support_entity* soporte, int tipo, int height, int heightspeed[]);
-
+static support_entity * iniSupEntities(void);
+static enemy_entity * iniEneEntities(void);
 
 static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightspeed[]){
 
@@ -155,7 +156,7 @@ int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int h
     rana->startcoord = ADJCOORDFROG(3); //Pongo la rana en el inicio
     rana->endcoord = rana->startcoord + ADJCOORDFROG(1); 
 
-    int i;
+    int i,j;
 
     for(i = 0; i < 13; i++){
 
@@ -163,28 +164,58 @@ int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int h
 
     }
 
-    for(i = 0; i < 5; i++){
+    for(i = 1; i < 6; i++){
 
         int temp = rand() % 4 + 1; //Genero un numero aleatorio entre 1 y 4 para ver cuantos enemigos genero
 
-        for(i = 0; i < temp; i++){
+        for(j = 0; j < temp; j++){
 
-            createEnemy(enemigos, rand() % 3, i + 1, heightspeed); //Genero enemigos aleatorios
+            createEnemy(enemigos, rand() % 3, i, heightspeed); //Genero enemigos aleatorios
 
         }
     }
 
-    for(i = 0; i < 5; i++){
+    for(i = 7; i < 12; i++){
 
         int temp = rand() % 4 + 1; //Genero un numero aleatorio entre 1 y 4 para ver cuantos soportes genero
 
-        for(i = 0; i < temp; i++){
+        for(j = 0; j < temp; j++){
 
-            createSupport(soportes, rand() % 3, i + 6, heightspeed); //Genero soportes aleatorios
+            createSupport(soportes, rand() % 3 , i , heightspeed); //Genero soportes aleatorios
 
         }
     }
 
     return 0;
+
+}
+
+static enemy_entity * iniEneEntities(void){
+
+    enemy_entity * enemies = (enemy_entity*) malloc(25*sizeof(enemy_entity));
+
+    if(!enemies){
+
+        free(enemies);
+        return NULL;
+
+    }
+
+    return enemies;
+
+}
+
+static support_entity * iniSupEntities(void){
+
+    support_entity * support = (support_entity*) malloc(25*sizeof(support_entity));
+
+    if(!support){
+
+        free(support);
+        return NULL;
+
+    }
+
+    return support;
 
 }
