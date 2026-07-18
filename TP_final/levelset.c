@@ -14,6 +14,7 @@
 
 #include "levelset.h"
 #include <time.h>
+#include <stdlib.h>
 
 int lentypes[] = {1,1,1,1,2,3,3,7,2,5};
 
