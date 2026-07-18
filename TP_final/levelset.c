@@ -15,20 +15,18 @@
 #include "levelset.h"
 #include <time.h>
 
-int lentypes[] = {1,1,2,3,5,7};
+int lentypes[] = {1,1,1,1,2,3,3,7,2,5};
 
 
 static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightspeed[]);
 static int createSupport(support_entity* soporte, int tipo, int height, int heightspeed[]);
-static support_entity * iniSupEntities(void);
-static enemy_entity * iniEneEntities(void);
 
 static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightspeed[]){
 
     if(enemigo == NULL){
         return ERROR_NULL_POINTER;
     }
-    else if(tipo < 0 || tipo >= 2){
+    else if(tipo < 0 || tipo >= 5){
         return ERROR_TIPO_INVALIDO;
     }
     else if(height < 1 || height > 5){
@@ -51,7 +49,7 @@ static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightsp
         enemy_entity* temp = enemigo;
 
         new_enemy->startcoord = rand() % (ENDWORLD - 3 ); //Genero un numero aleatorio entre 0 y ENDWORLD para que el soporte no se salga de la pantalla
-        new_enemy->endcoord = new_enemy->startcoord + lentypes[tipo];
+        new_enemy->endcoord = new_enemy->startcoord + ADJCOORDFROG(lentypes[tipo]);
 
         for(; temp->type != -1; temp++){
         
@@ -86,7 +84,7 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
     if(soporte == NULL){
         return ERROR_NULL_POINTER;
     }
-    else if(tipo < 2){
+    else if(tipo < 5){
         return ERROR_TIPO_INVALIDO;
     }
     else if(height < 7 || height > 11){
@@ -109,7 +107,7 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
         support_entity* temp = soporte;
 
         new_support->startcoord = rand() % (ENDWORLD - 3 ); //Genero un numero aleatorio entre 0 y ENDWORLD para que el soporte no se salga de la pantalla
-        new_support->endcoord = new_support->startcoord + lentypes[tipo];
+        new_support->endcoord = new_support->startcoord + ADJCOORDFROG(lentypes[tipo]);
 
         for(; temp->type != -1; temp++){
         
@@ -164,58 +162,26 @@ int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int h
 
     }
 
-    for(i = 1; i < 6; i++){
+    for(i = 0; i<3; i++){
 
-        int temp = rand() % 4 + 1; //Genero un numero aleatorio entre 1 y 4 para ver cuantos enemigos genero
+        createEnemy(enemigos,0,1,heightspeed);
+        createEnemy(enemigos,1,2,heightspeed);
+        createEnemy(enemigos,2,3,heightspeed);
+        createEnemy(enemigos,3,4,heightspeed);
+        createEnemy(enemigos,4,5,heightspeed);
+        createSupport(soportes,9,11,heightspeed);
+        createSupport(soportes,7,9,heightspeed);
+        createSupport(soportes,6,8,heightspeed);
 
-        for(j = 0; j < temp; j++){
-
-            createEnemy(enemigos, rand() % 3, i, heightspeed); //Genero enemigos aleatorios
-
-        }
     }
 
-    for(i = 7; i < 12; i++){
+    for(i = 0; i<4; i++){
 
-        int temp = rand() % 4 + 1; //Genero un numero aleatorio entre 1 y 4 para ver cuantos soportes genero
+        createSupport(soportes,5,7,heightspeed);
+        createSupport(soportes,8,10,heightspeed);
 
-        for(j = 0; j < temp; j++){
-
-            createSupport(soportes, rand() % 3 , i , heightspeed); //Genero soportes aleatorios
-
-        }
     }
 
     return 0;
-
-}
-
-static enemy_entity * iniEneEntities(void){
-
-    enemy_entity * enemies = (enemy_entity*) malloc(25*sizeof(enemy_entity));
-
-    if(!enemies){
-
-        free(enemies);
-        return NULL;
-
-    }
-
-    return enemies;
-
-}
-
-static support_entity * iniSupEntities(void){
-
-    support_entity * support = (support_entity*) malloc(25*sizeof(support_entity));
-
-    if(!support){
-
-        free(support);
-        return NULL;
-
-    }
-
-    return support;
 
 }
