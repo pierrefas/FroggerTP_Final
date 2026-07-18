@@ -1,8 +1,32 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// Autor: Matías Larrahona
+// Código que unifica la lógica del movimiento con el joystick
+//
+/////////////////////////////////////////////////////////////////////////////////
+
 #include "joystick.h"
 #include "entidades.h"
 #include "frogupdates.h"
+#include "joydrv.h"
+#define DEADZONE 100 // zona muerta del joystick
 
-//Aca seria donde iria el codigo para el joysick llame a las funciones de ranaupdates
-//HAbria qeu ponerle zaona muerta y todo eso
-//Y que sea de lecutra unica, osea qeu tenga q volver a la zona muerta para volver a llamar a otra funcion de movimiento, para que no se mueva solo con mantener el joystick en una direccion
+int main (void){
 
+    {
+        
+        joy_init();
+        joyinfo_t data = {0,0,J_NOPRESS};
+    
+    do
+        {
+        data = joy_read();
+        if (data.x > DEADZONE){
+            frogStepRight()
+        }
+        if (data.x < - DEADZONE){}
+        if (data.y > DEADZONE){}
+        if (data.y < -DEADZONE){}
+        }
+        while(data.sw == J_NOPRESS);
+}
