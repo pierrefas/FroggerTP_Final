@@ -6,8 +6,6 @@
 /////////////////////////////////////////////////////////////////////////////////
 
 #include "joystick.h"
-#include "entidades.h"
-#include "frogupdates.h"
 #include "joydrv.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -23,7 +21,7 @@ int main (void)
     do
         {
         data = joy_read();
-        if (abs(data.x)<DEADZONE && abs(data.x) < DEADZONE)
+        if (abs(data.x)<DEADZONE && abs(data.y) < DEADZONE)
             {
                 isActive = 0;
             }
@@ -32,22 +30,26 @@ int main (void)
             if (data.x > DEADZONE)
                 {
                     isActive = 1;
-                    printf("El jugador se movió a la derecha");
+                    printf("El jugador se movió a la derecha\n");
+                    usleep(200000);
                 }
             if (data.x < - DEADZONE)
                 {
                   isActive = 1;
-                    printf("El jugador se movió a la izquierda");
+                    printf("El jugador se movió a la izquierda\n");
+                    usleep(200000);
                 }
             if (data.y > DEADZONE)
                 {
                     isActive = 1;
-                    printf("El jugador se movió arriba");
+                    printf("El jugador se movió arriba\n");
+                    usleep(200000);
                 }
         if (data.y < -DEADZONE)
                 {
                     isActive = 1;
-                    printf("El jugador se movió abajo");
+                    printf("El jugador se movió abajo\n");
+                    usleep(200000);
                 }
             }
         }
