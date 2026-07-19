@@ -24,10 +24,18 @@ endif
 ifeq ($(filter yes,$(HDMI_CONNECTED) $(FORCE_ALLEGRO)),yes)
     $(info Building with Allegro support (HDMI detected or forced).)
     ALLEGRO_LIBS := -lallegro -lallegro_font -lallegro_image -lallegro_primitives
-    CFLAGS := 
+    CFLAGS :=
 else
     # paso un flag DHEADLESS para archivos como "main.c" que puede usar Allegro o no.
     CFLAGS += -DHEADLESS
+endif
+
+# gameloop.o (run_headless_game) solo se compila/linkea con IS_PI=1 (ver
+# subdir.mk). HEADLESS se define en cualquier maquina sin HDMI, Pi o no;
+# sin este flag aparte, main.c llamaria run_headless_game() tambien en un
+# PC sin Pi y el link fallaria con "undefined reference".
+ifeq ($(IS_PI),1)
+    CFLAGS += -DIS_PI
 endif
 
 ifneq ($(MAKECMDGOALS),clean)
