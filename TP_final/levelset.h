@@ -12,6 +12,7 @@ int level;
 #define ERROR_ENTIDAD_INCOLOCABLE -137
 
 
-int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int heightspeed[],frog_player* rana);
+int nextLevel(int,game_state*);
+int firstLevel(game_state*);
 
 #endif

@@ -2,10 +2,10 @@
 #define EUPDATE_H
 
 #include "entidades.h"
+#include "gamestate.h"
 
-
-int stepEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight[]);
-int resetEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight[]);
+int stepEntites(game_state*);
+int resetEntites(game_state*);
 
 
 #endif

@@ -12,26 +12,26 @@
 #include "entityupdates.h"
 
 
-int stepEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight[]){
+int stepEntites(game_state * game){
 
     int i;
 
-    if(enemigo == NULL || soporte == NULL || speedheight == NULL){
+    if(game->penemies == NULL || game->psoport == NULL || game->pspeedheight == NULL || game == NULL){
 
         return ERROR_NULL_POINTER;
 
     }
 
-    for(i = 0; (soporte + i)->type != -1; i++){
+    for(i = 0; (game->psoport + i)->type != -1; i++){
 
-        (soporte + i)->startcoord += speedheight[(soporte + i)->height];
-        (soporte + i)->endcoord += speedheight[(soporte + i)->height];
+        (game->psoport + i)->startcoord += (game->pspeedheight)[(game->psoport + i)->height];
+        (game->psoport + i)->endcoord += (game->pspeedheight)[(game->psoport + i)->height];
 
     }
-    for(i = 0; (enemigo + i)->type != -1; i++){
+    for(i = 0; (game->penemies + i)->type != -1; i++){
 
-        (enemigo + i)->startcoord += speedheight[(enemigo + i)->height];
-        (enemigo + i)->endcoord += speedheight[(enemigo + i)->height];
+        (game->penemies + i)->startcoord += (game->pspeedheight)[(game->penemies + i)->height];
+        (game->penemies + i)->endcoord += (game->pspeedheight)[(game->penemies + i)->height];
 
     }
 
@@ -40,65 +40,63 @@ int stepEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight[
 
 }
 
-int resetEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight[]){
+int resetEntites(game_state * game){
 
     int i;
 
-    if(enemigo == NULL || soporte == NULL || speedheight == NULL){
-
+    if(game == NULL || game->psoport == NULL || game->pspeedheight == NULL || game->penemies == NULL){
         return ERROR_NULL_POINTER;
-
     }
 
-    for(i = 0; (soporte + i)->type != -1; i++){
+    for(i = 0; (game->psoport + i)->type != -1; i++){
 
-        if(speedheight[(soporte + i)->height] < 0){
+        if(game->pspeedheight[(game->psoport + i)->height] < 0){
 
-            if((soporte + i)->endcoord < 0){
+            if((game->psoport + i)->endcoord < 0){
 
-                int temp = (soporte + i)->startcoord - (soporte + i)->endcoord; 
+                int temp = (game->psoport + i)->startcoord - (game->psoport + i)->endcoord; 
 
-                (soporte + i)->startcoord = ENDWORLD;
-                (soporte + i)->endcoord = ENDWORLD + temp;
+                (game->psoport + i)->startcoord = ENDWORLD;
+                (game->psoport + i)->endcoord = ENDWORLD + temp;
 
 
             }
 
         }
-        else if(speedheight[(soporte + i)->height] > 0){
+        else if(game->pspeedheight[(game->psoport + i)->height] > 0){
 
-            if((soporte + i)->startcoord > ENDWORLD){
+            if((game->psoport + i)->startcoord > ENDWORLD){
 
-                int temp = (soporte + i)->endcoord - (soporte + i)->startcoord; 
+                int temp = (game->psoport + i)->endcoord - (game->psoport + i)->startcoord; 
 
-                (soporte + i)->endcoord = 0;
-                (soporte + i)->startcoord = 0 - temp;
+                (game->psoport + i)->endcoord = 0;
+                (game->psoport + i)->startcoord = 0 - temp;
 
             }
 
         }
 
     }
-    for(i = 0; (enemigo + i)->type != -1; i++){
+    for(i = 0; (game->penemies + i)->type != -1; i++){
 
-        if(speedheight[(enemigo + i)->height] < 0){
+        if(game->pspeedheight[(game->penemies + i)->height] < 0){
 
-            if((enemigo + i)->endcoord < 0){
+            if((game->penemies + i)->endcoord < 0){
 
-                int temp = (enemigo + i)->startcoord - (enemigo + i)->endcoord; 
+                int temp = (game->penemies + i)->startcoord - (game->penemies + i)->endcoord; 
 
-                (enemigo + i)->startcoord = ENDWORLD;
-                (enemigo + i)->endcoord = ENDWORLD + temp;
+                (game->penemies + i)->startcoord = ENDWORLD;
+                (game->penemies + i)->endcoord = ENDWORLD + temp;
             }
         }
-        else if(speedheight[(enemigo + i)->height] > 0){
+        else if(game->pspeedheight[(game->penemies + i)->height] > 0){
 
-            if((enemigo + i)->startcoord > ENDWORLD){
+            if((game->penemies + i)->startcoord > ENDWORLD){
 
-                int temp = (enemigo + i)->endcoord - (enemigo + i)->startcoord; 
+                int temp = (game->penemies + i)->endcoord - (game->penemies + i)->startcoord; 
 
-                (enemigo + i)->endcoord = 0;
-                (enemigo + i)->startcoord = 0 - temp;
+                (game->penemies + i)->endcoord = 0;
+                (game->penemies + i)->startcoord = 0 - temp;
 
             }
 
