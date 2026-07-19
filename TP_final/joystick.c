@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int main (void)
+int joystick (void)
 
     {   
         int isActive; 
@@ -54,4 +54,6 @@ int main (void)
             }
         }
         while(data.sw == J_NOPRESS);
+
+        return 1;
 }

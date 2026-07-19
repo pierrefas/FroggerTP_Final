@@ -14,6 +14,7 @@
 
 #include "a_map.h"
 #include "a_sprites.h"
+#include "a_pause.h"
 
 #define GAME_HEIGHT 256
 #define GAME_WIDTH 224
@@ -96,6 +97,9 @@ int display(void)
     al_register_event_source(queue, al_get_timer_event_source(timer));
 
     int redraw = 1;
+
+    int pause = 0;
+
     ALLEGRO_EVENT event;
 
     al_start_timer(timer);
@@ -111,6 +115,10 @@ int display(void)
             // Check if the key that was pressed is specifically the 'Q' key
             if (event.keyboard.keycode == ALLEGRO_KEY_Q) {
                 break;
+            }
+            if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+            {
+                pause = 1;
             }
         }
         else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -138,6 +146,11 @@ int display(void)
                         a_disp_map();
                         
                         al_draw_bitmap(frog_fwd, CENTER_X, CENTER_Y, 0);
+
+                        if(pause)
+                        {
+                            pause_menu();
+                        }
 
                        
                     }

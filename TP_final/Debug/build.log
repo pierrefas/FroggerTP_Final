@@ -1,11 +1,9 @@
 Building with Allegro support (HDMI detected or forced).
-Building file: ../a_map.c
-Invoking: GCC C Compiler
-gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_map.d" -MT"a_map.o" -o "a_map.o" "../a_map.c"
-Finished building: ../a_map.c
- 
 Building target: TP_final
 Invoking: GCC C Linker
-gcc  -o "TP_final" ./a_PC_display.o ./a_sprites.o ./a_map.o ./checking.o ./entityupdates.o ./frogupdates.o ./joystick.o ./levelset.o ./main.o   -lallegro -lallegro_font -lallegro_image -lallegro_primitives
-Finished building target: TP_final
- 
+gcc  -o "TP_final" ../a_alphanum.o ./a_PC_display.o ./a_sprites.o ./a_map.o ./a_pause.o ./checking.o ./entityupdates.o ./frogupdates.o ./joystick.o ./levelset.o ./main.o   -lallegro -lallegro_font -lallegro_image -lallegro_primitives
+/usr/bin/ld: ./joystick.o: in function `joystick':
+/home/peterfas/Desktop/test/FroggerTP_Final/TP_final/Debug/../joystick.c:20:(.text+0xd): undefined reference to `joy_init'
+/usr/bin/ld: /home/peterfas/Desktop/test/FroggerTP_Final/TP_final/Debug/../joystick.c:25:(.text+0x1a): undefined reference to `joy_read'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:48: TP_final] Error 1
