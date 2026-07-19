@@ -5,19 +5,19 @@
 
 extern frog;
 
-if (event.keyboard.keycode == ALLEGRO_KEY_W || /*joystick*/)  //se mueve para arriba
+if (event.keyboard.keycode == ALLEGRO_KEY_W)  //se mueve para arriba
 {
     frogStepUp(frog);
 }
-if (event.keyboard.keycode == ALLEGRO_KEY_s || /*joystick*/)
+if (event.keyboard.keycode == ALLEGRO_KEY_s )
 {
     frogStepDown(frog);
 }
-if (event.keyboard.keycode == ALLEGRO_KEY_D || /*joystick*/)
+if (event.keyboard.keycode == ALLEGRO_KEY_D)
 {
     frogStepRight(frog);
 }
-if ((event.keyboard.keycode == ALLEGRO_KEY_A)|| /*joystick*/)
+if ((event.keyboard.keycode == ALLEGRO_KEY_A))
 {
     frogStepLeft(frog);
 }

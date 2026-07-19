@@ -23,32 +23,36 @@ int joystick (void)
         data = joy_read();
         if (abs(data.x)<DEADZONE && abs(data.y) < DEADZONE)
             {
+                isUp = 0;
+                isDwn = 0;
+                isRgt = 0;
+                isLft = 0;
                 isActive = 0;
             }
         if(!isActive) 
             { 
             if (data.x > DEADZONE)
                 {
+                    isRgt = 1;
                     isActive = 1;
-                    printf("El jugador se movió a la derecha\n");
                     usleep(200000);
                 }
             if (data.x < - DEADZONE)
                 {
+                  isLft = 1;
                   isActive = 1;
-                    printf("El jugador se movió a la izquierda\n");
                     usleep(200000);
                 }
             if (data.y > DEADZONE)
                 {
+                    isUp = 1;
                     isActive = 1;
-                    printf("El jugador se movió arriba\n");
                     usleep(200000);
                 }
         if (data.y < -DEADZONE)
                 {
+                    isDwn = 0;
                     isActive = 1;
-                    printf("El jugador se movió abajo\n");
                     usleep(200000);
                 }
             }
