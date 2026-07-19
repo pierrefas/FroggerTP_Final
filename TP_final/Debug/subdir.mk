@@ -26,6 +26,7 @@ C_SRCS += \
 ../checking.c \
 ../entityupdates.c \
 ../frogupdates.c \
+../gamestate.c \
 ../joystick.c \
 ../levelset.c \
 ../main.c
@@ -39,6 +40,7 @@ C_DEPS += \
 ./checking.d \
 ./entityupdates.d \
 ./frogupdates.d \
+./gamestate.d \
 ./joystick.d \
 ./levelset.d \
 ./main.d
@@ -52,6 +54,7 @@ OBJS += \
 ./checking.o \
 ./entityupdates.o \
 ./frogupdates.o \
+./gamestate.o \
 ./joystick.o \
 ./levelset.o \
 ./main.o
