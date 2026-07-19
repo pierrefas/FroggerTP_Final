@@ -52,18 +52,22 @@ OBJS += \
 ./checking.o \
 ./entityupdates.o \
 ./frogupdates.o \
-./joydrv.o \
 ./joystick.o \
 ./levelset.o \
 ./main.o
-#./disdrv.o \#
 
 
-# filtro los archivos "a_" si no hay conexion por hdmi
+# filtro los archivos "a_" si no hay conexion por hdmi o
 ifeq ($(HDMI_CONNECTED),no and $(FORCE_ALLEGRO),no)
     C_SRCS := $(filter-out ../a_%,$(C_SRCS))
     C_DEPS := $(filter-out ./a_%,$(C_DEPS))
     OBJS   := $(filter-out ./a_%,$(OBJS))
+endif
+
+ifeq ($(IS_PI),1)
+	OBJS += \
+	./disdrv.o
+	./joydrv.o
 endif
 
 # Each subdirectory must supply rules for building sources it contributes
