@@ -203,6 +203,10 @@ int firstLevel(game_state * game){
         return ERROR_NIVEL_INVALIDO;
     }
 
+
+    game->penemies->type = -1;
+    game->psoport->type = -1;
+    game->score = 0;
     game->penemies->type = -1; //Pongo el primer enemigo como vacio
     game->psoport->type = -1; //Pongo el primer soporte como vacio
     game->prana->lives = 3; // Inicializa las vidas

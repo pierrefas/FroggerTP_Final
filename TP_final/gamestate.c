@@ -82,11 +82,7 @@ game_state * createGame(void){
 
 
     }
-    
-    newgame->score = 0;
-   
-    newgame->penemies->type = -1;
-    newgame->psoport->type = -1;
+
 
     int i;
 

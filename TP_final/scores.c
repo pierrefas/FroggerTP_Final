@@ -38,4 +38,3 @@ int pointsForTime(game_state * game, int time){
 
 }
 
-
