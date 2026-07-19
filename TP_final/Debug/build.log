@@ -1,9 +1,45 @@
 Building with Allegro support (HDMI detected or forced).
-Building target: TP_final
-Invoking: GCC C Linker
-gcc  -o "TP_final" ./a_alphanum.o ./a_PC_display.o ./a_sprites.o ./a_map.o ./a_pause.o ./checking.o ./entityupdates.o ./frogupdates.o ./joydrv.o ./joystick.o ./levelset.o ./main.o   -lallegro -lallegro_font -lallegro_image -lallegro_primitives
-/usr/bin/ld: ./joydrv.o: relocations in generic ELF (EM: 40)
-/usr/bin/ld: ./joydrv.o: relocations in generic ELF (EM: 40)
-/usr/bin/ld: ./joydrv.o: error adding symbols: file in wrong format
-collect2: error: ld returned 1 exit status
-make: *** [makefile:48: TP_final] Error 1
+Building file: ../levelset.c
+Invoking: GCC C Compiler
+gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"levelset.d" -MT"levelset.o" -o "levelset.o" "../levelset.c"
+../levelset.c:141:5: error: conflicting types for ‘nextLevel’; have ‘int(game_state *)’
+  141 | int nextLevel(game_state * game){
+      |     ^~~~~~~~~
+In file included from ../levelset.c:15:
+../levelset.h:15:5: note: previous declaration of ‘nextLevel’ with type ‘int(int,  game_state *)’
+   15 | int nextLevel(int,game_state*);
+      |     ^~~~~~~~~
+../levelset.c: In function ‘firstLevel’:
+../levelset.c:217:11: warning: unused variable ‘j’ [-Wunused-variable]
+  217 |     int i,j;
+      |           ^
+../levelset.c: In function ‘updateLevel’:
+../levelset.c:262:8: error: implicit declaration of function ‘isDeadFromLake’; did you mean ‘isDeadLake’? [-Wimplicit-function-declaration]
+  262 |     if(isDeadFromLake(game) == 1 || isDeadFromEnemy(game) == 1){
+      |        ^~~~~~~~~~~~~~
+      |        isDeadLake
+../levelset.c:274:9: error: implicit declaration of function ‘pointsForTime’ [-Wimplicit-function-declaration]
+  274 |         pointsForTime(game,time);
+      |         ^~~~~~~~~~~~~
+../levelset.c:279:8: error: implicit declaration of function ‘isLevelFinished’ [-Wimplicit-function-declaration]
+  279 |     if(isLevelFinished(game)){
+      |        ^~~~~~~~~~~~~~~
+../levelset.c:281:9: error: implicit declaration of function ‘pointsForFinishingLevel’ [-Wimplicit-function-declaration]
+  281 |         pointsForFinishingLevel(game); //Añado puntos por terminar , subo el nivel
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+../levelset.c:290:9: error: implicit declaration of function ‘updateHighScores’ [-Wimplicit-function-declaration]
+  290 |         updateHighScores("AAA",game->score);
+      |         ^~~~~~~~~~~~~~~~
+../levelset.c:292:9: error: implicit declaration of function ‘endGame’ [-Wimplicit-function-declaration]
+  292 |         endGame(game);
+      |         ^~~~~~~
+../levelset.c:297:9: error: implicit declaration of function ‘stepEntities’ [-Wimplicit-function-declaration]
+  297 |         stepEntities(game);
+      |         ^~~~~~~~~~~~
+../levelset.c:298:9: error: implicit declaration of function ‘resetEntites’ [-Wimplicit-function-declaration]
+  298 |         resetEntites(game);
+      |         ^~~~~~~~~~~~
+../levelset.c:301:13: error: implicit declaration of function ‘followSupport’ [-Wimplicit-function-declaration]
+  301 |             followSupport(game);
+      |             ^~~~~~~~~~~~~
+make: *** [subdir.mk:85: levelset.o] Error 1
