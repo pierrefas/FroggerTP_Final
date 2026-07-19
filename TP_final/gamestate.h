@@ -4,7 +4,15 @@
 #include "entidades.h"
 
 
-typedef srtuct
+typedef struct{
+
+    frog_player* prana;
+    support_entity* psoport;
+    enemy_entity* penemies;
+    int * pspeedheight;
+    int score;
+
+}game_state;
 
 
 #endif
