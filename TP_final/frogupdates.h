@@ -2,16 +2,16 @@
 #define FUPDATE_H
 
 
-#include "entidades.h"
+#include "gamestate.h"
 #include "checking.h"
 
-int followSupport(frog_player * rana, support_entity * soporte, int speedheight[]);
-int deathOfFrog(frog_player * rana, support_entity * soporte, enemy_entity * enemigos);
-int frogStepUp(frog_player * rana);        
-int frogStepDown(frog_player * rana);
-int frogStepRight(frog_player * rana);
-int frogStepLeft(frog_player * rana);
-int isInBounds(frog_player * rana);
+int followSupport(game_state*);
+int deathOfFrog(game_state*);
+int frogStepUp(game_state*);        
+int frogStepDown(game_state*);
+int frogStepRight(game_state*);
+int frogStepLeft(game_state*);
+int isInBounds(game_state*);
 
 
 #endif

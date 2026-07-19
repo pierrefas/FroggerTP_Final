@@ -1,3 +1,3 @@
-entityupdates.o: ../entityupdates.c ../entityupdates.h ../entidades.h
+entityupdates.o: ../entityupdates.c ../entityupdates.h ../gamestate.h
 ../entityupdates.h:
-../entidades.h:
+../gamestate.h:

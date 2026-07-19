@@ -3,6 +3,19 @@
 
 RM := rm -rf
 
+# IS_PI tiene que calcularse ANTES de meter subdir.mk: ese archivo lo
+# usa en su propio "ifeq ($(IS_PI),1)" para decidir si suma gameloop.o/
+# disdrv.o/joydrv.o al link, y los ifeq se evaluan en el momento en que
+# se lee cada archivo. Si se calcula despues (como estaba antes), subdir.mk
+# siempre ve IS_PI vacio y ese bloque nunca se activa, ni en una Raspberry Pi real.
+IS_PI := $(shell grep -i "raspberry pi" /proc/device-tree/model 2>/dev/null)
+
+ifeq ($(IS_PI),)
+    IS_PI = 0
+else
+    IS_PI = 1
+endif
+
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir.mk
@@ -11,10 +24,18 @@ RM := rm -rf
 ifeq ($(filter yes,$(HDMI_CONNECTED) $(FORCE_ALLEGRO)),yes)
     $(info Building with Allegro support (HDMI detected or forced).)
     ALLEGRO_LIBS := -lallegro -lallegro_font -lallegro_image -lallegro_primitives
-    CFLAGS := 
+    CFLAGS :=
 else
     # paso un flag DHEADLESS para archivos como "main.c" que puede usar Allegro o no.
     CFLAGS += -DHEADLESS
+endif
+
+# gameloop.o (run_headless_game) solo se compila/linkea con IS_PI=1 (ver
+# subdir.mk). HEADLESS se define en cualquier maquina sin HDMI, Pi o no;
+# sin este flag aparte, main.c llamaria run_headless_game() tambien en un
+# PC sin Pi y el link fallaria con "undefined reference".
+ifeq ($(IS_PI),1)
+    CFLAGS += -DIS_PI
 endif
 
 ifneq ($(MAKECMDGOALS),clean)

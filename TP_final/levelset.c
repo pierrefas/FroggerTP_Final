@@ -3,7 +3,7 @@
 //  Consultas a:  Juanga                                            //
 //                                                                  //
 //  En este archivo van a estar todas las funciones que             //
-//  inicilaizan el nivel, sus entidades y el jugador                //
+//  inicilaizan y actualizan el nivel, sus entidades y el jugador   //
 //  Y tiene en cuenta la dificultad progresiva                      //
 //                                                                  //
 //                                                                  //
@@ -13,8 +13,14 @@
 
 
 #include "levelset.h"
+#include "scores.h"
+#include "highscores.h"
+#include "entityupdates.h"
+#include "frogupdates.h"
 #include <time.h>
 #include <stdlib.h>
+
+int level;
 
 int lentypes[] = {1,1,1,1,2,3,3,7,2,5};
 
@@ -45,7 +51,7 @@ static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightsp
 
     int supperposition = 1;
 
-    while(supperposition++ < 50 && supperposition > 0){
+    while(supperposition < 50 && supperposition != 0){
 
         enemy_entity* temp = enemigo;
 
@@ -56,7 +62,7 @@ static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightsp
         
             if(temp->height == height && new_enemy->startcoord <= temp->endcoord && new_enemy->endcoord >= temp->startcoord){ //Si hay colision entre soportes, se desplaza el nuevo soporte a la derecha del ultimo soporte que colisiona con el
 
-                supperposition = 1;
+                supperposition++;
                 break;
 
             }
@@ -68,7 +74,7 @@ static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightsp
 
     }
 
-    if(supperposition>=50){
+    if(supperposition == 50){
 
         new_enemy->type = -1;
         return ERROR_ENTIDAD_INCOLOCABLE; 
@@ -103,7 +109,7 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
 
     int supperposition = 1;
 
-    while(supperposition++ < 50 && supperposition > 0){
+    while(supperposition < 50 && supperposition != 0){
 
         support_entity* temp = soporte;
 
@@ -114,7 +120,7 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
         
             if(temp->height == height && new_support->startcoord <= temp->endcoord && new_support->endcoord >= temp->startcoord){ //Si hay colision entre soportes, se desplaza el nuevo soporte a la derecha del ultimo soporte que colisiona con el
 
-                supperposition = 1;
+                supperposition++;
                 break;
 
             }
@@ -126,7 +132,7 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
 
     }
 
-    if(supperposition>=50){
+    if(supperposition == 50){
 
         new_support->type = -1;
         return ERROR_ENTIDAD_INCOLOCABLE; 
@@ -138,107 +144,182 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
     }
 }
 
-int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int heightspeed[],frog_player* rana){
+int nextLevel(game_state * game){
 
     srand(time(NULL));
 
-    if(enemigos == NULL || soportes == NULL|| rana == NULL|| heightspeed == NULL){
+    if(game->penemies == NULL || game->psoport == NULL|| game->prana == NULL|| game->pspeedheight == NULL || game == NULL){
         return ERROR_NULL_POINTER;
     }
     else if(level < 1){
         return ERROR_NIVEL_INVALIDO;
     }
 
-    enemigos->type = -1; //Pongo el primer enemigo como vacio
-    soportes->type = -1; //Pongo el primer soporte como vacio
-    rana->height = 0; //Pongo la rana en la primera fila
-    rana->startcoord = ADJCOORDFROG(3); //Pongo la rana en el inicio
-    rana->endcoord = rana->startcoord + ADJCOORDFROG(1); 
+    game->penemies->type = -1; //Pongo el primer enemigo como vacio
+    game->psoport->type = -1; //Pongo el primer soporte como vacio
+    game->prana->height = 0; //Pongo la rana en la primera fila
+    game->prana->startcoord = ADJCOORDFROG(3); //Pongo la rana en el inicio
+    game->prana->endcoord = game->prana->startcoord + ADJCOORDFROG(1);
 
-    int i,j;
+    int i;
 
-    for(i = 0; i < 13; i++){
+    // Sin esto, isLevelFinished() seguia viendo los safespaces marcados
+    // del nivel anterior y el nivel nuevo se daba por terminado antes de
+    // que la rana se moviera.
+    for(i = 0; i < 5; i++){
+        (game->safespaces)[i] = 0;
+    }
 
-        heightspeed[i] = rand() % (level + 5) + level; //Aumento la velocidad de los enemigos y soportes en cada nivel
+    for(i = 0; i < NUM_HEIGHT_LEVELS; i++){
+
+        (game->pspeedheight)[i] = rand()%2 ? -(rand() % (level + 5) + level) : (rand() % (level + 5) + level); //Aumento la velocidad de los enemigos y soportes en cada nivel
 
     }
 
     for(i = 0; i<3; i++){
 
-        createEnemy(enemigos,0,1,heightspeed);
-        createEnemy(enemigos,1,2,heightspeed);
-        createEnemy(enemigos,2,3,heightspeed);
-        createEnemy(enemigos,3,4,heightspeed);
-        createEnemy(enemigos,4,5,heightspeed);
-        createSupport(soportes,9,11,heightspeed);
-        createSupport(soportes,6,8,heightspeed);
+        createEnemy(game->penemies,0,1,game->pspeedheight);
+        createEnemy(game->penemies,1,2,game->pspeedheight);
+        createEnemy(game->penemies,2,3,game->pspeedheight);
+        createEnemy(game->penemies,3,4,game->pspeedheight);
+        createEnemy(game->penemies,4,5,game->pspeedheight);
+        createSupport(game->psoport,9,11,game->pspeedheight);
+        createSupport(game->psoport,6,8,game->pspeedheight);
 
     }
 
     for(i = 0; i<2; i++){
 
-        createSupport(soportes,7,9,heightspeed);
+        createSupport(game->psoport,7,9,game->pspeedheight);
 
     }
 
     for(i = 0; i<4; i++){
 
-        createSupport(soportes,5,7,heightspeed);
-        createSupport(soportes,8,10,heightspeed);
+        createSupport(game->psoport,5,7,game->pspeedheight);
+        createSupport(game->psoport,8,10,game->pspeedheight);
 
     }
 
     return 0;
 
 }
-int firstLevel(int level, enemy_entity* enemigos, support_entity* soportes, int heightspeed[],frog_player* rana){
+
+int firstLevel(game_state * game){
 
     srand(time(NULL));
 
-    if(enemigos == NULL || soportes == NULL|| rana == NULL|| heightspeed == NULL){
+    if(game->penemies == NULL || game->psoport == NULL|| game->prana == NULL|| game->pspeedheight == NULL|| game == NULL){
         return ERROR_NULL_POINTER;
     }
     else if(level < 1){
         return ERROR_NIVEL_INVALIDO;
     }
 
-    enemigos->type = -1; //Pongo el primer enemigo como vacio
-    soportes->type = -1; //Pongo el primer soporte como vacio
-    rana->lives = 3; // Inicializa las vidas
-    rana->height = 0; //Pongo la rana en la primera fila
-    rana->startcoord = ADJCOORDFROG(3); //Pongo la rana en el inicio
-    rana->endcoord = rana->startcoord + ADJCOORDFROG(1); 
+
+    game->penemies->type = -1;
+    game->psoport->type = -1;
+    game->score = 0;
+    game->penemies->type = -1; //Pongo el primer enemigo como vacio
+    game->psoport->type = -1; //Pongo el primer soporte como vacio
+    game->prana->lives = 3; // Inicializa las vidas
+    game->prana->height = 0; //Pongo la rana en la primera fila
+    game->prana->startcoord = ADJCOORDFROG(3); //Pongo la rana en el inicio
+    game->prana->endcoord = game->prana->startcoord + ADJCOORDFROG(1); 
 
     int i,j;
 
-    for(i = 0; i < 13; i++){
+    for(i = 0; i < 5; i++){
+        (game->safespaces)[i] = 0;
+    }
 
-        heightspeed[i] = rand() % (level + 5) + level; //Aumento la velocidad de los enemigos y soportes en cada nivel
+    for(i = 0; i < NUM_HEIGHT_LEVELS; i++){
+
+        (game->pspeedheight)[i] = rand()%2 ? (rand() % (5) + 1) : -(rand() % (5) + 1); //Aumento la velocidad de los enemigos y soportes en cada nivel
 
     }
 
     for(i = 0; i<3; i++){
 
-        createEnemy(enemigos,0,1,heightspeed);
-        createEnemy(enemigos,1,2,heightspeed);
-        createEnemy(enemigos,2,3,heightspeed);
-        createEnemy(enemigos,3,4,heightspeed);
-        createEnemy(enemigos,4,5,heightspeed);
-        createSupport(soportes,9,11,heightspeed);
-        createSupport(soportes,6,8,heightspeed);
+        createEnemy(game->penemies,0,1,game->pspeedheight);
+        createEnemy(game->penemies,1,2,game->pspeedheight);
+        createEnemy(game->penemies,2,3,game->pspeedheight);
+        createEnemy(game->penemies,3,4,game->pspeedheight);
+        createEnemy(game->penemies,4,5,game->pspeedheight);
+        createSupport(game->psoport,9,11,game->pspeedheight);
+        createSupport(game->psoport,6,8,game->pspeedheight);
 
     }
 
     for(i = 0; i<2; i++){
 
-        createSupport(soportes,7,9,heightspeed);
+        createSupport(game->psoport,7,9,game->pspeedheight);
 
     }
 
     for(i = 0; i<4; i++){
 
-        createSupport(soportes,5,7,heightspeed);
-        createSupport(soportes,8,10,heightspeed);
+        createSupport(game->psoport,5,7,game->pspeedheight);
+        createSupport(game->psoport,8,10,game->pspeedheight);
+
+    }
+
+    return 0;
+
+}
+
+int updateLevel(game_state * game,int time){
+
+    if(game == NULL){
+
+        return ERROR_NULL_POINTER;
+
+    }
+    
+    if(isDeadLake(game) == 1 || isDeadFromEnemy(game) == 1){
+
+        game->prana->lives--; //Le saco una vida
+        game->prana->height = 0; //Pongo la rana en la primera fila
+        game->prana->startcoord = ADJCOORDFROG(3); //Pongo la rana en el inicio
+        game->prana->endcoord = game->prana->startcoord + ADJCOORDFROG(1); 
+    }
+    else if(isAtEnd(game)){
+
+        game->prana->height = 0; //Pongo la rana en la primera fila
+        game->prana->startcoord = ADJCOORDFROG(3); //Pongo la rana en el inicio
+        game->prana->endcoord = game->prana->startcoord + ADJCOORDFROG(1);
+        pointsForTime(game,time); 
+
+    }
+
+
+    if(isLevelFinished(game)){
+
+        pointForFinishingLevel(game); //Añado puntos por terminar , subo el nivel
+
+        level++;
+
+        nextLevel(game);
+
+    }
+    else if(game->prana->lives < 1){
+
+        updateHighScores("AAA",game->score);
+
+        endGame(game); // libera todo game_state: el llamador NO debe volver a tocar `game` despues de esto.
+
+        return GAME_OVER;
+
+    }
+    else{
+
+        stepEntites(game);
+        resetEntites(game);
+        if(game->prana->height>=STARTLAKE){
+
+            followSupport(game);
+
+        }
 
     }
 

@@ -1,3 +1,3 @@
-checking.o: ../checking.c ../checking.h ../entidades.h
+checking.o: ../checking.c ../checking.h ../gamestate.h
 ../checking.h:
-../entidades.h:
+../gamestate.h:

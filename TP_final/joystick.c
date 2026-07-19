@@ -1,8 +1,44 @@
 #include "joystick.h"
-#include "entidades.h"
-#include "frogupdates.h"
+#include "joydrv.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-//Aca seria donde iria el codigo para el joysick llame a las funciones de ranaupdates
-//HAbria qeu ponerle zaona muerta y todo eso
-//Y que sea de lecutra unica, osea qeu tenga q volver a la zona muerta para volver a llamar a otra funcion de movimiento, para que no se mueva solo con mantener el joystick en una direccion
+// joystick.h las declara "extern": esta es la unica definicion real,
+// nunca existia en ningun lado y el link fallaba con undefined reference.
+char isUp = 0;
+char isDwn = 0;
+char isLft = 0;
+char isRgt = 0;
 
+int joystic_update(void) {
+    static int isActive = 0; 
+    
+    joyinfo_t data = joy_read();
+    isUp = 0;
+    isDwn = 0;
+    isRgt = 0;
+    isLft = 0;
+    if (abs(data.x) < DEADZONE && abs(data.y) < DEADZONE) {
+        isActive = 0;
+    }
+
+    if (!isActive) { 
+        if (data.x > DEADZONE) {
+            isRgt = 1;
+            isActive = 1; 
+        }
+        else if (data.x < -DEADZONE) {
+            isLft = 1;
+            isActive = 1;
+        }
+        else if (data.y > DEADZONE) {
+            isUp = 1;
+            isActive = 1;
+        }
+        else if (data.y < -DEADZONE) {
+            isDwn = 1;
+            isActive = 1;
+        }
+    }
+    return (data.sw != J_NOPRESS); 
+}

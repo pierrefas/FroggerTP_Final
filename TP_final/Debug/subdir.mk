@@ -26,12 +26,14 @@ C_SRCS += \
 ../checking.c \
 ../entityupdates.c \
 ../frogupdates.c \
-../joystick.c \
+../gamestate.c \
 ../levelset.c \
+../scores.c \
+../highscores.c \
 ../main.c
 
 C_DEPS += \
-../a_alphanum.d \
+./a_alphanum.d \
 ./a_PC_display.d \
 ./a_sprites.d \
 ./a_map.d \
@@ -39,12 +41,14 @@ C_DEPS += \
 ./checking.d \
 ./entityupdates.d \
 ./frogupdates.d \
-./joystick.d \
+./gamestate.d \
 ./levelset.d \
+./scores.d \
+./highscores.d \
 ./main.d
 
 OBJS += \
-../a_alphanum.o \
+./a_alphanum.o \
 ./a_PC_display.o \
 ./a_sprites.o \
 ./a_map.o \
@@ -52,15 +56,43 @@ OBJS += \
 ./checking.o \
 ./entityupdates.o \
 ./frogupdates.o \
-./joystick.o \
+./gamestate.o \
 ./levelset.o \
+./scores.o \
+./highscores.o \
 ./main.o
 
-# filtro los archivos "a_" si no hay conexion por hdmi
-ifeq ($(HDMI_CONNECTED),no and $(FORCE_ALLEGRO),no)
+
+# filtro los archivos "a_" si no hay conexion por hdmi ni FORCE_ALLEGRO.
+# Antes esto comparaba HDMI_CONNECTED contra el string literal
+# "no and $(FORCE_ALLEGRO),no", que nunca podia ser cierto: los a_*.c
+# (que necesitan headers de Allegro) quedaban siempre en el build, aunque
+# no hubiera Allegro instalado (headless). Mismo chequeo que usa
+# Debug/makefile para decidir ALLEGRO_LIBS/-DHEADLESS, pero negado.
+ifneq ($(filter yes,$(HDMI_CONNECTED) $(FORCE_ALLEGRO)),yes)
     C_SRCS := $(filter-out ../a_%,$(C_SRCS))
     C_DEPS := $(filter-out ./a_%,$(C_DEPS))
     OBJS   := $(filter-out ./a_%,$(OBJS))
+endif
+
+ifeq ($(IS_PI),1)
+	C_SRCS += \
+	../joystick.c \
+	../drawleds.c \
+	../gameloop.c
+
+	C_DEPS += \
+	./joystick.d \
+	./drawleds.d \
+	./gameloop.d
+
+	OBJS += \
+	./disdrv.o \
+	./joydrv.o \
+	./joystick.o \
+	./drawleds.o \
+	./gameloop.o
+
 endif
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -74,8 +106,12 @@ endif
 
 clean: clean--2e-
 
+# disdrv.o/joydrv.o son los binarios del profesor: no hay .c del que
+# regenerarlos, asi que "clean" no los borra (antes se perdian en cada
+# limpieza y habia que volver a copiarlos a mano).
 clean--2e-:
-	-$(RM) ./*.d ./*.o
+	-$(RM) $(filter-out ./disdrv.o ./joydrv.o,$(wildcard ./*.o))
+	-$(RM) ./*.d
 
 .PHONY: clean--2e-
 
