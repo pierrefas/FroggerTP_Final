@@ -12,6 +12,7 @@
 // en cada inicio de nivel. Usar esta constante en gamestate.c y
 // levelset.c para que ambos coincidan siempre.
 #define NUM_HEIGHT_LEVELS 13
+#define MAX_ENTITIES 40
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -45,10 +46,10 @@ typedef struct {
 
 } frog_player;
 
+// patch for TP_final/gamestate.h (add inside game_state struct)
 
 
 typedef struct{
-
     frog_player* prana;
     support_entity* psoport;
     enemy_entity* penemies;
@@ -56,7 +57,10 @@ typedef struct{
     int score;
     int * safespaces;
 
-}game_state;
+    /* bookkeeping for active elements */
+    int enemy_count;     /* number of active enemies in penemies[] (<= MAX_ENTITIES) */
+    int support_count;   /* number of active supports in psoport[] (<= MAX_ENTITIES) */
+} game_state;
 
 game_state * createGame(void);
 int endGame(game_state* game);

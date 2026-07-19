@@ -94,6 +94,11 @@ game_state * createGame(void){
     }
 
 
+    // patch for TP_final/gamestate.c: before `return newgame;`
+    newgame->enemy_count = 0;
+    newgame->support_count = 0;
+    newgame->score = 0;
+
     return newgame;
 
 }

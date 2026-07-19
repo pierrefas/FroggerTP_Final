@@ -24,6 +24,14 @@
 #define FRAME_H 16
 #endif
 
+/* optional exported tile/sub-bitmaps (may be NULL if not created) */
+extern ALLEGRO_BITMAP *bush_0;
+extern ALLEGRO_BITMAP *bush_1;
+extern ALLEGRO_BITMAP *tile_0;
+
+/* access to the parent spritesheet (may be NULL if load failed) */
+ALLEGRO_BITMAP *get_spritesheet(void);
+
 /* enums públicos para usar en el resto del código */
 enum {
     FROG_IDLE = 0,
@@ -51,5 +59,8 @@ int load_sprites(const char *filename);
 
 /* Destroy sub-bitmaps and the parent spritesheet. */
 void destroy_sprites(void);
+
+/* in a_sprites.h */
+ALLEGRO_BITMAP *get_spritesheet(void);
 
 #endif /* A_SPRITES_H */

@@ -19,80 +19,17 @@ Invoking: GCC C Compiler
 gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_map.d" -MT"a_map.o" -o "a_map.o" "../a_map.c"
 Finished building: ../a_map.c
  
-Building file: ../a_pause.c
-Invoking: GCC C Compiler
-gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_pause.d" -MT"a_pause.o" -o "a_pause.o" "../a_pause.c"
-Finished building: ../a_pause.c
- 
-Building file: ../checking.c
-Invoking: GCC C Compiler
-gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"checking.d" -MT"checking.o" -o "checking.o" "../checking.c"
-In file included from ../checking.c:11:
-../checking.c: In function ‘isAtEnd’:
-../checking.h:6:56: warning: suggest parentheses around ‘&&’ within ‘||’ [-Wparentheses]
-    6 | #define ISINSAFEZONE(rana) (((rana)->height > ENDLAKE) && !((((rana)->startcoord>=12)&&((rana)->endcoord<=28))||(((rana)->startcoord>=52)&&((rana)->endcoord<=68)))||(((rana)->startcoord>=92)&&(rana->endcoord<=108))||(((rana)->startcoord>=132)&&((rana)->endcoord<=148))||(((rana)->startcoord>=172)&&((rana)->endcoord<=188)))
-      |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../checking.c:75:8: note: in expansion of macro ‘ISINSAFEZONE’
-   75 |     if(ISINSAFEZONE(rana)){
-      |        ^~~~~~~~~~~~
-Finished building: ../checking.c
- 
-Building file: ../entityupdates.c
-Invoking: GCC C Compiler
-gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"entityupdates.d" -MT"entityupdates.o" -o "entityupdates.o" "../entityupdates.c"
-Finished building: ../entityupdates.c
- 
-Building file: ../frogupdates.c
-Invoking: GCC C Compiler
-gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"frogupdates.d" -MT"frogupdates.o" -o "frogupdates.o" "../frogupdates.c"
-Finished building: ../frogupdates.c
- 
-Building file: ../gamestate.c
-Invoking: GCC C Compiler
-gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"gamestate.d" -MT"gamestate.o" -o "gamestate.o" "../gamestate.c"
-Finished building: ../gamestate.c
- 
-Building file: ../levelset.c
-Invoking: GCC C Compiler
-gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"levelset.d" -MT"levelset.o" -o "levelset.o" "../levelset.c"
-../levelset.c:141:5: error: conflicting types for ‘nextLevel’; have ‘int(game_state *)’
-  141 | int nextLevel(game_state * game){
-      |     ^~~~~~~~~
-In file included from ../levelset.c:15:
-../levelset.h:15:5: note: previous declaration of ‘nextLevel’ with type ‘int(int,  game_state *)’
-   15 | int nextLevel(int,game_state*);
-      |     ^~~~~~~~~
-../levelset.c: In function ‘firstLevel’:
-../levelset.c:217:11: warning: unused variable ‘j’ [-Wunused-variable]
-  217 |     int i,j;
-      |           ^
-../levelset.c: In function ‘updateLevel’:
-../levelset.c:262:8: error: implicit declaration of function ‘isDeadFromLake’; did you mean ‘isDeadLake’? [-Wimplicit-function-declaration]
-  262 |     if(isDeadFromLake(game) == 1 || isDeadFromEnemy(game) == 1){
-      |        ^~~~~~~~~~~~~~
-      |        isDeadLake
-../levelset.c:274:9: error: implicit declaration of function ‘pointsForTime’ [-Wimplicit-function-declaration]
-  274 |         pointsForTime(game,time);
-      |         ^~~~~~~~~~~~~
-../levelset.c:279:8: error: implicit declaration of function ‘isLevelFinished’ [-Wimplicit-function-declaration]
-  279 |     if(isLevelFinished(game)){
-      |        ^~~~~~~~~~~~~~~
-../levelset.c:281:9: error: implicit declaration of function ‘pointsForFinishingLevel’ [-Wimplicit-function-declaration]
-  281 |         pointsForFinishingLevel(game); //Añado puntos por terminar , subo el nivel
-      |         ^~~~~~~~~~~~~~~~~~~~~~~
-../levelset.c:290:9: error: implicit declaration of function ‘updateHighScores’ [-Wimplicit-function-declaration]
-  290 |         updateHighScores("AAA",game->score);
-      |         ^~~~~~~~~~~~~~~~
-../levelset.c:292:9: error: implicit declaration of function ‘endGame’ [-Wimplicit-function-declaration]
-  292 |         endGame(game);
-      |         ^~~~~~~
-../levelset.c:297:9: error: implicit declaration of function ‘stepEntities’ [-Wimplicit-function-declaration]
-  297 |         stepEntities(game);
-      |         ^~~~~~~~~~~~
-../levelset.c:298:9: error: implicit declaration of function ‘resetEntites’ [-Wimplicit-function-declaration]
-  298 |         resetEntites(game);
-      |         ^~~~~~~~~~~~
-../levelset.c:301:13: error: implicit declaration of function ‘followSupport’ [-Wimplicit-function-declaration]
-  301 |             followSupport(game);
-      |             ^~~~~~~~~~~~~
-make: *** [subdir.mk:89: levelset.o] Error 1
+Building target: TP_final
+Invoking: GCC C Linker
+gcc  -o "TP_final" ./a_alphanum.o ./a_PC_display.o ./a_sprites.o ./a_map.o ./a_pause.o ./checking.o ./entityupdates.o ./frogupdates.o ./gamestate.o ./levelset.o ./scores.o ./highscores.o ./main.o   -lallegro -lallegro_font -lallegro_image -lallegro_primitives
+/usr/bin/ld: ./a_map.o: warning: relocation against `bush_1' in read-only section `.text'
+/usr/bin/ld: ./a_map.o: in function `a_disp_map':
+/home/peterfas/Desktop/test3/FroggerTP_Final/TP_final/Debug/../a_map.c:28:(.text+0x9d): undefined reference to `bush_0'
+/usr/bin/ld: /home/peterfas/Desktop/test3/FroggerTP_Final/TP_final/Debug/../a_map.c:33:(.text+0xd4): undefined reference to `bush_0'
+/usr/bin/ld: /home/peterfas/Desktop/test3/FroggerTP_Final/TP_final/Debug/../a_map.c:35:(.text+0x106): undefined reference to `bush_1'
+/usr/bin/ld: /home/peterfas/Desktop/test3/FroggerTP_Final/TP_final/Debug/../a_map.c:37:(.text+0x138): undefined reference to `bush_1'
+/usr/bin/ld: /home/peterfas/Desktop/test3/FroggerTP_Final/TP_final/Debug/../a_map.c:44:(.text+0x17d): undefined reference to `tile_0'
+/usr/bin/ld: /home/peterfas/Desktop/test3/FroggerTP_Final/TP_final/Debug/../a_map.c:45:(.text+0x1af): undefined reference to `tile_0'
+/usr/bin/ld: warning: creating DT_TEXTREL in a PIE
+collect2: error: ld returned 1 exit status
+make: *** [makefile:69: TP_final] Error 1

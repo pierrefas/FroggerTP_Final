@@ -25,6 +25,25 @@
 #define FRAME_H 16
 #endif
 
+#ifndef SRC_BUSH_0_X
+#define SRC_BUSH_0_X 0
+#endif
+#ifndef SRC_BUSH_0_Y
+#define SRC_BUSH_0_Y 0
+#endif
+#ifndef SRC_BUSH_1_X
+#define SRC_BUSH_1_X 8
+#endif
+#ifndef SRC_BUSH_1_Y
+#define SRC_BUSH_1_Y 0
+#endif
+#ifndef SRC_TILE_0_X
+#define SRC_TILE_0_X 0
+#endif
+#ifndef SRC_TILE_0_Y
+#define SRC_TILE_0_Y 32
+#endif
+
 /* Layout assumption (change logic below if your sheet differs):
    - rows 0..NUM_ENEMY_TYPES-1 : each row contains ENEMY_FRAMES frames for that enemy type
        (columns 0..ENEMY_FRAMES-1)
@@ -40,6 +59,10 @@ static ALLEGRO_BITMAP *spritesheet = NULL;
 /* Exported sub-bitmaps */
 ALLEGRO_BITMAP *enemy_sprites[NUM_ENEMY_TYPES][ENEMY_FRAMES] = { { NULL } };
 ALLEGRO_BITMAP *frog_sprites[NUM_FROG_FRAMES] = { NULL };
+
+ALLEGRO_BITMAP *bush_0 = NULL;
+ALLEGRO_BITMAP *bush_1 = NULL;
+ALLEGRO_BITMAP *tile_0 = NULL;
 
 /* Load the spritesheet and create sub-bitmaps.
    Caller must have called al_init() and al_init_image_addon(). */
@@ -137,4 +160,9 @@ void destroy_sprites(void)
         al_destroy_bitmap(spritesheet);
         spritesheet = NULL;
     }
+}
+
+ALLEGRO_BITMAP *get_spritesheet(void)
+{
+    return spritesheet;
 }
