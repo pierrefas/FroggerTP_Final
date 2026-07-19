@@ -4,12 +4,12 @@
 #include <allegro5/allegro_primitives.h>
 
 extern frog;
-
-if (event.keyboard.keycode == ALLEGRO_KEY_W)  //se mueve para arriba
+void funcion (void){
+if(event.keyboard.keycode == ALLEGRO_KEY_W)  //se mueve para arriba
 {
     frogStepUp(frog);
 }
-if (event.keyboard.keycode == ALLEGRO_KEY_s )
+if (event.keyboard.keycode == ALLEGRO_KEY_S )
 {
     frogStepDown(frog);
 }
@@ -20,6 +20,7 @@ if (event.keyboard.keycode == ALLEGRO_KEY_D)
 if ((event.keyboard.keycode == ALLEGRO_KEY_A))
 {
     frogStepLeft(frog);
+}
 }
 //hay que hacer un IF(entra movimiento direccional (4 casos) por allegro teclado o por joystick){ 
 // llame a la funcion de movimiento adecuada, levantando su flag asociado
