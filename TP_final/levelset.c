@@ -22,7 +22,7 @@
 
 int level;
 
-static int lentypes[] = {1,1,1,1,2,3,3,7,2,5};
+int lentypes[] = {1,1,1,1,2,3,3,7,2,5};
 
 
 static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightspeed[]);
