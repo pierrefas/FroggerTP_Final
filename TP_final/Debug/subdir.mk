@@ -63,8 +63,13 @@ OBJS += \
 ./main.o
 
 
-# filtro los archivos "a_" si no hay conexion por hdmi o
-ifeq ($(HDMI_CONNECTED),no and $(FORCE_ALLEGRO),no)
+# filtro los archivos "a_" si no hay conexion por hdmi ni FORCE_ALLEGRO.
+# Antes esto comparaba HDMI_CONNECTED contra el string literal
+# "no and $(FORCE_ALLEGRO),no", que nunca podia ser cierto: los a_*.c
+# (que necesitan headers de Allegro) quedaban siempre en el build, aunque
+# no hubiera Allegro instalado (headless). Mismo chequeo que usa
+# Debug/makefile para decidir ALLEGRO_LIBS/-DHEADLESS, pero negado.
+ifneq ($(filter yes,$(HDMI_CONNECTED) $(FORCE_ALLEGRO)),yes)
     C_SRCS := $(filter-out ../a_%,$(C_SRCS))
     C_DEPS := $(filter-out ./a_%,$(C_DEPS))
     OBJS   := $(filter-out ./a_%,$(OBJS))
