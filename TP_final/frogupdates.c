@@ -35,9 +35,20 @@ int followSupport(frog_player * rana, support_entity * soporte, int speedheight[
         FollowingSupp = 1;
         rana->startcoord+=speedheight[rana->height];
         rana->endcoord+=speedheight[rana->height];
-    }
 
-    return 0;
+        if(isInBounds(rana)){
+
+            return 0;
+
+        }
+        else{
+
+            rana->startcoord-=speedheight[rana->height];
+            rana->endcoord-=speedheight[rana->height];
+            
+            return 0;
+        }
+    }
 
 }
 

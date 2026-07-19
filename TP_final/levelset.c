@@ -16,7 +16,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-int lentypes[] = {1,1,1,1,2,3,3,7,2,5};
+static int lentypes[] = {1,1,1,1,2,3,3,7,2,5};
 
 
 static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightspeed[]);
@@ -45,7 +45,7 @@ static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightsp
 
     int supperposition = 1;
 
-    while(supperposition++ < 50 && supperposition > 0){
+    while(supperposition < 50 && supperposition != 0){
 
         enemy_entity* temp = enemigo;
 
@@ -56,7 +56,7 @@ static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightsp
         
             if(temp->height == height && new_enemy->startcoord <= temp->endcoord && new_enemy->endcoord >= temp->startcoord){ //Si hay colision entre soportes, se desplaza el nuevo soporte a la derecha del ultimo soporte que colisiona con el
 
-                supperposition = 1;
+                supperposition++;
                 break;
 
             }
@@ -68,7 +68,7 @@ static int createEnemy(enemy_entity* enemigo, int tipo, int height, int heightsp
 
     }
 
-    if(supperposition>=50){
+    if(supperposition == 50){
 
         new_enemy->type = -1;
         return ERROR_ENTIDAD_INCOLOCABLE; 
@@ -103,7 +103,7 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
 
     int supperposition = 1;
 
-    while(supperposition++ < 50 && supperposition > 0){
+    while(supperposition < 50 && supperposition != 0){
 
         support_entity* temp = soporte;
 
@@ -114,7 +114,7 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
         
             if(temp->height == height && new_support->startcoord <= temp->endcoord && new_support->endcoord >= temp->startcoord){ //Si hay colision entre soportes, se desplaza el nuevo soporte a la derecha del ultimo soporte que colisiona con el
 
-                supperposition = 1;
+                supperposition++;
                 break;
 
             }
@@ -126,7 +126,7 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
 
     }
 
-    if(supperposition>=50){
+    if(supperposition == 50){
 
         new_support->type = -1;
         return ERROR_ENTIDAD_INCOLOCABLE; 
@@ -159,7 +159,7 @@ int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int h
 
     for(i = 0; i < 13; i++){
 
-        heightspeed[i] = rand() % (level + 5) + level; //Aumento la velocidad de los enemigos y soportes en cada nivel
+        heightspeed[i] = rand()%2 ? -(rand() % (level + 5) + level) : (rand() % (level + 5) + level); //Aumento la velocidad de los enemigos y soportes en cada nivel
 
     }
 
@@ -191,7 +191,7 @@ int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int h
     return 0;
 
 }
-int firstLevel(int level, enemy_entity* enemigos, support_entity* soportes, int heightspeed[],frog_player* rana){
+int firstLevel(enemy_entity* enemigos, support_entity* soportes, int heightspeed[],frog_player* rana){
 
     srand(time(NULL));
 
@@ -213,7 +213,7 @@ int firstLevel(int level, enemy_entity* enemigos, support_entity* soportes, int 
 
     for(i = 0; i < 13; i++){
 
-        heightspeed[i] = rand() % (level + 5) + level; //Aumento la velocidad de los enemigos y soportes en cada nivel
+        heightspeed[i] = rand()%2 ? (rand() % (5) + 1) : -(rand() % (5) + 1); //Aumento la velocidad de los enemigos y soportes en cada nivel
 
     }
 

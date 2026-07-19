@@ -35,6 +35,7 @@ int stepEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight[
 
     }
 
+
     return 0;
 
 }
@@ -66,7 +67,7 @@ int resetEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight
         }
         else if(speedheight[(soporte + i)->height] > 0){
 
-            if((soporte + i)->startcoord > 256){
+            if((soporte + i)->startcoord > ENDWORLD){
 
                 int temp = (soporte + i)->endcoord - (soporte + i)->startcoord; 
 
@@ -92,7 +93,7 @@ int resetEntites(enemy_entity* enemigo, support_entity* soporte, int speedheight
         }
         else if(speedheight[(enemigo + i)->height] > 0){
 
-            if((enemigo + i)->startcoord > 256){
+            if((enemigo + i)->startcoord > ENDWORLD){
 
                 int temp = (enemigo + i)->endcoord - (enemigo + i)->startcoord; 
 

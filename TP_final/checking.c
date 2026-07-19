@@ -59,3 +59,27 @@ int isDeadLake(frog_player * rana, support_entity * soporte){
     return 1; //Si esta en el lago y no esta sobre un soporte muere
 
 }
+
+int isAtEnd(frog_player* rana){
+
+    if(!rana){
+
+        return ERROR_NULL_POINTER;
+
+    }
+
+    if(ISINSAFEZONE(rana)){
+
+        rana->height = 0;
+        rana->startcoord = ADJCOORDFROG(3);
+        rana->endcoord = rana->startcoord + ADJCOORDFROG(1);
+
+        return 1;
+
+    }
+    else{
+
+        return 0;
+
+    }
+}
