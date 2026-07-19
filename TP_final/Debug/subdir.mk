@@ -66,8 +66,8 @@ endif
 
 ifeq ($(IS_PI),1)
 	OBJS += \
-	./disdrv.o
-	./joydrv.o
+	./disdrv.o \
+	./joydrv.o \
 endif
 
 # Each subdirectory must supply rules for building sources it contributes

@@ -10,9 +10,9 @@ RM := rm -rf
 IS_PI := $(shell grep -i "raspberry pi" /proc/device-tree/model 2>/dev/null)
 
 ifeq ($(IS_PI),)
-    IS_PI = 0
-else
     IS_PI = 1
+else
+    IS_PI = 0
 endif
 
 # si hay una conexion por hdmi en el raspberry pi permito que se agreguen las librerias de allegro
