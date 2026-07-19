@@ -5,6 +5,14 @@
 #define ERROR_NULL_POINTER -67 //Esta macro me permite definir un error de puntero nulo, que se usa en las funcioens del backend
 #define ENDWORLD (14*16) //Esta macro me permite definir el final del mundo, que se usa para resetear las entidades cuando salen de la pantalla.
 
+// Cantidad de "alturas" indexables en pspeedheight (alturas de enemigos:
+// 1-5, de soportes: 5-11, y la rana llega a leer/escribir hasta la fila
+// segura, altura >= 12). Antes pspeedheight se reservaba con malloc(10 *
+// sizeof(int)) pero se escribian/leian los indices 0..12: heap overflow
+// en cada inicio de nivel. Usar esta constante en gamestate.c y
+// levelset.c para que ambos coincidan siempre.
+#define NUM_HEIGHT_LEVELS 13
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -50,5 +58,7 @@ typedef struct{
 
 }game_state;
 
+game_state * createGame(void);
+int endGame(game_state* game);
 
 #endif

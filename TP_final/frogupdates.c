@@ -24,7 +24,7 @@ int MovedLEFT = 0;
 
 int followSupport(game_state * game){
 
-    if(game == NULL||game->psoport == NULL||game->prana){
+    if(game == NULL||game->psoport == NULL||game->prana == NULL){
 
         return ERROR_NULL_POINTER;
 

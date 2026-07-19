@@ -11,9 +11,9 @@ RM := rm -rf
 IS_PI := $(shell grep -i "raspberry pi" /proc/device-tree/model 2>/dev/null)
 
 ifeq ($(IS_PI),)
-    IS_PI = 1
-else
     IS_PI = 0
+else
+    IS_PI = 1
 endif
 
 # All of the sources participating in the build are defined here

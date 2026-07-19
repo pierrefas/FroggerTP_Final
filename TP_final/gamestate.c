@@ -52,7 +52,7 @@ game_state * createGame(void){
 
     }
     
-    newgame->pspeedheight = (int*) malloc(10*sizeof(int));
+    newgame->pspeedheight = (int*) malloc(NUM_HEIGHT_LEVELS*sizeof(int));
 
     if(newgame->pspeedheight == NULL){
 

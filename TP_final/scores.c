@@ -1,4 +1,5 @@
 #include "scores.h"
+#include "checking.h"
 
 int pointForFinishingLevel(game_state * game){
 

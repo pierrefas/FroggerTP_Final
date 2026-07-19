@@ -13,8 +13,14 @@
 
 
 #include "levelset.h"
+#include "scores.h"
+#include "highscores.h"
+#include "entityupdates.h"
+#include "frogupdates.h"
 #include <time.h>
 #include <stdlib.h>
+
+int level;
 
 static int lentypes[] = {1,1,1,1,2,3,3,7,2,5};
 
@@ -157,7 +163,14 @@ int nextLevel(game_state * game){
 
     int i;
 
-    for(i = 0; i < 13; i++){
+    // Sin esto, isLevelFinished() seguia viendo los safespaces marcados
+    // del nivel anterior y el nivel nuevo se daba por terminado antes de
+    // que la rana se moviera.
+    for(i = 0; i < 5; i++){
+        (game->safespaces)[i] = 0;
+    }
+
+    for(i = 0; i < NUM_HEIGHT_LEVELS; i++){
 
         (game->pspeedheight)[i] = rand()%2 ? -(rand() % (level + 5) + level) : (rand() % (level + 5) + level); //Aumento la velocidad de los enemigos y soportes en cada nivel
 
@@ -216,7 +229,11 @@ int firstLevel(game_state * game){
 
     int i,j;
 
-    for(i = 0; i < 13; i++){
+    for(i = 0; i < 5; i++){
+        (game->safespaces)[i] = 0;
+    }
+
+    for(i = 0; i < NUM_HEIGHT_LEVELS; i++){
 
         (game->pspeedheight)[i] = rand()%2 ? (rand() % (5) + 1) : -(rand() % (5) + 1); //Aumento la velocidad de los enemigos y soportes en cada nivel
 
@@ -259,7 +276,7 @@ int updateLevel(game_state * game,int time){
 
     }
     
-    if(isDeadFromLake(game) == 1 || isDeadFromEnemy(game) == 1){
+    if(isDeadLake(game) == 1 || isDeadFromEnemy(game) == 1){
 
         game->prana->lives--; //Le saco una vida
         game->prana->height = 0; //Pongo la rana en la primera fila
@@ -278,7 +295,7 @@ int updateLevel(game_state * game,int time){
 
     if(isLevelFinished(game)){
 
-        pointsForFinishingLevel(game); //Añado puntos por terminar , subo el nivel
+        pointForFinishingLevel(game); //Añado puntos por terminar , subo el nivel
 
         level++;
 
@@ -289,12 +306,14 @@ int updateLevel(game_state * game,int time){
 
         updateHighScores("AAA",game->score);
 
-        endGame(game);
+        endGame(game); // libera todo game_state: el llamador NO debe volver a tocar `game` despues de esto.
+
+        return GAME_OVER;
 
     }
     else{
 
-        stepEntities(game);
+        stepEntites(game);
         resetEntites(game);
         if(game->prana->height>=STARTLAKE){
 

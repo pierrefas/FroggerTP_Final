@@ -1,13 +1,11 @@
 /*
  * gameloop.c
  *
- * Ver gameloop.h. Este archivo es nuevo (Mati / port Raspberry Pi).
- *
- * NO se toco ningun archivo del equipo para escribir esto. Varios de
- * esos archivos tienen bugs que impiden que este loop (y en algunos
- * casos el proyecto entero) compile o linkee; estan documentados en
- * el bloque de "PROTOTIPOS FALTANTES" de aca abajo y se los mande al
- * equipo por separado. Sacar ese bloque en cuanto los arreglen.
+ * Ver gameloop.h. Conecta el joystick con el movimiento de la rana y
+ * con el dibujado en el display de LEDs, algo que hasta ahora ningun
+ * archivo hacia: joystick.c, drawleds.c, frogupdates.c, entityupdates.c
+ * y levelset.c ya existian por separado, pero nada los llamaba juntos
+ * en un mismo ciclo.
  */
 
 #include "gameloop.h"
@@ -17,29 +15,11 @@
 #include "gamestate.h"
 #include "checking.h"
 #include "frogupdates.h"
+#include "levelset.h"
 #include "joystick.h"
 #include "joydrv.h"
 #include "drawleds.h"
 #include "disdrv.h"
-
-/* -----------------------------------------------------------------------
- * PROTOTIPOS FALTANTES (bugs de headers del equipo, ver aviso aparte)
- *
- * - gamestate.h no declara createGame()/endGame() a pesar de definirlas
- *   en gamestate.c: cualquier archivo que las use (incluido levelset.c)
- *   depende de una declaracion implicita.
- * - levelset.h declara "int level;" (definicion, sin "extern") en vez de
- *   "extern int level;". Si yo incluyera levelset.h ademas de levelset.c,
- *   cada .c que lo incluya se trae su propia definicion de "level", y con
- *   gcc moderno (-fno-common, default desde gcc 10) el link falla con
- *   "multiple definition of level". Lo evito declarando yo mismo lo que
- *   necesito en vez de incluir levelset.h.
- * ----------------------------------------------------------------------- */
-game_state * createGame(void);
-int endGame(game_state * game);
-extern int level;
-int firstLevel(game_state * game);
-int updateLevel(game_state * game, int time);
 
 /* Cuantos ticks de este loop entran en una "vuelta" de la barra de tiempo.
  * No hay ninguna unidad documentada para el parametro "time" de
@@ -106,20 +86,9 @@ int run_headless_game(void){
             time_left = LEVEL_TIME_TICKS;
         }
 
-        /* updateLevel() llama a endGame(game) puertas adentro apenas
-         * lives llega a 0 (levelset.c, rama "else if(game->prana->lives < 1)"),
-         * liberando TODO el game_state en esa misma llamada. Para no leer
-         * memoria ya liberada, predecimos si esta va a ser la ultima
-         * vuelta repitiendo el mismo chequeo de muerte que hace
-         * updateLevel puertas adentro, y si da que si, no volvemos a
-         * tocar `game` depues de llamarlo. */
-        int lives_before = game->prana->lives;
-        int dying_this_tick = (isDeadFromEnemy(game) == 1) || (isDeadLake(game) == 1);
-
-        updateLevel(game, time_left);
-
-        if(dying_this_tick && lives_before <= 1){
-            /* game ya fue liberado por updateLevel(). No tocar mas. */
+        if(updateLevel(game, time_left) == GAME_OVER){
+            /* updateLevel() ya llamo a endGame(game) y libero todo el
+             * game_state. No tocar `game` de nuevo. */
             break;
         }
 

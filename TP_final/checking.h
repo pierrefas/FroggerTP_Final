@@ -10,5 +10,6 @@
 int isDeadFromEnemy(game_state*);
 int isDeadLake(game_state*);
 int isAtEnd(game_state*);
+int isLevelFinished(game_state*);
 
 #endif
