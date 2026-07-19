@@ -11,6 +11,7 @@ typedef struct{
     enemy_entity* penemies;
     int * pspeedheight;
     int score;
+    int * safespaces;
 
 }game_state;
 

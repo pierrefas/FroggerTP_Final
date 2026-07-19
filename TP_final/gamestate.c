@@ -65,12 +65,38 @@ game_state * createGame(void){
         return NULL;
 
 
-    }    
+    }
+    
+    newgame->safespaces = (int*) malloc(5*sizeof(int));
+
+    if(newgame->safespaces == NULL){
+
+        free(newgame->safespaces);
+        free(newgame->pspeedheight);
+        free(newgame->prana);
+        free(newgame->psoport);
+        free(newgame->penemies);
+        free(newgame);
+
+        return NULL;
+
+
+    }
     
     newgame->score = 0;
    
     newgame->penemies->type = -1;
     newgame->psoport->type = -1;
+
+    int i;
+
+    for(i = 0; i < 5 ; i++){
+
+        (newgame->safespaces)[i] = 0;
+
+
+    }
+
 
     return newgame;
 
