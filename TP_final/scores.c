@@ -1,15 +1,41 @@
 #include "scores.h"
 
-int addLevelScores(game_state * game, int points){
+int pointForFinishingLevel(game_state * game){
 
     if(game == NULL){
 
-        return ERROR_NULL_POINTER;
+        return 0;
 
     }
 
-    game->score += points;
+    if(isLevelFinished(game)){
 
-    return 0;
+        game->score += 100;
+        return 1;
+
+    }
+    else{
+
+        return 0;
+
+    }
 
 }
+
+int pointsForTime(game_state * game, int time){
+
+    if(game == NULL){
+
+        return 0;
+
+    }
+    else{
+
+        game->score += time;
+        return 1;
+
+    }
+
+}
+
+

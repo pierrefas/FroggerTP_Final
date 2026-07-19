@@ -3,7 +3,7 @@
 //  Consultas a:  Juanga                                            //
 //                                                                  //
 //  En este archivo van a estar todas las funciones que             //
-//  inicilaizan el nivel, sus entidades y el jugador                //
+//  inicilaizan y actualizan el nivel, sus entidades y el jugador   //
 //  Y tiene en cuenta la dificultad progresiva                      //
 //                                                                  //
 //                                                                  //
@@ -138,7 +138,7 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
     }
 }
 
-int nextLevel(int level, game_state * game){
+int nextLevel(game_state * game){
 
     srand(time(NULL));
 
@@ -244,5 +244,60 @@ int firstLevel(game_state * game){
     }
 
     return 0;
+
+}
+
+int updateLevel(game_state * game,int time){
+
+    if(game == NULL){
+
+        return ERROR_NULL_POINTER;
+
+    }
+    
+    if(isDeadFromLake(game) == 1 || isDeadFromEnemy(game) == 1){
+
+        game->prana->lives--; //Le saco una vida
+        game->prana->height = 0; //Pongo la rana en la primera fila
+        game->prana->startcoord = ADJCOORDFROG(3); //Pongo la rana en el inicio
+        game->prana->endcoord = game->prana->startcoord + ADJCOORDFROG(1); 
+    }
+    else if(isAtEnd(game)){
+
+        game->prana->height = 0; //Pongo la rana en la primera fila
+        game->prana->startcoord = ADJCOORDFROG(3); //Pongo la rana en el inicio
+        game->prana->endcoord = game->prana->startcoord + ADJCOORDFROG(1);
+        pointsForTime(game,time); 
+
+    }
+
+
+    if(isLevelFinished(game)){
+
+        pointsForFinishingLevel(game); //Añado puntos por terminar , subo el nivel
+
+        level++;
+
+        nextLevel(game);
+
+    }
+    else if(game->prana->lives < 1){
+
+        updateHighScores("AAA",game->score);
+
+        endGame(game);
+
+    }
+    else{
+
+        stepEntities(game);
+        resetEntites(game);
+        if(game->prana->height>=STARTLAKE){
+
+            followSupport(game);
+
+        }
+
+    }
 
 }

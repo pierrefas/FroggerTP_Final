@@ -4,6 +4,7 @@
 int level;
 
 #include "gamestate.h"
+#include "checking.h"
 
 #define ERROR_NIVEL_INVALIDO -404
 #define ERROR_TIPO_INVALIDO -405

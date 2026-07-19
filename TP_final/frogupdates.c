@@ -32,7 +32,6 @@ int followSupport(game_state * game){
 
     if(isDeadLake(game) == 0){//Si esta sobre un soporte hacer que siga dicho soporte
         
-        FollowingSupp = 1;
         game->prana->startcoord+=(game->pspeedheight)[game->prana->height];
         game->prana->endcoord+=(game->pspeedheight)[game->prana->height];
 
