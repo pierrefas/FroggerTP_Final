@@ -8,7 +8,8 @@
 #include "entidades.h"
 #include "gamestate.h"
 
-int isDeadFromEnemy(frog_player * rana, enemy_entity * enemigos);
-int isDeadLake(frog_player * rana, support_entity * soporte);
+int isDeadFromEnemy(game_state*);
+int isDeadLake(game_state*);
+int isAtEnd(game_state*);
 
 #endif
