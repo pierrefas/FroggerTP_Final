@@ -75,3 +75,21 @@ game_state * createGame(void){
     return newgame;
 
 }
+
+int endGame(game_state* game){
+
+    if(game == NULL){
+
+        return 1;
+
+    }
+
+    free(game->pspeedheight);
+    free(game->prana);
+    free(game->psoport);
+    free(game->penemies);
+    free(game);
+
+    return 0;
+
+}
