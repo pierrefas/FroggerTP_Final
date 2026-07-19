@@ -31,7 +31,7 @@ C_SRCS += \
 ../main.c
 
 C_DEPS += \
-../a_alphanum.d \
+./a_alphanum.d \
 ./a_PC_display.d \
 ./a_sprites.d \
 ./a_map.d \
@@ -44,7 +44,7 @@ C_DEPS += \
 ./main.d
 
 OBJS += \
-../a_alphanum.o \
+./a_alphanum.o \
 ./a_PC_display.o \
 ./a_sprites.o \
 ./a_map.o \
@@ -52,9 +52,12 @@ OBJS += \
 ./checking.o \
 ./entityupdates.o \
 ./frogupdates.o \
+./joydrv.o \
 ./joystick.o \
 ./levelset.o \
 ./main.o
+#./disdrv.o \#
+
 
 # filtro los archivos "a_" si no hay conexion por hdmi
 ifeq ($(HDMI_CONNECTED),no and $(FORCE_ALLEGRO),no)

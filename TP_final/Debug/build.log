@@ -1,9 +1,9 @@
 Building with Allegro support (HDMI detected or forced).
 Building target: TP_final
 Invoking: GCC C Linker
-gcc  -o "TP_final" ../a_alphanum.o ./a_PC_display.o ./a_sprites.o ./a_map.o ./a_pause.o ./checking.o ./entityupdates.o ./frogupdates.o ./joystick.o ./levelset.o ./main.o   -lallegro -lallegro_font -lallegro_image -lallegro_primitives
-/usr/bin/ld: ./joystick.o: in function `joystick':
-/home/peterfas/Desktop/test/FroggerTP_Final/TP_final/Debug/../joystick.c:20:(.text+0xd): undefined reference to `joy_init'
-/usr/bin/ld: /home/peterfas/Desktop/test/FroggerTP_Final/TP_final/Debug/../joystick.c:25:(.text+0x1a): undefined reference to `joy_read'
+gcc  -o "TP_final" ./a_alphanum.o ./a_PC_display.o ./a_sprites.o ./a_map.o ./a_pause.o ./checking.o ./entityupdates.o ./frogupdates.o ./joydrv.o ./joystick.o ./levelset.o ./main.o   -lallegro -lallegro_font -lallegro_image -lallegro_primitives
+/usr/bin/ld: ./joydrv.o: relocations in generic ELF (EM: 40)
+/usr/bin/ld: ./joydrv.o: relocations in generic ELF (EM: 40)
+/usr/bin/ld: ./joydrv.o: error adding symbols: file in wrong format
 collect2: error: ld returned 1 exit status
 make: *** [makefile:48: TP_final] Error 1
