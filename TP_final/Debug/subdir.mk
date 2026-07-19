@@ -8,7 +8,9 @@
 
 HDMI1 := $(shell cat /sys/class/drm/card0-HDMI-A-1/status 2>/dev/null)
 HDMI2 := $(shell cat /sys/class/drm/card0-HDMI-A-2/status 2>/dev/null)
-
+ifeq($(IS_PI),1)
+	HDMI1 := disconnected
+	HDMI2 := disconnected
 ifeq ($(HDMI1),connected)
     HDMI_CONNECTED := yes
 else ifeq ($(HDMI2),connected)
