@@ -28,6 +28,8 @@ C_SRCS += \
 ../frogupdates.c \
 ../gamestate.c \
 ../levelset.c \
+../scores.c \
+../highscores.c \
 ../main.c
 
 C_DEPS += \
@@ -41,6 +43,8 @@ C_DEPS += \
 ./frogupdates.d \
 ./gamestate.d \
 ./levelset.d \
+./scores.d \
+./highscores.d \
 ./main.d
 
 OBJS += \
@@ -54,11 +58,9 @@ OBJS += \
 ./frogupdates.o \
 ./gamestate.o \
 ./levelset.o \
+./scores.o \
+./highscores.o \
 ./main.o
-
-# gameloop.c: orquestador para el hardware fisico (LEDs + joystick). Se
-# agrega mas abajo a C_SRCS/C_DEPS/OBJS solo bajo IS_PI, junto con
-# disdrv.o/joydrv.o, porque depende de esos dos objetos.
 
 
 # filtro los archivos "a_" si no hay conexion por hdmi o
@@ -70,15 +72,18 @@ endif
 
 ifeq ($(IS_PI),1)
 	C_SRCS += \
-	../joystick.c 
+	../joystick.c \
+	../gameloop.c
 
 	C_DEPS += \
-	./joystick.d 
+	./joystick.d \
+	./gameloop.d
 
 	OBJS += \
 	./disdrv.o \
 	./joydrv.o \
-	./joystick.o 
+	./joystick.o \
+	./gameloop.o
 
 endif
 
@@ -93,8 +98,12 @@ endif
 
 clean: clean--2e-
 
+# disdrv.o/joydrv.o son los binarios del profesor: no hay .c del que
+# regenerarlos, asi que "clean" no los borra (antes se perdian en cada
+# limpieza y habia que volver a copiarlos a mano).
 clean--2e-:
-	-$(RM) ./*.d ./*.o
+	-$(RM) $(filter-out ./disdrv.o ./joydrv.o,$(wildcard ./*.o))
+	-$(RM) ./*.d
 
 .PHONY: clean--2e-
 
