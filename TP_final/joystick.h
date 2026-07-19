@@ -1,6 +1,6 @@
 #ifndef JOYSTICK_H
 #define JOYSTICK_H
-
-//header del joistick (˶>⩊<˶)
+#define DEADZONE 100 // zona muerta del joystick
+int isActive;
 
 #endif
