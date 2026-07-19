@@ -15,22 +15,13 @@
 #define ENEMY_FRAMES     2
 #define NUM_FROG_FRAMES  4
 
-/* en TP_final/a_sprites.h — añadir después de los #define existentes */
-
+/* frame defaults (can be overridden at compile time) */
 #ifndef FRAME_W
 #define FRAME_W 16
 #endif
 #ifndef FRAME_H
 #define FRAME_H 16
 #endif
-
-/* optional exported tile/sub-bitmaps (may be NULL if not created) */
-extern ALLEGRO_BITMAP *bush_0;
-extern ALLEGRO_BITMAP *bush_1;
-extern ALLEGRO_BITMAP *tile_0;
-
-/* access to the parent spritesheet (may be NULL if load failed) */
-ALLEGRO_BITMAP *get_spritesheet(void);
 
 /* enums públicos para usar en el resto del código */
 enum {
@@ -52,6 +43,11 @@ enum {
 extern ALLEGRO_BITMAP *enemy_sprites[NUM_ENEMY_TYPES][ENEMY_FRAMES];
 extern ALLEGRO_BITMAP *frog_sprites[NUM_FROG_FRAMES];
 
+/* Optional exported simple tiles (may be NULL if not created) */
+extern ALLEGRO_BITMAP *bush_0;
+extern ALLEGRO_BITMAP *bush_1;
+extern ALLEGRO_BITMAP *tile_0;
+
 /* Load the spritesheet and create sub-bitmaps.
    - filename: path to the spritesheet PNG. If NULL, uses default inside a_sprites.c.
    - Returns 0 on success, -1 on failure. Caller must have initialized Allegro and the image addon. */
@@ -60,7 +56,7 @@ int load_sprites(const char *filename);
 /* Destroy sub-bitmaps and the parent spritesheet. */
 void destroy_sprites(void);
 
-/* in a_sprites.h */
+/* Accessor for the raw parent spritesheet (may be NULL if load failed). Use only for drawing regions. */
 ALLEGRO_BITMAP *get_spritesheet(void);
 
 #endif /* A_SPRITES_H */

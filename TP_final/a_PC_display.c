@@ -1,11 +1,3 @@
-/*
- * main.c
- *
- *  Created on: Jul 9, 2026
- *      Author: peterfas
- */
-
-/* main display with spritesheet integration */
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
@@ -17,6 +9,8 @@
 #include "a_map.h"
 #include "a_sprites.h"
 #include "a_pause.h"
+#include "a_render.h"
+#include "gamestate.h"
 
 #define GAME_HEIGHT 256
 #define GAME_WIDTH 224
@@ -116,9 +110,17 @@ int display(void)
 
     al_start_timer(timer);
 
-    /* compute center position for frog drawing in buffer coords */
-    int center_x = (GAME_WIDTH / 2) - (FRAME_W / 2);
-    int center_y = (GAME_HEIGHT / 2) - (FRAME_H / 2);
+    /* create/own the game state for rendering and updates */
+    game_state *gs = createGame();
+    if (!gs) {
+        fprintf(stderr, "Failed to create game state\n");
+        destroy_sprites();
+        al_destroy_display(disp);
+        al_destroy_bitmap(buffer);
+        al_destroy_event_queue(queue);
+        al_destroy_timer(timer);
+        return 0;
+    }
 
     while(1)
     {
@@ -151,10 +153,8 @@ int display(void)
             /* draw map */
             a_disp_map();
 
-            /* draw frog using sub-bitmap (choose frame/orientation as needed) */
-            if (frog_sprites[FROG_IDLE]) {
-                al_draw_bitmap(frog_sprites[FROG_IDLE], center_x, center_y, 0);
-            }
+            /* draw game state using our renderer */
+            draw_game_state(gs);
 
             if (pause) {
                 pause_menu();
@@ -172,6 +172,7 @@ int display(void)
 
     /* cleanup */
     destroy_sprites(); // destroys sub-bitmaps and spritesheet
+    endGame(gs);
     al_destroy_bitmap(buffer);
     al_destroy_font(font);
     al_destroy_display(disp);

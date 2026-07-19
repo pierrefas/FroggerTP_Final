@@ -1,11 +1,22 @@
-#ifndef PAUSE_MENU_H
-#define PAUSE_MENU_H
+/*
+ * a_pause.h
+ *
+ * Minimal pause menu for the Allegro frontend.
+ *
+ * The frontend should call pause_menu() when it wants to suspend the game loop.
+ * The function will block until the player chooses to resume or quit.
+ */
 
-/**
- * @brief Dibuja el menú de pausa en la pantalla.
- * 
- * Limpia la pantalla y renderiza el texto del menú utilizando la función de display alfanumérico.
+#ifndef A_PAUSE_H
+#define A_PAUSE_H
+
+/* Blocks and runs a small modal pause menu.
+ * - Resume: Enter, Space or Escape
+ * - Quit: Q or closing the display window (calls exit(0))
+ *
+ * This function expects Allegro to be initialized and a display to be current.
+ * It performs its own event loop and cleans up before returning.
  */
 void pause_menu(void);
 
-#endif // PAUSE_MENU_H
+#endif /* A_PAUSE_H */

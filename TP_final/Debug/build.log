@@ -1,35 +1,11 @@
 Building with Allegro support (HDMI detected or forced).
-Building file: ../a_alphanum.c
-Invoking: GCC C Compiler
-gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_alphanum.d" -MT"a_alphanum.o" -o "a_alphanum.o" "../a_alphanum.c"
-Finished building: ../a_alphanum.c
- 
-Building file: ../a_PC_display.c
-Invoking: GCC C Compiler
-gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_PC_display.d" -MT"a_PC_display.o" -o "a_PC_display.o" "../a_PC_display.c"
-Finished building: ../a_PC_display.c
- 
 Building file: ../a_sprites.c
 Invoking: GCC C Compiler
 gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_sprites.d" -MT"a_sprites.o" -o "a_sprites.o" "../a_sprites.c"
 Finished building: ../a_sprites.c
  
-Building file: ../a_map.c
-Invoking: GCC C Compiler
-gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_map.d" -MT"a_map.o" -o "a_map.o" "../a_map.c"
-Finished building: ../a_map.c
- 
 Building target: TP_final
 Invoking: GCC C Linker
-gcc  -o "TP_final" ./a_alphanum.o ./a_PC_display.o ./a_sprites.o ./a_map.o ./a_pause.o ./checking.o ./entityupdates.o ./frogupdates.o ./gamestate.o ./levelset.o ./scores.o ./highscores.o ./main.o   -lallegro -lallegro_font -lallegro_image -lallegro_primitives
-/usr/bin/ld: ./a_map.o: warning: relocation against `bush_1' in read-only section `.text'
-/usr/bin/ld: ./a_map.o: in function `a_disp_map':
-/home/peterfas/Desktop/test3/FroggerTP_Final/TP_final/Debug/../a_map.c:28:(.text+0x9d): undefined reference to `bush_0'
-/usr/bin/ld: /home/peterfas/Desktop/test3/FroggerTP_Final/TP_final/Debug/../a_map.c:33:(.text+0xd4): undefined reference to `bush_0'
-/usr/bin/ld: /home/peterfas/Desktop/test3/FroggerTP_Final/TP_final/Debug/../a_map.c:35:(.text+0x106): undefined reference to `bush_1'
-/usr/bin/ld: /home/peterfas/Desktop/test3/FroggerTP_Final/TP_final/Debug/../a_map.c:37:(.text+0x138): undefined reference to `bush_1'
-/usr/bin/ld: /home/peterfas/Desktop/test3/FroggerTP_Final/TP_final/Debug/../a_map.c:44:(.text+0x17d): undefined reference to `tile_0'
-/usr/bin/ld: /home/peterfas/Desktop/test3/FroggerTP_Final/TP_final/Debug/../a_map.c:45:(.text+0x1af): undefined reference to `tile_0'
-/usr/bin/ld: warning: creating DT_TEXTREL in a PIE
-collect2: error: ld returned 1 exit status
-make: *** [makefile:69: TP_final] Error 1
+gcc  -o "TP_final" ./a_alphanum.o ./a_PC_display.o ./a_render.o ./a_sprites.o ./a_map.o ./a_pause.o ./checking.o ./entityupdates.o ./frogupdates.o ./gamestate.o ./levelset.o ./scores.o ./highscores.o ./main.o   -lallegro -lallegro_font -lallegro_image -lallegro_primitives
+Finished building target: TP_final
+ 
