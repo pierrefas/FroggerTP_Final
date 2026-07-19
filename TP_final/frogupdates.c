@@ -15,6 +15,13 @@
 
 #include "frogupdates.h"
 
+int FollowingSupp = 0;
+int FlagDied = 0;
+int MovedUP = 0;
+int MovedDOWN = 0;
+int MovedRIGHT = 0;
+int MovedLEFT = 0;
+
 int followSupport(frog_player * rana, support_entity * soporte, int speedheight[]){
 
     if(soporte == NULL){
@@ -24,7 +31,8 @@ int followSupport(frog_player * rana, support_entity * soporte, int speedheight[
     }
 
     if(isDeadLake(rana,soporte) == 0){//Si esta sobre un soporte hacer que siga dicho soporte
-
+        
+        FollowingSupp = 1;
         rana->startcoord+=speedheight[rana->height];
         rana->endcoord+=speedheight[rana->height];
     }
@@ -49,7 +57,7 @@ int deathOfFrog(frog_player * rana, support_entity * soporte, enemy_entity * ene
         rana->height = 0;
         rana->startcoord = ADJCOORDFROG(3);
         rana->endcoord = rana->startcoord + ADJCOORDFROG(1);
-
+        FlagDied = 1;
     }
 
     return 0;
@@ -64,7 +72,7 @@ int frogStepUp(frog_player * rana){
 
     }
    
-   
+    MovedUP = 1;
     rana->height++;
     rana->orientation = 0;
 
@@ -86,7 +94,7 @@ int frogStepDown(frog_player * rana){
 
     }
 
-
+    MovedDOWN = 1;
     rana->height--;
     rana->orientation = 2;
 
@@ -107,7 +115,7 @@ int frogStepRight(frog_player * rana){
         return ERROR_NULL_POINTER;
 
     }
-
+    MovedRIGHT = 1;
     rana->orientation = 1;
     rana->startcoord+=ADJCOORDFROG(1);
     rana->endcoord+=ADJCOORDFROG(1);
@@ -131,7 +139,7 @@ int frogStepLeft(frog_player * rana){
         return ERROR_NULL_POINTER;
 
     }
-
+    MovedLEFT = 1;
     rana->orientation = 2;
     rana->startcoord-=ADJCOORDFROG(1);
     rana->endcoord-=ADJCOORDFROG(1);
