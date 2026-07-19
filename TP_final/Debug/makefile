@@ -3,10 +3,11 @@
 
 RM := rm -rf
 
-# All of the sources participating in the build are defined here
--include sources.mk
--include subdir.mk
-
+# IS_PI tiene que calcularse ANTES de meter subdir.mk: ese archivo lo
+# usa en su propio "ifeq ($(IS_PI),1)" para decidir si suma gameloop.o/
+# disdrv.o/joydrv.o al link, y los ifeq se evaluan en el momento en que
+# se lee cada archivo. Si se calcula despues (como estaba antes), subdir.mk
+# siempre ve IS_PI vacio y ese bloque nunca se activa, ni en una Raspberry Pi real.
 IS_PI := $(shell grep -i "raspberry pi" /proc/device-tree/model 2>/dev/null)
 
 ifeq ($(IS_PI),)
@@ -14,6 +15,10 @@ ifeq ($(IS_PI),)
 else
     IS_PI = 1
 endif
+
+# All of the sources participating in the build are defined here
+-include sources.mk
+-include subdir.mk
 
 # si hay una conexion por hdmi en el raspberry pi permito que se agreguen las librerias de allegro
 ifeq ($(filter yes,$(HDMI_CONNECTED) $(FORCE_ALLEGRO)),yes)

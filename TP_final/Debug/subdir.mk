@@ -56,6 +56,10 @@ OBJS += \
 ./levelset.o \
 ./main.o
 
+# gameloop.c: orquestador para el hardware fisico (LEDs + joystick). Se
+# agrega mas abajo a C_SRCS/C_DEPS/OBJS solo bajo IS_PI, junto con
+# disdrv.o/joydrv.o, porque depende de esos dos objetos.
+
 
 # filtro los archivos "a_" si no hay conexion por hdmi o
 ifeq ($(HDMI_CONNECTED),no and $(FORCE_ALLEGRO),no)
@@ -65,8 +69,11 @@ ifeq ($(HDMI_CONNECTED),no and $(FORCE_ALLEGRO),no)
 endif
 
 ifeq ($(IS_PI),1)
+	C_SRCS += ../gameloop.c
+	C_DEPS += ./gameloop.d
 	OBJS += \
-	./disdrv.o
+	./gameloop.o \
+	./disdrv.o \
 	./joydrv.o
 endif
 
