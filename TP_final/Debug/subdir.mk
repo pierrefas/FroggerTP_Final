@@ -78,16 +78,19 @@ endif
 ifeq ($(IS_PI),1)
 	C_SRCS += \
 	../joystick.c \
+	../drawleds.c \
 	../gameloop.c
 
 	C_DEPS += \
 	./joystick.d \
+	./drawleds.d \
 	./gameloop.d
 
 	OBJS += \
 	./disdrv.o \
 	./joydrv.o \
 	./joystick.o \
+	./drawleds.o \
 	./gameloop.o
 
 endif

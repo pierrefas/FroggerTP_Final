@@ -3,7 +3,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int joystic_update(void) { 
+// joystick.h las declara "extern": esta es la unica definicion real,
+// nunca existia en ningun lado y el link fallaba con undefined reference.
+char isUp = 0;
+char isDwn = 0;
+char isLft = 0;
+char isRgt = 0;
+
+int joystic_update(void) {
     static int isActive = 0; 
     
     joyinfo_t data = joy_read();
