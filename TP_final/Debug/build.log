@@ -1,8 +1,8 @@
 Building with Allegro support (HDMI detected or forced).
-Building file: ../a_sprites.c
+Building file: ../a_pause.c
 Invoking: GCC C Compiler
-gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_sprites.d" -MT"a_sprites.o" -o "a_sprites.o" "../a_sprites.c"
-Finished building: ../a_sprites.c
+gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_pause.d" -MT"a_pause.o" -o "a_pause.o" "../a_pause.c"
+Finished building: ../a_pause.c
  
 Building target: TP_final
 Invoking: GCC C Linker

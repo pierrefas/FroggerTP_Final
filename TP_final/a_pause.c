@@ -10,11 +10,21 @@
 #include <allegro5/allegro_primitives.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "a_pause.h"
 
 void pause_menu(void)
 {
+
+    srand(time(NULL));
+
+    static int random = 0;
+
+    int x = 255;
+    int y = 255;
+    int z = 255;
+
     ALLEGRO_DISPLAY *disp = al_get_current_display();
     ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
     if (!queue) return;
@@ -36,19 +46,34 @@ void pause_menu(void)
         al_set_target_backbuffer(disp);
         int w = al_get_display_width(disp);
         int h = al_get_display_height(disp);
-        al_draw_filled_rectangle(0, 0, w, h, al_map_rgba(0, 0, 0, 160));
+        al_clear_to_color(al_map_rgb(0, 0, 0));
         if (font) {
-            al_draw_text(font, al_map_rgb(255,255,255), w/2, h/2 - 12, ALLEGRO_ALIGN_CENTER, "PAUSED");
-            al_draw_text(font, al_map_rgb(200,200,200), w/2, h/2 + 8, ALLEGRO_ALIGN_CENTER,
+            al_draw_text(font, al_map_rgb(x,y,z), w/2, h/2 - 12, ALLEGRO_ALIGN_CENTER, "PAUSED");
+            al_draw_text(font, al_map_rgb(x,y,z), w/2, h/2 + 8, ALLEGRO_ALIGN_CENTER,
                          "Press Enter/Space/Esc to resume, Q to quit");
         }
         al_flip_display();
     }
 
     while (running) {
+
+        if(random)
+        {
+            x = rand() % 256;
+            y = rand() % 256;
+            z = rand() % 256;
+        }
+        else
+        {
+            x = 255;
+            y = 255;
+            z = 255;
+        }
+
         al_wait_for_event(queue, &ev);
 
         if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+
             switch (ev.keyboard.keycode) {
             case ALLEGRO_KEY_ESCAPE:
             case ALLEGRO_KEY_ENTER:
@@ -61,6 +86,8 @@ void pause_menu(void)
                 if (font) al_destroy_font(font);
                 exit(0);
                 break;
+            case ALLEGRO_KEY_C:
+                random = 1;
             default:
                 break;
             }
@@ -76,10 +103,10 @@ void pause_menu(void)
             al_set_target_backbuffer(disp);
             int w = al_get_display_width(disp);
             int h = al_get_display_height(disp);
-            al_draw_filled_rectangle(0, 0, w, h, al_map_rgba(0, 0, 0, 160));
+            al_clear_to_color(al_map_rgb(0, 0, 0));
             if (font) {
-                al_draw_text(font, al_map_rgb(255,255,255), w/2, h/2 - 12, ALLEGRO_ALIGN_CENTER, "PAUSED");
-                al_draw_text(font, al_map_rgb(200,200,200), w/2, h/2 + 8, ALLEGRO_ALIGN_CENTER,
+                al_draw_text(font, al_map_rgb(x,y,z), w/2, h/2 - 12, ALLEGRO_ALIGN_CENTER, "PAUSED");
+                al_draw_text(font, al_map_rgb(x,y,z), w/2, h/2 + 8, ALLEGRO_ALIGN_CENTER,
                              "Press Enter/Space/Esc to resume, Q to quit");
             }
             al_flip_display();

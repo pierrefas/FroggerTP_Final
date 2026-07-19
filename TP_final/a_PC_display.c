@@ -134,9 +134,24 @@ int display(void)
             if (event.keyboard.keycode == ALLEGRO_KEY_Q) {
                 break;
             }
+            
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
             {
-                pause = 1;
+                pause = !pause;
+                if (!pause) {
+                    /* Just resumed: drop any pending events (e.g., the same ESC) */
+                    al_flush_event_queue(queue);
+                }
+            }
+
+            /* While paused allow Enter/Space to resume, Q to quit */
+            if (pause) {
+                if (event.keyboard.keycode == ALLEGRO_KEY_ENTER ||
+                    event.keyboard.keycode == ALLEGRO_KEY_SPACE) {
+                    pause = 0;
+                    al_flush_event_queue(queue);
+                }
+                /* If Q pressed here we'd already break above because we check it first */
             }
         }
         else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -158,7 +173,12 @@ int display(void)
 
             if (pause) {
                 pause_menu();
+                pause = 0;
+                al_flush_event_queue(queue);
+
             }
+
+
 
             /* scale buffer to display backbuffer */
             al_set_target_bitmap(al_get_backbuffer(disp));
