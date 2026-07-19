@@ -18,8 +18,8 @@
 #define TIME_BAR_ROW        14   // fila fija de la barra de tiempo
 #define LIVES_COLUMN        15   // columna fija del indicador de vidas
 
-// Cantidad de tipos de entidad soportados. DEBE coincidir con el tamano
-// de lentypes[] (definido en levelset.c) para no leer fuera de rango.
+// Cantidad de tipos de entidad soportados. DEBE coincidir con
+// lentypes[] para no leer fuera de rango.
 #define NUM_ENTITY_TYPES    10
 
 // Funciones de dibujo
