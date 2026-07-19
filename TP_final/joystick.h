@@ -3,4 +3,6 @@
 #define DEADZONE 100 // zona muerta del joystick
 int isActive;
 
+
+
 #endif
