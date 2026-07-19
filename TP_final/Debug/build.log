@@ -95,4 +95,4 @@ In file included from ../levelset.c:15:
 ../levelset.c:301:13: error: implicit declaration of function ‘followSupport’ [-Wimplicit-function-declaration]
   301 |             followSupport(game);
       |             ^~~~~~~~~~~~~
-make: *** [subdir.mk:85: levelset.o] Error 1
+make: *** [subdir.mk:89: levelset.o] Error 1
