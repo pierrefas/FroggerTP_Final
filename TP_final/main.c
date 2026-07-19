@@ -13,7 +13,8 @@
   #include <allegro5/allegro.h>
   #include <allegro5/allegro_font.h>
 #else
-  // sino nada, despues veo si agrego algo mas aca o si mati necesita algo
+  // sin hdmi, corremos el juego sobre el display de LEDs + joystick
+  #include "gameloop.h"
 #endif
 
 int main (void){
@@ -22,7 +23,9 @@ int main (void){
 	init_alegro(); // inicializo todo lo de alegro en esta funcion
   printf("\n");
   display();
+	#else
+	run_headless_game();
 	#endif
-	
+
 	return 0;
 }
