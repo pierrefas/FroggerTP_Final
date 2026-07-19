@@ -138,107 +138,108 @@ static int createSupport(support_entity* soporte, int tipo, int height, int heig
     }
 }
 
-int nextLevel(int level, enemy_entity* enemigos, support_entity* soportes, int heightspeed[],frog_player* rana){
+int nextLevel(int level, game_state * game){
 
     srand(time(NULL));
 
-    if(enemigos == NULL || soportes == NULL|| rana == NULL|| heightspeed == NULL){
+    if(game->penemies == NULL || game->psoport == NULL|| game->prana == NULL|| game->pspeedheight == NULL || game == NULL){
         return ERROR_NULL_POINTER;
     }
     else if(level < 1){
         return ERROR_NIVEL_INVALIDO;
     }
 
-    enemigos->type = -1; //Pongo el primer enemigo como vacio
-    soportes->type = -1; //Pongo el primer soporte como vacio
-    rana->height = 0; //Pongo la rana en la primera fila
-    rana->startcoord = ADJCOORDFROG(3); //Pongo la rana en el inicio
-    rana->endcoord = rana->startcoord + ADJCOORDFROG(1); 
+    game->penemies->type = -1; //Pongo el primer enemigo como vacio
+    game->psoport->type = -1; //Pongo el primer soporte como vacio
+    game->prana->height = 0; //Pongo la rana en la primera fila
+    game->prana->startcoord = ADJCOORDFROG(3); //Pongo la rana en el inicio
+    game->prana->endcoord = game->prana->startcoord + ADJCOORDFROG(1);
 
-    int i,j;
+    int i;
 
     for(i = 0; i < 13; i++){
 
-        heightspeed[i] = rand()%2 ? -(rand() % (level + 5) + level) : (rand() % (level + 5) + level); //Aumento la velocidad de los enemigos y soportes en cada nivel
+        (game->pspeedheight)[i] = rand()%2 ? -(rand() % (level + 5) + level) : (rand() % (level + 5) + level); //Aumento la velocidad de los enemigos y soportes en cada nivel
 
     }
 
     for(i = 0; i<3; i++){
 
-        createEnemy(enemigos,0,1,heightspeed);
-        createEnemy(enemigos,1,2,heightspeed);
-        createEnemy(enemigos,2,3,heightspeed);
-        createEnemy(enemigos,3,4,heightspeed);
-        createEnemy(enemigos,4,5,heightspeed);
-        createSupport(soportes,9,11,heightspeed);
-        createSupport(soportes,6,8,heightspeed);
+        createEnemy(game->penemies,0,1,game->pspeedheight);
+        createEnemy(game->penemies,1,2,game->pspeedheight);
+        createEnemy(game->penemies,2,3,game->pspeedheight);
+        createEnemy(game->penemies,3,4,game->pspeedheight);
+        createEnemy(game->penemies,4,5,game->pspeedheight);
+        createSupport(game->psoport,9,11,game->pspeedheight);
+        createSupport(game->psoport,6,8,game->pspeedheight);
 
     }
 
     for(i = 0; i<2; i++){
 
-        createSupport(soportes,7,9,heightspeed);
+        createSupport(game->psoport,7,9,game->pspeedheight);
 
     }
 
     for(i = 0; i<4; i++){
 
-        createSupport(soportes,5,7,heightspeed);
-        createSupport(soportes,8,10,heightspeed);
+        createSupport(game->psoport,5,7,game->pspeedheight);
+        createSupport(game->psoport,8,10,game->pspeedheight);
 
     }
 
     return 0;
 
 }
-int firstLevel(enemy_entity* enemigos, support_entity* soportes, int heightspeed[],frog_player* rana){
+
+int firstLevel(game_state * game){
 
     srand(time(NULL));
 
-    if(enemigos == NULL || soportes == NULL|| rana == NULL|| heightspeed == NULL){
+    if(game->penemies == NULL || game->psoport == NULL|| game->prana == NULL|| game->pspeedheight == NULL|| game == NULL){
         return ERROR_NULL_POINTER;
     }
     else if(level < 1){
         return ERROR_NIVEL_INVALIDO;
     }
 
-    enemigos->type = -1; //Pongo el primer enemigo como vacio
-    soportes->type = -1; //Pongo el primer soporte como vacio
-    rana->lives = 3; // Inicializa las vidas
-    rana->height = 0; //Pongo la rana en la primera fila
-    rana->startcoord = ADJCOORDFROG(3); //Pongo la rana en el inicio
-    rana->endcoord = rana->startcoord + ADJCOORDFROG(1); 
+    game->penemies->type = -1; //Pongo el primer enemigo como vacio
+    game->psoport->type = -1; //Pongo el primer soporte como vacio
+    game->prana->lives = 3; // Inicializa las vidas
+    game->prana->height = 0; //Pongo la rana en la primera fila
+    game->prana->startcoord = ADJCOORDFROG(3); //Pongo la rana en el inicio
+    game->prana->endcoord = game->prana->startcoord + ADJCOORDFROG(1); 
 
     int i,j;
 
     for(i = 0; i < 13; i++){
 
-        heightspeed[i] = rand()%2 ? (rand() % (5) + 1) : -(rand() % (5) + 1); //Aumento la velocidad de los enemigos y soportes en cada nivel
+        (game->pspeedheight)[i] = rand()%2 ? (rand() % (5) + 1) : -(rand() % (5) + 1); //Aumento la velocidad de los enemigos y soportes en cada nivel
 
     }
 
     for(i = 0; i<3; i++){
 
-        createEnemy(enemigos,0,1,heightspeed);
-        createEnemy(enemigos,1,2,heightspeed);
-        createEnemy(enemigos,2,3,heightspeed);
-        createEnemy(enemigos,3,4,heightspeed);
-        createEnemy(enemigos,4,5,heightspeed);
-        createSupport(soportes,9,11,heightspeed);
-        createSupport(soportes,6,8,heightspeed);
+        createEnemy(game->penemies,0,1,game->pspeedheight);
+        createEnemy(game->penemies,1,2,game->pspeedheight);
+        createEnemy(game->penemies,2,3,game->pspeedheight);
+        createEnemy(game->penemies,3,4,game->pspeedheight);
+        createEnemy(game->penemies,4,5,game->pspeedheight);
+        createSupport(game->psoport,9,11,game->pspeedheight);
+        createSupport(game->psoport,6,8,game->pspeedheight);
 
     }
 
     for(i = 0; i<2; i++){
 
-        createSupport(soportes,7,9,heightspeed);
+        createSupport(game->psoport,7,9,game->pspeedheight);
 
     }
 
     for(i = 0; i<4; i++){
 
-        createSupport(soportes,5,7,heightspeed);
-        createSupport(soportes,8,10,heightspeed);
+        createSupport(game->psoport,5,7,game->pspeedheight);
+        createSupport(game->psoport,8,10,game->pspeedheight);
 
     }
 
