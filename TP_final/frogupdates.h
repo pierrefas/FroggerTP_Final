@@ -2,7 +2,7 @@
 #define FUPDATE_H
 
 
-#include "entidades.h"
+#include "gamestate.h"
 #include "checking.h"
 
 int followSupport(game_state*);

@@ -3,4 +3,6 @@
 
 #include "gamestate.h"
 
+int addLevelScores(game_state * game, int points);
+
 #endif

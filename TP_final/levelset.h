@@ -3,7 +3,6 @@
 
 int level;
 
-#include "entidades.h"
 #include "gamestate.h"
 
 #define ERROR_NIVEL_INVALIDO -404

@@ -118,3 +118,28 @@ int isAtEnd(game_state* state){
 
     }
 }
+
+int isLevelFinished(game_state * game){
+
+    if(game == NULL || game->safespaces == NULL){
+
+        return ERROR_NULL_POINTER;
+
+    }
+
+    int i;
+
+
+    for(i = 0; i < 5; i++){
+
+        if((game->safespaces)[i] == 0){
+
+            return 0;
+
+        }
+
+    }
+
+    return 1;
+
+}
