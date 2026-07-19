@@ -26,7 +26,7 @@ C_SRCS += \
 ../checking.c \
 ../entityupdates.c \
 ../frogupdates.c \
-../joystick.c \
+../gamestate.c \
 ../levelset.c \
 ../main.c
 
@@ -39,7 +39,7 @@ C_DEPS += \
 ./checking.d \
 ./entityupdates.d \
 ./frogupdates.d \
-./joystick.d \
+./gamestate.d \
 ./levelset.d \
 ./main.d
 
@@ -52,7 +52,7 @@ OBJS += \
 ./checking.o \
 ./entityupdates.o \
 ./frogupdates.o \
-./joystick.o \
+./gamestate.o \
 ./levelset.o \
 ./main.o
 
@@ -69,12 +69,20 @@ ifeq ($(HDMI_CONNECTED),no and $(FORCE_ALLEGRO),no)
 endif
 
 ifeq ($(IS_PI),1)
+	C_SRCS += \
+	../joystick.c \
+
+	C_DEPS += \
+	./joystick.d \
+
 	C_SRCS += ../gameloop.c
 	C_DEPS += ./gameloop.d
 	OBJS += \
 	./gameloop.o \
-	./disdrv.o \
-	./joydrv.o
+	./disdrv.o \ \
+	./joydrv.o \
+	./joystick.o \
+
 endif
 
 # Each subdirectory must supply rules for building sources it contributes

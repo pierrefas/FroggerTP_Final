@@ -11,8 +11,6 @@
 
 #include "a_sprites.h"
 
-#include "entidades.h"
-
 extern frog;
 extern MovedUp; 
 extern MovedDOWN;
