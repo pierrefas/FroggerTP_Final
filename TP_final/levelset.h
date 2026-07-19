@@ -14,5 +14,6 @@ int level;
 
 int nextLevel(int,game_state*);
 int firstLevel(game_state*);
+int updateLevel(game_state*,int);
 
 #endif

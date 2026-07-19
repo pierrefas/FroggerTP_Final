@@ -300,4 +300,6 @@ int updateLevel(game_state * game,int time){
 
     }
 
+    return 0;
+
 }
