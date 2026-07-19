@@ -1,4 +1,57 @@
 Building with Allegro support (HDMI detected or forced).
+Building file: ../a_alphanum.c
+Invoking: GCC C Compiler
+gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_alphanum.d" -MT"a_alphanum.o" -o "a_alphanum.o" "../a_alphanum.c"
+Finished building: ../a_alphanum.c
+ 
+Building file: ../a_PC_display.c
+Invoking: GCC C Compiler
+gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_PC_display.d" -MT"a_PC_display.o" -o "a_PC_display.o" "../a_PC_display.c"
+Finished building: ../a_PC_display.c
+ 
+Building file: ../a_sprites.c
+Invoking: GCC C Compiler
+gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_sprites.d" -MT"a_sprites.o" -o "a_sprites.o" "../a_sprites.c"
+Finished building: ../a_sprites.c
+ 
+Building file: ../a_map.c
+Invoking: GCC C Compiler
+gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_map.d" -MT"a_map.o" -o "a_map.o" "../a_map.c"
+Finished building: ../a_map.c
+ 
+Building file: ../a_pause.c
+Invoking: GCC C Compiler
+gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_pause.d" -MT"a_pause.o" -o "a_pause.o" "../a_pause.c"
+Finished building: ../a_pause.c
+ 
+Building file: ../checking.c
+Invoking: GCC C Compiler
+gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"checking.d" -MT"checking.o" -o "checking.o" "../checking.c"
+In file included from ../checking.c:11:
+../checking.c: In function ‘isAtEnd’:
+../checking.h:6:56: warning: suggest parentheses around ‘&&’ within ‘||’ [-Wparentheses]
+    6 | #define ISINSAFEZONE(rana) (((rana)->height > ENDLAKE) && !((((rana)->startcoord>=12)&&((rana)->endcoord<=28))||(((rana)->startcoord>=52)&&((rana)->endcoord<=68)))||(((rana)->startcoord>=92)&&(rana->endcoord<=108))||(((rana)->startcoord>=132)&&((rana)->endcoord<=148))||(((rana)->startcoord>=172)&&((rana)->endcoord<=188)))
+      |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../checking.c:75:8: note: in expansion of macro ‘ISINSAFEZONE’
+   75 |     if(ISINSAFEZONE(rana)){
+      |        ^~~~~~~~~~~~
+Finished building: ../checking.c
+ 
+Building file: ../entityupdates.c
+Invoking: GCC C Compiler
+gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"entityupdates.d" -MT"entityupdates.o" -o "entityupdates.o" "../entityupdates.c"
+Finished building: ../entityupdates.c
+ 
+Building file: ../frogupdates.c
+Invoking: GCC C Compiler
+gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"frogupdates.d" -MT"frogupdates.o" -o "frogupdates.o" "../frogupdates.c"
+Finished building: ../frogupdates.c
+ 
+Building file: ../gamestate.c
+Invoking: GCC C Compiler
+gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"gamestate.d" -MT"gamestate.o" -o "gamestate.o" "../gamestate.c"
+Finished building: ../gamestate.c
+ 
 Building file: ../levelset.c
 Invoking: GCC C Compiler
 gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"levelset.d" -MT"levelset.o" -o "levelset.o" "../levelset.c"
@@ -42,4 +95,4 @@ In file included from ../levelset.c:15:
 ../levelset.c:301:13: error: implicit declaration of function ‘followSupport’ [-Wimplicit-function-declaration]
   301 |             followSupport(game);
       |             ^~~~~~~~~~~~~
-make: *** [subdir.mk:85: levelset.o] Error 1
+make: *** [subdir.mk:89: levelset.o] Error 1

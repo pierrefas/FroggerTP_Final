@@ -15,6 +15,31 @@
 #define ENEMY_FRAMES     2
 #define NUM_FROG_FRAMES  4
 
+/* en TP_final/a_sprites.h — añadir después de los #define existentes */
+
+#ifndef FRAME_W
+#define FRAME_W 16
+#endif
+#ifndef FRAME_H
+#define FRAME_H 16
+#endif
+
+/* enums públicos para usar en el resto del código */
+enum {
+    FROG_IDLE = 0,
+    FROG_LEFT,
+    FROG_RIGHT,
+    FROG_JUMP
+};
+
+/* si también quieres exponer los índices de enemigos */
+enum {
+    ENEMY_CAR = 0,
+    ENEMY_TRUCK,
+    ENEMY_BUS,
+    ENEMY_BIKE
+};
+
 /* Exposed sprite arrays (sub-bitmaps created from the spritesheet) */
 extern ALLEGRO_BITMAP *enemy_sprites[NUM_ENEMY_TYPES][ENEMY_FRAMES];
 extern ALLEGRO_BITMAP *frog_sprites[NUM_FROG_FRAMES];
