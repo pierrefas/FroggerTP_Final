@@ -11,6 +11,8 @@
 #define GOALROW (ENDLAKE + 1)
 #define SAFEROW (STARTLAKE - 1)
 
+#define HITBOX_MARGIN 2 //Nos dimos cuenta que el entrar a la casilla final era muy dificl asi que le dimos un margen para que puedan entrar
+
 /* Huecos-meta: NUM_GOAL_SLOTS huecos de un casillero de ancho, el primero
  * en la columna 1 y despues uno cada 3 columnas (columnas 1, 4, 7, 10, 13). */
 #define NUM_GOAL_SLOTS 5
