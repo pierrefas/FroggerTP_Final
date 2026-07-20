@@ -4,7 +4,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "checking.h"
 
 
 #define ADJCOORDFROG(n) ((n) * 16) //Comvierte casilleros a pixeles, sirve para los saltos de la rana

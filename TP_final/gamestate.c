@@ -12,7 +12,7 @@ game_state * createGame(void){
     newgame->psoport = (support_entity *) malloc(MAX_ENTITIES * sizeof(support_entity));
     newgame->prana = (frog_player *) malloc(sizeof(frog_player));
     newgame->pspeedheight = (int *) malloc(NUM_HEIGHT_LEVELS * sizeof(int));
-    newgame->safespaces = (int *) malloc(NUM_GOAL_SLOTS * sizeof(int));
+    newgame->safespaces = (int *) malloc(5 * sizeof(int));
 
     if(newgame->penemies == NULL || newgame->psoport == NULL || newgame->prana == NULL ||
        newgame->pspeedheight == NULL || newgame->safespaces == NULL){
@@ -29,7 +29,7 @@ game_state * createGame(void){
 
     int i;
 
-    for(i = 0; i < NUM_GOAL_SLOTS; i++){
+    for(i = 0; i < 5; i++){
         (newgame->safespaces)[i] = 0;
     }
 
