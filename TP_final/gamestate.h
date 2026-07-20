@@ -34,6 +34,8 @@ typedef struct {
     int height;
     int type;
     int supporting; /* 1 si puede llevar a la rana (tronco/tortuga a flote) */
+    int divetimer;  /* fase del ciclo de buceo de una tortuga (ver
+                     * entityupdates.h); -1 = tronco, nunca se hunde */
 
 } support_entity;
 

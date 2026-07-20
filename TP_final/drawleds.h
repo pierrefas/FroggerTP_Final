@@ -28,4 +28,37 @@ void led_draw_entity(int x_px, int y_height, int type);
 void led_draw_time(int time_val);
 void led_draw_lives(int lives_val);
 
+/*******************************************************************************
+ * TEXTO 3x3
+ *
+ * Letras A-Z y digitos 0-9 en glifos de 3x3 LEDs (mayusculas; minusculas
+ * se convierten, cualquier otro caracter sale en blanco). Cada caracter
+ * ocupa LED_CHAR_PITCH columnas: 3 del glifo + 1 de separacion.
+ ******************************************************************************/
+#define LED_GLYPH_H      3
+#define LED_CHAR_PITCH   4
+
+// Dibuja msg con la primera columna del primer glifo en x (puede ser
+// negativa: lo que caiga fuera del display se recorta) y la fila superior
+// de los glifos en top_row.
+void led_draw_text(const char * msg, int x, int top_row);
+
+/* Marquesina no bloqueante: el mensaje entra por la derecha, cruza el
+ * display y sale por la izquierda. No tiene loop propio: el ciclo de juego
+ * llama a led_scroll_step() una vez por tick entre disp_clear() y
+ * disp_update(), asi el joystick se sigue leyendo mientras el texto pasa. */
+typedef struct {
+    const char * msg; /* debe seguir vivo mientras se scrollea */
+    int len;
+    int offset;       /* columna del strip virtual visible en el borde izquierdo */
+    int tick;
+} led_scroll;
+
+void led_scroll_start(led_scroll * s, const char * msg);
+
+// Dibuja un frame y avanza. Devuelve 1 cuando el texto ya salio entero
+// (el llamador decide si reiniciarlo con led_scroll_start o cambiar de
+// pantalla), 0 mientras siga pasando.
+int led_scroll_step(led_scroll * s, int top_row);
+
 #endif

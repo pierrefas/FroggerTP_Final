@@ -23,4 +23,8 @@ int readHighScores(ScoreEntry * list, int max);
  * o HS_FILE_ERROR si no se pudo escribir el archivo. */
 int updateHighScores(const char * new_initials, int new_score);
 
+/* 1 si score entraria al top 10 (consulta pura: no escribe nada).
+ * Los front-ends la usan para pedir iniciales solo cuando vale la pena. */
+int hsQualifies(int score);
+
 #endif

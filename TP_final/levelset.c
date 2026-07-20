@@ -123,7 +123,13 @@ static int createSupport(support_entity * soporte, int tipo, int height){
 
     new_support->type = tipo;
     new_support->height = height;
-    new_support->supporting = 1; //Por ahora todos los soportes llevan a la rana
+    new_support->supporting = 1; //Todos arrancan a flote
+
+    /* Las tortugas se hunden ciclicamente (ver entityupdates.h); la fase
+     * arranca al azar para que no se sumerjan todas juntas. Los troncos
+     * quedan con -1: a flote para siempre. */
+    new_support->divetimer = SUPPORT_IS_TURTLE(tipo) ? rand() % DIVE_CYCLE_TICKS : -1;
+
     (new_support + 1)->type = -1;
 
     int len = ADJCOORDFROG(lentypes[tipo]);
@@ -170,7 +176,7 @@ static int createSupport(support_entity * soporte, int tipo, int height){
 /* Velocidad aleatoria de una fila: el rango crece con el nivel. */
 static int rowSpeed(void){
 
-    int speed = 1 + rand() % (level + 2);
+    int speed = 1 + rand() % (level);
 
     if(speed > MAX_ROW_SPEED){
         speed = MAX_ROW_SPEED;
@@ -266,6 +272,7 @@ int updateLevel(game_state * game, int time_left, int time_total){
 
     stepEntites(game);
     resetEntites(game);
+    updateSupportDive(game); //Las tortugas avanzan su ciclo de buceo
     followSupport(game); //Solo actua si la rana esta en el lago
 
     if(isDeadLake(game) == 1 || isDeadFromEnemy(game) == 1){

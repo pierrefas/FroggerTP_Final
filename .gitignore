@@ -1,0 +1,9 @@
+# Artefactos de compilacion (se regeneran con make; versionarlos causa
+# conflictos de merge dentro de archivos generados, como el que rompio
+# el build con "missing separator")
+TP_final/Debug/*.o
+TP_final/Debug/*.d
+TP_final/Debug/TP_final
+
+# Datos de ejecucion, no del proyecto
+TP_final/Debug/highscores.txt
