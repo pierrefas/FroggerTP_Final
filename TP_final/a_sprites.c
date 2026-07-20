@@ -35,12 +35,12 @@ typedef struct {
 } sheet_region;
 
 static const sheet_region regions[] = {
-    /* rana sentada mirando: arriba, derecha, abajo, izquierda */
+    // rana sentada mirando: arriba, derecha, abajo, izquierda 
     { &frog_sprites[0],     3,   4, 12,  9 },
     { &frog_sprites[1],   113,   3,  9, 12 },
     { &frog_sprites[2],    75,   5, 12,  9 },
     { &frog_sprites[3],    40,   3,  9, 12 },
-    /* rana saltando (patas estiradas), mismas orientaciones */
+    // rana saltando (patas estiradas), mismas orientaciones
     { &frog_jump_sprites[0],  21, 3, 12, 13 },
     { &frog_jump_sprites[1], 128, 3, 13, 12 },
     { &frog_jump_sprites[2],  93, 2, 12, 13 },
@@ -75,13 +75,14 @@ static const sheet_region regions[] = {
 
 #define NUM_REGIONS ((int)(sizeof(regions) / sizeof(regions[0])))
 
-ALLEGRO_BITMAP *get_spritesheet(void)
-{
+ALLEGRO_BITMAP *get_spritesheet(void){
+
     return spritesheet;
+
 }
 
-int load_sprites(const char *filename)
-{
+int load_sprites(const char *filename){
+    
     const char *file = filename ? filename : DEFAULT_SPRITESHEET_FILE;
     int i;
 
