@@ -6,6 +6,18 @@
 #include "entityupdates.h" /* fase de buceo de las tortugas */
 #include "levelset.h" /* extern level para el HUD */
 
+/* Frames que dura el sprite de salto tras cada movimiento (a 30 fps). */
+#define FROG_JUMP_FRAMES 4
+
+/* Frames de salto pendientes; frog_anim_jump() lo recarga y el dibujo
+ * del jugador lo va gastando. */
+static int frog_jump_ticks = 0;
+
+void frog_anim_jump(void)
+{
+    frog_jump_ticks = FROG_JUMP_FRAMES;
+}
+
 /* Un color distinto por tipo de entidad (0..4 enemigos, 5..9 soportes).
  * Solo se usa en el modo de respaldo sin spritesheet. */
 static ALLEGRO_COLOR entity_color(int type)
@@ -98,11 +110,22 @@ static void draw_support(support_entity * s)
 
     } else if (!SUPPORT_IS_TURTLE(s->type) && log_left && log_mid && log_right) {
 
-        for (c = 0; c < cells; c++) {
-            ALLEGRO_BITMAP * piece = (c == 0) ? log_left
-                                  : (c == cells - 1) ? log_right : log_mid;
-            draw_in_cell(piece, s->startcoord + ADJCOORDFROG(c), y, 0);
+        /* tronco continuo, sin costuras: la punta izquierda termina justo
+         * donde arranca el primer tramo del medio (se alinea a la derecha
+         * de su casillero, porque mide menos de 16), los tramos del medio
+         * van pegados cada 16 px, y la punta derecha arranca justo al
+         * final del ultimo tramo (alineada a la izquierda). */
+        int y_log = y + (ADJCOORDFROG(1) - al_get_bitmap_height(log_mid)) / 2;
+
+        al_draw_bitmap(log_left,
+                       s->startcoord + ADJCOORDFROG(1) - al_get_bitmap_width(log_left),
+                       y_log, 0);
+
+        for (c = 1; c < cells - 1; c++) {
+            al_draw_bitmap(log_mid, s->startcoord + ADJCOORDFROG(c), y_log, 0);
         }
+
+        al_draw_bitmap(log_right, s->startcoord + ADJCOORDFROG(cells - 1), y_log, 0);
 
     } else {
 
@@ -139,7 +162,7 @@ static void draw_enemy(game_state * g, enemy_entity * e)
     al_draw_filled_rectangle(mid - 2, y + 4, mid + 2, y + 12, al_map_rgb(30, 30, 30));
 }
 
-void draw_game_state(game_state * g)
+void draw_game_state(game_state * g, int hide_player)
 {
     if (!g) return;
 
@@ -166,10 +189,44 @@ void draw_game_state(game_state * g)
         }
     }
 
-    /* la rana del jugador */
-    if (g->prana) {
-        draw_frog_at(g->prana->startcoord, ROW_TO_Y(g->prana->height), g->prana->orientation);
+    /* la rana del jugador: recien movida usa el cuadro de salto */
+    if (g->prana && !hide_player) {
+
+        int o = g->prana->orientation & 3;
+        ALLEGRO_BITMAP * jump = (frog_jump_ticks > 0) ? frog_jump_sprites[o] : NULL;
+
+        if (jump) {
+            al_draw_bitmap(jump,
+                           g->prana->startcoord + (ADJCOORDFROG(1) - al_get_bitmap_width(jump)) / 2,
+                           ROW_TO_Y(g->prana->height) + (ADJCOORDFROG(1) - al_get_bitmap_height(jump)) / 2, 0);
+        } else {
+            draw_frog_at(g->prana->startcoord, ROW_TO_Y(g->prana->height), o);
+        }
+
+        if (frog_jump_ticks > 0) {
+            frog_jump_ticks--;
+        }
     }
+}
+
+void draw_death_at(int x, int row, int step)
+{
+    if (step < 0) step = 0;
+    if (step >= NUM_DEATH_FRAMES) step = NUM_DEATH_FRAMES - 1;
+
+    int y = ROW_TO_Y(row);
+    ALLEGRO_BITMAP * sprite = death_sprites[step];
+
+    if (sprite) {
+        al_draw_bitmap(sprite,
+                       x + (ADJCOORDFROG(1) - al_get_bitmap_width(sprite)) / 2,
+                       y + (ADJCOORDFROG(1) - al_get_bitmap_height(sprite)) / 2, 0);
+        return;
+    }
+
+    /* respaldo sin spritesheet: circulo rojo que se apaga */
+    al_draw_filled_circle(x + ADJCOORDFROG(1) / 2, y + ADJCOORDFROG(1) / 2,
+                          7 - step, al_map_rgb(220, 60, 60));
 }
 
 void draw_hud(game_state * g, ALLEGRO_FONT * font, int time_left, int time_total)

@@ -16,8 +16,15 @@
 #define NUM_VEHICLE_TYPES 5
 
 /* Rana del jugador, indexada por prana->orientation:
- * 0 arriba, 1 derecha, 2 abajo, 3 izquierda. */
+ * 0 arriba, 1 derecha, 2 abajo, 3 izquierda. frog_sprites es la rana
+ * sentada; frog_jump_sprites, el cuadro de salto (patas estiradas) que
+ * se muestra un instante con cada movimiento. */
 extern ALLEGRO_BITMAP *frog_sprites[4];
+extern ALLEGRO_BITMAP *frog_jump_sprites[4];
+
+/* Animacion de muerte del arcade: splash violeta -> ondas -> calavera. */
+#define NUM_DEATH_FRAMES 6
+extern ALLEGRO_BITMAP *death_sprites[NUM_DEATH_FRAMES];
 
 extern ALLEGRO_BITMAP *vehicle_sprites[NUM_VEHICLE_TYPES];
 
@@ -30,6 +37,10 @@ extern ALLEGRO_BITMAP *turtle_sprite, *turtle_dive;
 
 /* Rana ya guardada en un hueco-meta. */
 extern ALLEGRO_BITMAP *home_frog;
+
+/* Fondo: baldosa de vereda (franjas seguras) y arbustos de la fila de
+ * llegada (arco con la entrada del hueco-meta + relleno angosto). */
+extern ALLEGRO_BITMAP *sidewalk_tile, *bush_arch, *bush_fill;
 
 /* Carga el spritesheet y crea los sub-bitmaps.
    - filename: ruta del PNG; NULL usa "sprites.png" (directorio actual).

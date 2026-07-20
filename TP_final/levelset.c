@@ -18,8 +18,9 @@
 int level;
 
 /* Largo (en casilleros) de cada tipo de entidad: 0..4 enemigos, 5..9
- * soportes. drawleds.c (Raspberry Pi) tambien lo usa via extern. */
-int lentypes[] = {1, 1, 1, 1, 2, 3, 3, 7, 2, 5};
+ * soportes (8 = grupo de 3 tortugas, 9 = grupo de 2 tortugas).
+ * drawleds.c (Raspberry Pi) tambien lo usa via extern. */
+int lentypes[] = {1, 1, 1, 1, 2, 3, 3, 7, 3, 2};
 
 /* Tope de velocidad por fila (px/tick) para que los niveles altos sigan
  * siendo jugables; la dificultad progresiva sube el promedio, no el tope. */
@@ -28,11 +29,13 @@ int lentypes[] = {1, 1, 1, 1, 2, 3, 3, 7, 2, 5};
 /* Separacion minima (px) entre entidades de una misma fila. */
 #define ENTITY_MIN_GAP 8
 
-/* Intentos de ubicacion aleatoria antes de dar por incolocable. */
-#define PLACE_ATTEMPTS 50
+/* Intentos de ubicacion aleatoria antes de dar por incolocable. La fila
+ * 10 ahora mete 5 grupos de tortugas y queda apretada: con 50 intentos a
+ * veces alguno no entraba y esa fila salia despoblada. */
+#define PLACE_ATTEMPTS 200
 
 static int createEnemy(enemy_entity * enemigo, int tipo, int height);
-static int createSupport(support_entity * soporte, int tipo, int height);
+static int createSupport(support_entity * soporte, int tipo, int height, int can_dive);
 static int setupLevel(game_state * game);
 static int rowSpeed(void);
 
@@ -101,7 +104,7 @@ static int createEnemy(enemy_entity * enemigo, int tipo, int height){
 
 }
 
-static int createSupport(support_entity * soporte, int tipo, int height){
+static int createSupport(support_entity * soporte, int tipo, int height, int can_dive){
 
     if(soporte == NULL){
         return ERROR_NULL_POINTER;
@@ -125,10 +128,12 @@ static int createSupport(support_entity * soporte, int tipo, int height){
     new_support->height = height;
     new_support->supporting = 1; //Todos arrancan a flote
 
-    /* Las tortugas se hunden ciclicamente (ver entityupdates.h); la fase
-     * arranca al azar para que no se sumerjan todas juntas. Los troncos
-     * quedan con -1: a flote para siempre. */
-    new_support->divetimer = SUPPORT_IS_TURTLE(tipo) ? rand() % DIVE_CYCLE_TICKS : -1;
+    /* Solo las tortugas marcadas con can_dive se hunden ciclicamente
+     * (ver entityupdates.h): setupLevel habilita UNA por fila, con fase
+     * inicial al azar. El resto (y los troncos) queda en -1: a flote
+     * para siempre. */
+    new_support->divetimer = (SUPPORT_IS_TURTLE(tipo) && can_dive)
+                                 ? rand() % DIVE_CYCLE_TICKS : -1;
 
     (new_support + 1)->type = -1;
 
@@ -224,18 +229,28 @@ static int setupLevel(game_state * game){
         createEnemy(game->penemies, 2, 3);
         createEnemy(game->penemies, 3, 4);
         createEnemy(game->penemies, 4, 5);
-        createSupport(game->psoport, 9, 11);
-        createSupport(game->psoport, 6, 8);
 
+    }
+
+    /* Lago como el arcade: tortugas en la primera y la anteultima fila,
+     * troncos en las demas. En cada fila de tortugas solo el PRIMER
+     * grupo creado sabe bucear (can_dive = 1); el resto flota siempre. */
+
+    for(i = 0; i < 3; i++){
+        createSupport(game->psoport, 8, 7, i == 0);  //3 grupos de 3 tortugas
+        createSupport(game->psoport, 6, 8, 0);       //3 troncos de 3
     }
 
     for(i = 0; i < 2; i++){
-        createSupport(game->psoport, 7, 9);
+        createSupport(game->psoport, 7, 9, 0);       //2 troncos largos de 7
+    }
+
+    for(i = 0; i < 5; i++){
+        createSupport(game->psoport, 9, 10, i == 0); //5 grupos de 2 tortugas
     }
 
     for(i = 0; i < 4; i++){
-        createSupport(game->psoport, 5, 7);
-        createSupport(game->psoport, 8, 10);
+        createSupport(game->psoport, 5, 11, 0);      //4 troncos de 3
     }
 
     return 0;
@@ -261,6 +276,19 @@ int firstLevel(game_state * game){
 int nextLevel(game_state * game){
 
     return setupLevel(game);
+
+}
+
+int skipLevel(game_state * game){
+
+    if(game == NULL){
+        return ERROR_NULL_POINTER;
+    }
+
+    /* Cheat/debug: pasa de nivel sin puntos de premio. */
+    level++;
+
+    return nextLevel(game);
 
 }
 

@@ -9,8 +9,11 @@
  * Pantallas (espejo de las del front-end de Allegro):
  *   MENU      "FROGGER" en marquesina. Switch: jugar. Abajo: salir.
  *   PLAYING   el juego. Switch: pausa.
- *   PAUSED    "PAUSA" en marquesina. Switch: seguir. Arriba: reiniciar.
- *             Abajo: abandonar y volver al menu.
+ *   PAUSED    "PAUSA" en marquesina. Switch: seguir. Arriba: saltear el
+ *             nivel (cheat/debug, como la tecla E en PC). Abajo:
+ *             abandonar y volver al menu.
+ *   LEVELMSG  "NIVEL n" en marquesina al cambiar de nivel (natural o
+ *             salteado). Switch: saltear el cartel. Al terminar: juego.
  *   INITIALS  solo si el puntaje entra al top 10: elegir 3 iniciales.
  *             Arriba/abajo: cambiar letra. Izq/der: cambiar posicion.
  *             Switch: confirmar.
@@ -49,38 +52,64 @@
 #define INITIALS_X 2
 #define INITIALS_BLINK_TICKS 5
 
+/* Parpadeos del juego, en ticks (~20/seg): la rana titila rapido para
+ * distinguirse de todo lo demas; los huecos-meta libres, lento. */
+#define FROG_BLINK_PERIOD 5
+#define FROG_BLINK_ON     3
+#define GOAL_BLINK_TICKS  8
+
 typedef enum {
     PI_MENU,
     PI_PLAYING,
     PI_PAUSED,
+    PI_LEVELMSG,
     PI_INITIALS,
     PI_GAMEOVER
 } pi_screen;
 
 static void draw_frame(game_state * game, int time_left)
 {
+    static int tick = 0;
     int i;
 
+    tick++;
+
     disp_clear();
+
+    /* el lago es luz: agua = LEDs encendidos; los soportes van "borrando"
+     * su hueco, asi que donde esta oscuro se puede pisar */
+    led_fill_rows(STARTLAKE, ENDLAKE);
 
     for (i = 0; (game->psoport + i)->type != -1; i++) {
 
         support_entity * s = game->psoport + i;
         dive_phase phase = supportDivePhase(s);
 
-        /* sumergida no se dibuja (se ve el "agua": LED apagado); mientras
-         * se hunde parpadea como aviso de que hay que saltar de ahi */
+        /* sumergida no borra nada: su hueco vuelve a ser agua encendida;
+         * mientras se hunde parpadea (alterna hueco/agua) como aviso */
         if (phase == SUPPORT_DIVED || (phase == SUPPORT_SINKING && (s->divetimer / 3) % 2)) {
             continue;
         }
 
-        led_draw_entity(s->startcoord, s->height, s->type);
+        led_draw_entity(s->startcoord, s->height, s->type, D_OFF);
     }
     for (i = 0; (game->penemies + i)->type != -1; i++) {
-        led_draw_entity((game->penemies + i)->startcoord, (game->penemies + i)->height, (game->penemies + i)->type);
+        led_draw_entity((game->penemies + i)->startcoord, (game->penemies + i)->height, (game->penemies + i)->type, D_ON);
     }
 
-    led_draw_frog(game->prana->startcoord, game->prana->height);
+    /* huecos-meta: los libres titilan lento (invitan), los reclamados
+     * quedan fijos (la rana ya guardada) */
+    for (i = 0; i < NUM_GOAL_SLOTS; i++) {
+        if (game->safespaces[i] || (tick / GOAL_BLINK_TICKS) % 2) {
+            led_write(GOAL_SLOT_X(i) >> 4, GOALROW, D_ON);
+        }
+    }
+
+    /* la rana parpadea rapido para distinguirse de autos y troncos */
+    if (tick % FROG_BLINK_PERIOD < FROG_BLINK_ON) {
+        led_draw_frog(game->prana->startcoord, game->prana->height);
+    }
+
     led_draw_lives(game->prana->lives);
     led_draw_time((time_left * (PLAY_FIELD_MAX_X + 1)) / LEVEL_TIME_TICKS);
 
@@ -99,10 +128,10 @@ static void draw_initials(const char * initials, int pos, int blink_on)
 
     led_draw_text(shown, INITIALS_X, TEXT_ROW);
 
-    /* subrayado fijo bajo la letra activa, para ubicarse aunque parpadee */
+    /* subrayado fijo bajo la letra activa, para ubicarse aunque parpadee
+     * (en coordenadas fisicas, como el texto al que acompana) */
     for (int c = 0; c < 3; c++) {
-        dcoord_t coord = {(uint8_t)(INITIALS_X + pos * LED_CHAR_PITCH + c), TEXT_ROW + LED_GLYPH_H + 1};
-        disp_write(coord, D_ON);
+        led_write_abs(INITIALS_X + pos * LED_CHAR_PITCH + c, TEXT_ROW + LED_GLYPH_H + 1, D_ON);
     }
 
     disp_update();
@@ -130,6 +159,7 @@ int run_headless_game(void)
     int blink = 0;
 
     char gameover_msg[32];
+    char level_msg[16];
     led_scroll marquee;
 
     led_scroll_start(&marquee, "FROGGER");
@@ -200,8 +230,14 @@ int run_headless_game(void)
                     screen = PI_GAMEOVER;
                 }
 
+            } else if (result == LEVEL_UP) {
+                /* cartel de nivel nuevo para que se entienda el cambio */
+                time_left = LEVEL_TIME_TICKS;
+                sprintf(level_msg, "NIVEL %d", level);
+                led_scroll_start(&marquee, level_msg);
+                screen = PI_LEVELMSG;
             } else if (result != LEVEL_RUNNING) {
-                time_left = LEVEL_TIME_TICKS; /* murio, cruzo o subio de nivel */
+                time_left = LEVEL_TIME_TICKS; /* murio o cruzo */
             }
 
             if (screen == PI_PLAYING) {
@@ -215,12 +251,12 @@ int run_headless_game(void)
             if (sw_press) {
                 screen = PI_PLAYING;
             } else if (isUp) {
-                if (firstLevel(game) != 0) {
-                    endGame(game);
-                    return -1;
-                }
+                /* cheat/debug (como la tecla E en PC): saltear el nivel */
+                skipLevel(game);
                 time_left = LEVEL_TIME_TICKS;
-                screen = PI_PLAYING;
+                sprintf(level_msg, "NIVEL %d", level);
+                led_scroll_start(&marquee, level_msg);
+                screen = PI_LEVELMSG;
             } else if (isDwn) {
                 led_scroll_start(&marquee, "FROGGER");
                 screen = PI_MENU; /* abandona: el puntaje no se guarda */
@@ -231,6 +267,15 @@ int run_headless_game(void)
                 }
                 disp_update();
             }
+            break;
+
+        case PI_LEVELMSG:
+            /* una sola pasada del cartel; el switch lo saltea */
+            disp_clear();
+            if (led_scroll_step(&marquee, TEXT_ROW) || sw_press) {
+                screen = PI_PLAYING;
+            }
+            disp_update();
             break;
 
         case PI_INITIALS:

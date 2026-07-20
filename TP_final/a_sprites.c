@@ -20,10 +20,13 @@
 static ALLEGRO_BITMAP *spritesheet = NULL;
 
 ALLEGRO_BITMAP *frog_sprites[4] = { NULL };
+ALLEGRO_BITMAP *frog_jump_sprites[4] = { NULL };
+ALLEGRO_BITMAP *death_sprites[NUM_DEATH_FRAMES] = { NULL };
 ALLEGRO_BITMAP *vehicle_sprites[NUM_VEHICLE_TYPES] = { NULL };
 ALLEGRO_BITMAP *log_left = NULL, *log_mid = NULL, *log_right = NULL;
 ALLEGRO_BITMAP *turtle_sprite = NULL, *turtle_dive = NULL;
 ALLEGRO_BITMAP *home_frog = NULL;
+ALLEGRO_BITMAP *sidewalk_tile = NULL, *bush_arch = NULL, *bush_fill = NULL;
 
 /* Region de la hoja + puntero destino, para recortar todo en un loop. */
 typedef struct {
@@ -37,6 +40,18 @@ static const sheet_region regions[] = {
     { &frog_sprites[1],   113,   3,  9, 12 },
     { &frog_sprites[2],    75,   5, 12,  9 },
     { &frog_sprites[3],    40,   3,  9, 12 },
+    /* rana saltando (patas estiradas), mismas orientaciones */
+    { &frog_jump_sprites[0],  21, 3, 12, 13 },
+    { &frog_jump_sprites[1], 128, 3, 13, 12 },
+    { &frog_jump_sprites[2],  93, 2, 12, 13 },
+    { &frog_jump_sprites[3],  57, 3, 13, 12 },
+    /* muerte: splash violeta x3, ondas x2, calavera */
+    { &death_sprites[0],    3,  81, 12, 14 },
+    { &death_sprites[1],   20,  81, 14, 13 },
+    { &death_sprites[2],   37,  80, 16, 16 },
+    { &death_sprites[3],   59,  84,  8,  8 },
+    { &death_sprites[4],   77,  84,  8,  8 },
+    { &death_sprites[5],  110,  80, 15, 16 },
     /* vehiculos (tipos 0..4 del backend; el camion mide ~2 casilleros) */
     { &vehicle_sprites[0],  2, 119, 15, 10 },
     { &vehicle_sprites[1], 19, 117, 16, 14 },
@@ -52,6 +67,10 @@ static const sheet_region regions[] = {
     { &turtle_dive,        56, 154, 16, 13 },
     /* rana guardada en el hueco-meta */
     { &home_frog,          45, 196, 16, 16 },
+    /* fondo: vereda y arbustos de la fila de llegada */
+    { &sidewalk_tile,     135, 196, 16, 16 },
+    { &bush_arch,           1, 188, 32, 23 },
+    { &bush_fill,          35, 188,  8, 23 },
 };
 
 #define NUM_REGIONS ((int)(sizeof(regions) / sizeof(regions[0])))

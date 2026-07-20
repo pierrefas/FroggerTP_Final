@@ -28,6 +28,10 @@ extern int level;
 int firstLevel(game_state *);
 int nextLevel(game_state *);
 
+/* Cheat/debug de los front-ends (tecla E en PC, pausa+arriba en la Pi):
+ * salta al nivel siguiente sin dar los puntos de premio. */
+int skipLevel(game_state *);
+
 /* Avanza un tick de juego: mueve entidades, arrastra a la rana en los
  * troncos, resuelve muertes/cruces y el cambio de nivel.
  * time_left/time_total: estado de la barra de tiempo del front-end

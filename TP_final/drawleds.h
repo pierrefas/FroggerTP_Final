@@ -22,9 +22,27 @@
 // lentypes[] para no leer fuera de rango.
 #define NUM_ENTITY_TYPES    10
 
+/* Escritura de un LED del CAMPO DE JUEGO, en coordenadas logicas: da
+ * vuelta las filas (la fila logica 0 sale abajo del panel) sin tocar las
+ * columnas, y recorta fuera de rango. Todo dibujo del juego (tambien el
+ * de gameloop.c) debe pasar por aca, nunca por disp_write directo. */
+void led_write(int x, int y, dlevel_t val);
+
+/* Escritura sin invertir (coordenadas fisicas del panel): SOLO para
+ * texto y sus adornos (p. ej. el subrayado de las iniciales), que deben
+ * leerse derechos aunque el campo de juego este dado vuelta. */
+void led_write_abs(int x, int y, dlevel_t val);
+
 // Funciones de dibujo
 void led_draw_frog(int x_px, int y_height);
-void led_draw_entity(int x_px, int y_height, int type);
+
+/* val = D_ON para autos (encendidos sobre calle apagada); D_OFF para
+ * soportes (huecos apagados sobre el agua encendida del lago). */
+void led_draw_entity(int x_px, int y_height, int type, dlevel_t val);
+
+/* Enciende las columnas de juego de las filas row_from..row_to (el agua). */
+void led_fill_rows(int row_from, int row_to);
+
 void led_draw_time(int time_val);
 void led_draw_lives(int lives_val);
 

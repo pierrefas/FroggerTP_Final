@@ -33,6 +33,15 @@
 /* Parpadeo de la letra activa al cargar iniciales, en frames. */
 #define INITIALS_BLINK_FRAMES 8
 
+/* Animacion de muerte: duracion total y frames por cuadro. Mientras
+ * corre, el mundo entero queda congelado (no se llama a updateLevel ni
+ * baja la barra de tiempo): solo se anima la rana muriendo. */
+#define DEATH_ANIM_FRAMES (NUM_DEATH_FRAMES * 5)
+#define DEATH_FRAME_DIV 5
+
+/* Cuanto dura el cartel "NIVEL n" al cambiar de nivel (~1.5 seg). */
+#define LEVEL_MSG_FRAMES 45
+
 typedef enum {
     SCREEN_MENU,
     SCREEN_PLAYING,
@@ -230,6 +239,16 @@ int display(void)
     int anim = 0; /* contador de frames para el parpadeo de las iniciales */
     char initials[4] = "AAA";
     int initials_pos = 0;
+
+    /* animacion de muerte: frames restantes, donde murio y si al
+     * terminar hay que pasar al game over (era la ultima vida) */
+    int death_frames = 0;
+    int death_x = 0;
+    int death_row = 0;
+    int death_then_gameover = 0;
+
+    int level_msg_frames = 0; /* cartel "NIVEL n" tras un cambio de nivel */
+
     ALLEGRO_EVENT event;
 
     al_start_timer(timer);
@@ -242,29 +261,58 @@ int display(void)
 
             if (screen == SCREEN_PLAYING) {
 
-                int result = LEVEL_RUNNING;
+                if (death_frames > 0) {
 
-                if (--time_left <= 0) {
-                    /* se acabo la barra de tiempo: cuesta una vida */
-                    result = loseLife(gs) ? GAME_OVER : FROG_DIED;
-                }
+                    /* mundo congelado: solo avanza la animacion de muerte */
+                    death_frames--;
 
-                if (result == LEVEL_RUNNING) {
-                    result = updateLevel(gs, time_left, LEVEL_TIME_TICKS);
-                }
-
-                if (result == GAME_OVER) {
-                    if (hsQualifies(gs->score)) {
-                        initials[0] = initials[1] = initials[2] = 'A';
-                        initials_pos = 0;
-                        screen = SCREEN_INITIALS;
-                    } else {
-                        hs_rank = -1; /* no entro al top 10: no se guarda nada */
-                        screen = SCREEN_GAMEOVER;
+                    if (death_frames == 0 && death_then_gameover) {
+                        death_then_gameover = 0;
+                        if (hsQualifies(gs->score)) {
+                            initials[0] = initials[1] = initials[2] = 'A';
+                            initials_pos = 0;
+                            screen = SCREEN_INITIALS;
+                        } else {
+                            hs_rank = -1; /* no entro al top 10: no se guarda nada */
+                            screen = SCREEN_GAMEOVER;
+                        }
                     }
-                } else if (result != LEVEL_RUNNING) {
-                    /* murio, cruzo o subio de nivel: barra de nuevo */
-                    time_left = LEVEL_TIME_TICKS;
+
+                } else {
+
+                    /* donde esta la rana ANTES del update: si muere, la
+                     * animacion va ahi (updateLevel ya la repone en la salida) */
+                    int frog_x = gs->prana ? gs->prana->startcoord : 0;
+                    int frog_row = gs->prana ? gs->prana->height : 0;
+
+                    int result = LEVEL_RUNNING;
+
+                    if (--time_left <= 0) {
+                        /* se acabo la barra de tiempo: cuesta una vida */
+                        result = loseLife(gs) ? GAME_OVER : FROG_DIED;
+                    }
+
+                    if (result == LEVEL_RUNNING) {
+                        result = updateLevel(gs, time_left, LEVEL_TIME_TICKS);
+                    }
+
+                    if (result == FROG_DIED || result == GAME_OVER) {
+                        death_frames = DEATH_ANIM_FRAMES;
+                        death_x = frog_x;
+                        death_row = frog_row;
+                        death_then_gameover = (result == GAME_OVER);
+                        time_left = LEVEL_TIME_TICKS;
+                    } else if (result == LEVEL_UP) {
+                        time_left = LEVEL_TIME_TICKS;
+                        level_msg_frames = LEVEL_MSG_FRAMES;
+                    } else if (result != LEVEL_RUNNING) {
+                        time_left = LEVEL_TIME_TICKS; /* cruzo: barra de nuevo */
+                    }
+
+                }
+
+                if (level_msg_frames > 0) {
+                    level_msg_frames--;
                 }
 
             }
@@ -286,6 +334,9 @@ int display(void)
                 if (key == ALLEGRO_KEY_ENTER || key == ALLEGRO_KEY_SPACE) {
                     firstLevel(gs);
                     time_left = LEVEL_TIME_TICKS;
+                    death_frames = 0;
+                    death_then_gameover = 0;
+                    level_msg_frames = 0;
                     screen = SCREEN_PLAYING;
                 } else if (key == ALLEGRO_KEY_ESCAPE || key == ALLEGRO_KEY_Q) {
                     running = 0;
@@ -293,11 +344,21 @@ int display(void)
                 break;
 
             case SCREEN_PLAYING:
-                if (key == ALLEGRO_KEY_UP || key == ALLEGRO_KEY_W) frogStepUp(gs);
-                else if (key == ALLEGRO_KEY_DOWN || key == ALLEGRO_KEY_S) frogStepDown(gs);
-                else if (key == ALLEGRO_KEY_RIGHT || key == ALLEGRO_KEY_D) frogStepRight(gs);
-                else if (key == ALLEGRO_KEY_LEFT || key == ALLEGRO_KEY_A) frogStepLeft(gs);
-                else if (key == ALLEGRO_KEY_ESCAPE || key == ALLEGRO_KEY_P) screen = SCREEN_PAUSED;
+                /* mientras corre la animacion de muerte no hay rana que
+                 * mover ni nivel que saltear; solo se puede pausar */
+                if (death_frames == 0) {
+                    if (key == ALLEGRO_KEY_UP || key == ALLEGRO_KEY_W) { frogStepUp(gs); frog_anim_jump(); }
+                    else if (key == ALLEGRO_KEY_DOWN || key == ALLEGRO_KEY_S) { frogStepDown(gs); frog_anim_jump(); }
+                    else if (key == ALLEGRO_KEY_RIGHT || key == ALLEGRO_KEY_D) { frogStepRight(gs); frog_anim_jump(); }
+                    else if (key == ALLEGRO_KEY_LEFT || key == ALLEGRO_KEY_A) { frogStepLeft(gs); frog_anim_jump(); }
+                    else if (key == ALLEGRO_KEY_E) {
+                        /* cheat/debug: saltear el nivel */
+                        skipLevel(gs);
+                        time_left = LEVEL_TIME_TICKS;
+                        level_msg_frames = LEVEL_MSG_FRAMES;
+                    }
+                }
+                if (key == ALLEGRO_KEY_ESCAPE || key == ALLEGRO_KEY_P) screen = SCREEN_PAUSED;
                 break;
 
             case SCREEN_PAUSED:
@@ -306,6 +367,9 @@ int display(void)
                 } else if (key == ALLEGRO_KEY_R) {
                     firstLevel(gs); /* reiniciar la partida */
                     time_left = LEVEL_TIME_TICKS;
+                    death_frames = 0;
+                    death_then_gameover = 0;
+                    level_msg_frames = 0;
                     screen = SCREEN_PLAYING;
                 } else if (key == ALLEGRO_KEY_M) {
                     screen = SCREEN_MENU; /* salir del juego sin cerrar el programa */
@@ -357,8 +421,24 @@ int display(void)
             case SCREEN_PLAYING:
             case SCREEN_PAUSED:
                 a_disp_map();
-                draw_game_state(gs);
+
+                /* muriendo: el mundo queda quieto, la rana se reemplaza
+                 * por la animacion de muerte donde la atropellaron/ahogo */
+                draw_game_state(gs, death_frames > 0);
+                if (death_frames > 0) {
+                    draw_death_at(death_x, death_row,
+                                  (DEATH_ANIM_FRAMES - death_frames) / DEATH_FRAME_DIV);
+                }
+
                 draw_hud(gs, font, time_left, LEVEL_TIME_TICKS);
+
+                if (level_msg_frames > 0) {
+                    char level_msg[16];
+                    sprintf(level_msg, "NIVEL %d", level);
+                    draw_title_retro(font, level_msg, CENTER_Y - 24, 1,
+                                     al_map_rgb(235, 220, 60));
+                }
+
                 if (screen == SCREEN_PAUSED) {
                     draw_pause_overlay(font);
                 }
