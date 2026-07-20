@@ -16,7 +16,7 @@
 /* Huecos-meta: NUM_GOAL_SLOTS huecos de un casillero de ancho, el primero
  * en la columna 1 y despues uno cada 3 columnas (columnas 1, 4, 7, 10, 13). */
 #define NUM_GOAL_SLOTS 5
-#define GOAL_SLOT_X(i) (ADJCOORDFROG(1) + (i) * ADJCOORDFROG(3))
+#define GOAL_SLOT_X(i) (ADJCOORDFROG(1)/2 + (i) * ADJCOORDFROG(3))
 
 /* Devuelve el indice del hueco-meta (0..NUM_GOAL_SLOTS-1) sobre el que esta
  * el centro de la rana, o -1 si no esta sobre ninguno. Consulta pura: no
