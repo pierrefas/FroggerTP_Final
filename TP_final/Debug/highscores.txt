@@ -1,8 +1,10 @@
-<<<<<<< HEAD
+MAT 66
+FAA 36
+BYO 21
+AAA 19
+ZZC 14
 MAT 0
-MAT 0
-MAT 0
-MAT 0
-=======
-hola: 75745
->>>>>>> 9697fd7427d1f41a669dba9861688c3c48163d8e
+DNG 0
+AAA 0
+VAL 0
+COW 0

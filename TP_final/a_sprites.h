@@ -1,8 +1,10 @@
 /*
- * sprites.h
+ * a_sprites.h
  *
- * Created on: Jul 9, 2026
- * Author: peterfas
+ * Carga del spritesheet (rip del Frogger arcade de Konami) y recorte en
+ * sub-bitmaps listos para dibujar. Las coordenadas de cada sprite dentro
+ * de la hoja viven en a_sprites.c. Todos los punteros pueden quedar NULL
+ * si la hoja no cargo: a_render.c dibuja con primitivas en ese caso.
  */
 
 #ifndef A_SPRITES_H
@@ -10,53 +12,45 @@
 
 #include <allegro5/allegro.h>
 
-/* Public constants — keep in sync with a_sprites.c */
-#define NUM_ENEMY_TYPES  4
-#define ENEMY_FRAMES     2
-#define NUM_FROG_FRAMES  4
+/* Tipos de enemigo del backend (0..4); el 4 es el camion de 2 casilleros. */
+#define NUM_VEHICLE_TYPES 5
 
-/* frame defaults (can be overridden at compile time) */
-#ifndef FRAME_W
-#define FRAME_W 16
-#endif
-#ifndef FRAME_H
-#define FRAME_H 16
-#endif
+/* Rana del jugador, indexada por prana->orientation:
+ * 0 arriba, 1 derecha, 2 abajo, 3 izquierda. frog_sprites es la rana
+ * sentada; frog_jump_sprites, el cuadro de salto (patas estiradas) que
+ * se muestra un instante con cada movimiento. */
+extern ALLEGRO_BITMAP *frog_sprites[4];
+extern ALLEGRO_BITMAP *frog_jump_sprites[4];
 
-/* enums públicos para usar en el resto del código */
-enum {
-    FROG_IDLE = 0,
-    FROG_LEFT,
-    FROG_RIGHT,
-    FROG_JUMP
-};
+/* Animacion de muerte del arcade: splash violeta -> ondas -> calavera. */
+#define NUM_DEATH_FRAMES 6
+extern ALLEGRO_BITMAP *death_sprites[NUM_DEATH_FRAMES];
 
-/* si también quieres exponer los índices de enemigos */
-enum {
-    ENEMY_CAR = 0,
-    ENEMY_TRUCK,
-    ENEMY_BUS,
-    ENEMY_BIKE
-};
+extern ALLEGRO_BITMAP *vehicle_sprites[NUM_VEHICLE_TYPES];
 
-/* Exposed sprite arrays (sub-bitmaps created from the spritesheet) */
-extern ALLEGRO_BITMAP *enemy_sprites[NUM_ENEMY_TYPES][ENEMY_FRAMES];
-extern ALLEGRO_BITMAP *frog_sprites[NUM_FROG_FRAMES];
+/* Troncos de largo variable: punta izquierda + tramo del medio (se
+ * repite) + punta derecha. */
+extern ALLEGRO_BITMAP *log_left, *log_mid, *log_right;
 
-/* Optional exported simple tiles (may be NULL if not created) */
-extern ALLEGRO_BITMAP *bush_0;
-extern ALLEGRO_BITMAP *bush_1;
-extern ALLEGRO_BITMAP *tile_0;
+/* Tortuga a flote y hundiendose (para el parpadeo de aviso). */
+extern ALLEGRO_BITMAP *turtle_sprite, *turtle_dive;
 
-/* Load the spritesheet and create sub-bitmaps.
-   - filename: path to the spritesheet PNG. If NULL, uses default inside a_sprites.c.
-   - Returns 0 on success, -1 on failure. Caller must have initialized Allegro and the image addon. */
+/* Rana ya guardada en un hueco-meta. */
+extern ALLEGRO_BITMAP *home_frog;
+
+/* Fondo: baldosa de vereda (franjas seguras) y arbustos de la fila de
+ * llegada (arco con la entrada del hueco-meta + relleno angosto). */
+extern ALLEGRO_BITMAP *sidewalk_tile, *bush_arch, *bush_fill;
+
+/* Carga el spritesheet y crea los sub-bitmaps.
+   - filename: ruta del PNG; NULL usa "sprites.png" (directorio actual).
+   - Devuelve 0 si cargo, -1 si no (el juego sigue, con primitivas).
+   Requiere al_init() y al_init_image_addon() ya llamados. */
 int load_sprites(const char *filename);
 
-/* Destroy sub-bitmaps and the parent spritesheet. */
 void destroy_sprites(void);
 
-/* Accessor for the raw parent spritesheet (may be NULL if load failed). Use only for drawing regions. */
+/* Hoja completa (NULL si no cargo). La usa a_alphanum.c para el texto. */
 ALLEGRO_BITMAP *get_spritesheet(void);
 
 #endif /* A_SPRITES_H */

@@ -90,3 +90,46 @@ int resetEntites(game_state * game){
     return 0;
 
 }
+
+dive_phase supportDivePhase(const support_entity * soporte){
+
+    if(soporte == NULL || soporte->divetimer < 0){
+        return SUPPORT_LOG;
+    }
+
+    if(soporte->divetimer < DIVE_FLOAT_TICKS){
+        return SUPPORT_FLOATING;
+    }
+
+    if(soporte->divetimer < DIVE_FLOAT_TICKS + DIVE_WARN_TICKS){
+        return SUPPORT_SINKING;
+    }
+
+    return SUPPORT_DIVED;
+
+}
+
+int updateSupportDive(game_state * game){
+
+    int i;
+
+    if(game == NULL || game->psoport == NULL){
+        return ERROR_NULL_POINTER;
+    }
+
+    for(i = 0; (game->psoport + i)->type != -1; i++){
+
+        support_entity * soporte = game->psoport + i;
+
+        if(soporte->divetimer < 0){
+            continue; //Tronco: siempre a flote
+        }
+
+        soporte->divetimer = (soporte->divetimer + 1) % DIVE_CYCLE_TICKS;
+        soporte->supporting = supportDivePhase(soporte) != SUPPORT_DIVED;
+
+    }
+
+    return 0;
+
+}

@@ -67,3 +67,14 @@ int updateHighScores(const char * new_initials, int new_score){
     return (pos < HS_MAX_SCORES) ? pos : -1;
 
 }
+
+int hsQualifies(int score){
+
+    ScoreEntry list[HS_MAX_SCORES];
+    int count = readHighScores(list, HS_MAX_SCORES);
+
+    /* Con la tabla incompleta entra cualquiera; llena, hay que superar al
+     * ultimo (a igualdad no entra: updateHighScores lo deja abajo). */
+    return count < HS_MAX_SCORES || score > list[count - 1].score;
+
+}

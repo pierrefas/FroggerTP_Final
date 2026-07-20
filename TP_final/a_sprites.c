@@ -1,45 +1,89 @@
 /*
- * sprites.c
+ * a_sprites.c
  *
- * Created on: Jul 9, 2026
- * Author: peterfas
+ * Ver a_sprites.h. La hoja es el rip del arcade (154x487): los sprites
+ * NO estan en una grilla regular, asi que cada uno se recorta por sus
+ * coordenadas medidas en el PNG. El fondo de la hoja (gris 64,64,64 y
+ * negro) se convierte a transparente al cargar.
  */
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 
 #include "a_sprites.h"
 
-/* Default spritesheet path (change if needed) */
 #ifndef DEFAULT_SPRITESHEET_FILE
 #define DEFAULT_SPRITESHEET_FILE "sprites.png"
 #endif
 
-/* Parent spritesheet bitmap (kept private) */
 static ALLEGRO_BITMAP *spritesheet = NULL;
 
-/* Optional exported simple tiles (may remain NULL) */
-ALLEGRO_BITMAP *bush_0 = NULL;
-ALLEGRO_BITMAP *bush_1 = NULL;
-ALLEGRO_BITMAP *tile_0 = NULL;
+ALLEGRO_BITMAP *frog_sprites[4] = { NULL };
+ALLEGRO_BITMAP *frog_jump_sprites[4] = { NULL };
+ALLEGRO_BITMAP *death_sprites[NUM_DEATH_FRAMES] = { NULL };
+ALLEGRO_BITMAP *vehicle_sprites[NUM_VEHICLE_TYPES] = { NULL };
+ALLEGRO_BITMAP *log_left = NULL, *log_mid = NULL, *log_right = NULL;
+ALLEGRO_BITMAP *turtle_sprite = NULL, *turtle_dive = NULL;
+ALLEGRO_BITMAP *home_frog = NULL;
+ALLEGRO_BITMAP *sidewalk_tile = NULL, *bush_arch = NULL, *bush_fill = NULL;
 
-/* Exported sub-bitmaps */
-ALLEGRO_BITMAP *enemy_sprites[NUM_ENEMY_TYPES][ENEMY_FRAMES] = { { NULL } };
-ALLEGRO_BITMAP *frog_sprites[NUM_FROG_FRAMES] = { NULL };
+/* Region de la hoja + puntero destino, para recortar todo en un loop. */
+typedef struct {
+    ALLEGRO_BITMAP **dst;
+    int x, y, w, h;
+} sheet_region;
 
-/* Getter for raw sheet */
+static const sheet_region regions[] = {
+    /* rana sentada mirando: arriba, derecha, abajo, izquierda */
+    { &frog_sprites[0],     3,   4, 12,  9 },
+    { &frog_sprites[1],   113,   3,  9, 12 },
+    { &frog_sprites[2],    75,   5, 12,  9 },
+    { &frog_sprites[3],    40,   3,  9, 12 },
+    /* rana saltando (patas estiradas), mismas orientaciones */
+    { &frog_jump_sprites[0],  21, 3, 12, 13 },
+    { &frog_jump_sprites[1], 128, 3, 13, 12 },
+    { &frog_jump_sprites[2],  93, 2, 12, 13 },
+    { &frog_jump_sprites[3],  57, 3, 13, 12 },
+    /* muerte: splash violeta x3, ondas x2, calavera */
+    { &death_sprites[0],    3,  81, 12, 14 },
+    { &death_sprites[1],   20,  81, 14, 13 },
+    { &death_sprites[2],   37,  80, 16, 16 },
+    { &death_sprites[3],   59,  84,  8,  8 },
+    { &death_sprites[4],   77,  84,  8,  8 },
+    { &death_sprites[5],  110,  80, 15, 16 },
+    /* vehiculos (tipos 0..4 del backend; el camion mide ~2 casilleros) */
+    { &vehicle_sprites[0],  2, 119, 15, 10 },
+    { &vehicle_sprites[1], 19, 117, 16, 14 },
+    { &vehicle_sprites[2], 37, 117, 16, 14 },
+    { &vehicle_sprites[3], 56, 118, 14, 12 },
+    { &vehicle_sprites[4], 76, 119, 27, 10 },
+    /* tronco: puntas y tramo repetible */
+    { &log_left,            4, 137, 13, 10 },
+    { &log_mid,            19, 137, 16, 10 },
+    { &log_right,          37, 137, 13, 10 },
+    /* tortuga a flote / hundiendose */
+    { &turtle_sprite,       2, 156, 13,  9 },
+    { &turtle_dive,        56, 154, 16, 13 },
+    /* rana guardada en el hueco-meta */
+    { &home_frog,          45, 196, 16, 16 },
+    /* fondo: vereda y arbustos de la fila de llegada */
+    { &sidewalk_tile,     135, 196, 16, 16 },
+    { &bush_arch,           1, 188, 32, 23 },
+    { &bush_fill,          35, 188,  8, 23 },
+};
+
+#define NUM_REGIONS ((int)(sizeof(regions) / sizeof(regions[0])))
+
 ALLEGRO_BITMAP *get_spritesheet(void)
 {
     return spritesheet;
 }
 
-/* Load the spritesheet and create sub-bitmaps.
-   Caller must have called al_init() and al_init_image_addon(). */
 int load_sprites(const char *filename)
 {
     const char *file = filename ? filename : DEFAULT_SPRITESHEET_FILE;
+    int i;
 
     spritesheet = al_load_bitmap(file);
     if (!spritesheet) {
@@ -47,112 +91,37 @@ int load_sprites(const char *filename)
         return -1;
     }
 
-    /* Validate sheet is at least large enough for our grid (optional) */
-    int sheet_w = al_get_bitmap_width(spritesheet);
-    int sheet_h = al_get_bitmap_height(spritesheet);
-    int needed_w = ENEMY_FRAMES * FRAME_W;
-    int needed_h = (NUM_ENEMY_TYPES + NUM_FROG_FRAMES) * FRAME_H;
-    if (sheet_w < needed_w || sheet_h < needed_h) {
-        fprintf(stderr,
-                "a_sprites: spritesheet too small (%dx%d) for required grid (%dx%d)\n",
-                sheet_w, sheet_h, needed_w, needed_h);
-        goto error;
-    }
+    /* el fondo de la hoja pasa a transparente */
+    al_convert_mask_to_alpha(spritesheet, al_map_rgb(64, 64, 64));
+    al_convert_mask_to_alpha(spritesheet, al_map_rgb(0, 0, 0));
 
-    ALLEGRO_COLOR mask_color = al_map_rgb( 64, 64, 64);
+    for (i = 0; i < NUM_REGIONS; i++) {
 
-    al_convert_mask_to_alpha(spritesheet, mask_color);
+        *regions[i].dst = al_create_sub_bitmap(spritesheet, regions[i].x,
+                                               regions[i].y, regions[i].w,
+                                               regions[i].h);
 
-    mask_color = al_map_rgb( 0, 0, 0);
-
-    al_convert_mask_to_alpha( spritesheet, mask_color);
-
-    /* Create enemy sub-bitmaps: each enemy type occupies a row, frames per columns */
-    for (int t = 0; t < NUM_ENEMY_TYPES; ++t) {
-        int row = t;
-        for (int f = 0; f < ENEMY_FRAMES; ++f) {
-            int x = f * FRAME_W;
-            int y = row * FRAME_H;
-            enemy_sprites[t][f] = al_create_sub_bitmap(spritesheet, x, y, FRAME_W, FRAME_H);
-            if (!enemy_sprites[t][f]) {
-                fprintf(stderr, "a_sprites: Failed to create enemy sub-bitmap type=%d frame=%d\n", t, f);
-                goto error;
-            }
+        if (*regions[i].dst == NULL) {
+            fprintf(stderr, "a_sprites: Failed to create sub-bitmap %d\n", i);
+            destroy_sprites();
+            return -1;
         }
     }
-
-    /* Create frog sub-bitmaps: one frog frame per row in this layout */
-    for (int f = 0; f < NUM_FROG_FRAMES; ++f) {
-        int row = NUM_ENEMY_TYPES + f;
-        int x = 0; /* if frog frames are in the first column of each row */
-        int y = row * FRAME_H;
-        frog_sprites[f] = al_create_sub_bitmap(spritesheet, x, y, FRAME_W, FRAME_H);
-        if (!frog_sprites[f]) {
-            fprintf(stderr, "a_sprites: Failed to create frog sub-bitmap frame=%d\n", f);
-            goto error;
-        }
-    }
-
-    bush_0 = al_create_sub_bitmap( spritesheet, 1, 188, FRAME_W * 2, (FRAME_H / 2) * 3 );    
-
-    bush_1 = al_create_sub_bitmap( spritesheet, 35, 188, FRAME_W, (FRAME_H / 2) * 3);
-
-    tile_0 = al_create_sub_bitmap( spritesheet, 135, 196, FRAME_W, FRAME_H);
-
-
-
-    /* Optional: leave bush_0/bush_1/tile_0 as NULL; modules may use get_spritesheet and draw regions
-       or you can create these sub-bitmaps here if your spritesheet layout is fixed. */
 
     return 0;
-
-error:
-    /* Clean up any sub-bitmaps that were created */
-    for (int t = 0; t < NUM_ENEMY_TYPES; ++t) {
-        for (int f = 0; f < ENEMY_FRAMES; ++f) {
-            if (enemy_sprites[t][f]) {
-                al_destroy_bitmap(enemy_sprites[t][f]);
-                enemy_sprites[t][f] = NULL;
-            }
-        }
-    }
-    for (int f = 0; f < NUM_FROG_FRAMES; ++f) {
-        if (frog_sprites[f]) {
-            al_destroy_bitmap(frog_sprites[f]);
-            frog_sprites[f] = NULL;
-        }
-    }
-    if (bush_0) { al_destroy_bitmap(bush_0); bush_0 = NULL; }
-    if (bush_1) { al_destroy_bitmap(bush_1); bush_1 = NULL; }
-    if (tile_0) { al_destroy_bitmap(tile_0); tile_0 = NULL; }
-    if (spritesheet) {
-        al_destroy_bitmap(spritesheet);
-        spritesheet = NULL;
-    }
-    return -1;
 }
 
-/* Destroy sub-bitmaps first, then the parent spritesheet */
 void destroy_sprites(void)
 {
-    if (bush_0) { al_destroy_bitmap(bush_0); bush_0 = NULL; }
-    if (bush_1) { al_destroy_bitmap(bush_1); bush_1 = NULL; }
-    if (tile_0) { al_destroy_bitmap(tile_0); tile_0 = NULL; }
+    int i;
 
-    for (int t = 0; t < NUM_ENEMY_TYPES; ++t) {
-        for (int f = 0; f < ENEMY_FRAMES; ++f) {
-            if (enemy_sprites[t][f]) {
-                al_destroy_bitmap(enemy_sprites[t][f]);
-                enemy_sprites[t][f] = NULL;
-            }
+    for (i = 0; i < NUM_REGIONS; i++) {
+        if (*regions[i].dst) {
+            al_destroy_bitmap(*regions[i].dst);
+            *regions[i].dst = NULL;
         }
     }
-    for (int f = 0; f < NUM_FROG_FRAMES; ++f) {
-        if (frog_sprites[f]) {
-            al_destroy_bitmap(frog_sprites[f]);
-            frog_sprites[f] = NULL;
-        }
-    }
+
     if (spritesheet) {
         al_destroy_bitmap(spritesheet);
         spritesheet = NULL;

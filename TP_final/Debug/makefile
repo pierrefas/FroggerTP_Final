@@ -28,7 +28,7 @@ endif
 # si hay una conexion por hdmi en el raspberry pi permito que se agreguen las librerias de allegro
 ifeq ($(filter yes,$(HDMI_CONNECTED) $(FORCE_ALLEGRO)),yes)
     $(info Building with Allegro support (HDMI detected or forced).)
-    ALLEGRO_LIBS := -lallegro -lallegro_font -lallegro_image -lallegro_primitives
+    ALLEGRO_LIBS := -lallegro -lallegro_font -lallegro_image -lallegro_primitives -lallegro_audio -lallegro_acodec
     CFLAGS :=
 else
     # paso un flag DHEADLESS para archivos como "main.c" que puede usar Allegro o no.
