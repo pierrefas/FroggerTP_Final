@@ -10,9 +10,6 @@
 
 #include "frogupdates.h"
 
-/* Columna donde arranca la rana (centro de la fila de salida) */
-#define FROG_START_COL 6
-
 int resetFrogPos(game_state * game){
 
     if(game == NULL || game->prana == NULL){
@@ -78,7 +75,7 @@ int frogStepUp(game_state * game){
     }
 
     game->prana->height++;
-    game->prana->orientation = 0;
+    game->prana->orientation = LOOKUP;
 
     if(!isInBounds(game)){
         game->prana->height--;
@@ -95,7 +92,7 @@ int frogStepDown(game_state * game){
     }
 
     game->prana->height--;
-    game->prana->orientation = 2;
+    game->prana->orientation = LOOKDOWN;
 
     if(!isInBounds(game)){
         game->prana->height++;
@@ -111,7 +108,7 @@ int frogStepRight(game_state * game){
         return ERROR_NULL_POINTER;
     }
 
-    game->prana->orientation = 1;
+    game->prana->orientation = LOOKRIGHT;
     game->prana->startcoord += ADJCOORDFROG(1);
     game->prana->endcoord += ADJCOORDFROG(1);
 
@@ -130,7 +127,7 @@ int frogStepLeft(game_state * game){
         return ERROR_NULL_POINTER;
     }
 
-    game->prana->orientation = 3;
+    game->prana->orientation = LOOKLEFT;
     game->prana->startcoord -= ADJCOORDFROG(1);
     game->prana->endcoord -= ADJCOORDFROG(1);
 
@@ -152,17 +149,16 @@ int isInBounds(game_state * game){
     frog_player * rana = game->prana;
 
     if(rana->startcoord < 0 || rana->endcoord > ENDWORLD ||
-       rana->height < 0 || rana->height > GOALROW){
+       rana->height < 0 || rana->height > GOALROW){ //Si esta por fuera del mundo
         return 0;
-    }
+    } 
 
-    /* A la fila de llegada solo se puede subir cayendo en un hueco-meta
-     * libre; en cualquier otra posicion el movimiento es invalido. */
+    
     if(rana->height == GOALROW){
 
         int slot = goalSlotAt(rana);
 
-        if(slot < 0 || (game->safespaces)[slot] != 0){
+        if(slot < 0 || (game->safespaces)[slot] != 0){ //Si a la meta donde intenta ir ya esta tomada
             return 0;
         }
 

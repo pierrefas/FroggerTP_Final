@@ -4,6 +4,17 @@
 #include "gamestate.h"
 #include "checking.h"
 
+#define FROG_START_COL 6 //Defino la 6ta columna como columna de inicio del juego
+
+typedef enum{
+
+    LOOKUP,
+    LOOKRIGHT,
+    LOOKDOWN,
+    LOOKLEFT
+
+} orientations;
+
 int followSupport(game_state *);
 int frogStepUp(game_state *);
 int frogStepDown(game_state *);
