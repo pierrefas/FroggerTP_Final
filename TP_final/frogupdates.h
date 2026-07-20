@@ -6,14 +6,14 @@
 
 #define FROG_START_COL 6 //Defino la 6ta columna como columna de inicio del juego
 
-typedef enum{
+enum{
 
-    LOOKUP,
+    LOOKUP = 0,
     LOOKRIGHT,
     LOOKDOWN,
     LOOKLEFT
 
-} orientations;
+};
 
 int followSupport(game_state *); //Sirve para que la rana no se caiga de las entidades
 
