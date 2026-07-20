@@ -1,20 +1,18 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+
 #include <stdlib.h>
 #include <stdio.h>
+#include "checking.h"
 
-/* Conversion casillero -> pixeles: cada casillero mide 16 px. */
-#define ADJCOORDFROG(n) ((n) * 16)
 
-/* Error de puntero nulo, usado por las funciones del backend. */
+#define ADJCOORDFROG(n) ((n) * 16) //Comvierte casilleros a pixeles, sirve para los saltos de la rana
+
 #define ERROR_NULL_POINTER -67
-
-/* Borde derecho del mundo en px (14 columnas de juego, 0..13). */
 #define ENDWORLD ADJCOORDFROG(14)
 
-/* Cantidad de "alturas" indexables en pspeedheight: filas 0..12
- * (ver el mapa de filas en checking.h). */
+
 #define NUM_HEIGHT_LEVELS 13
 #define MAX_ENTITIES 40
 
@@ -33,9 +31,8 @@ typedef struct {
     int endcoord;
     int height;
     int type;
-    int supporting; /* 1 si puede llevar a la rana (tronco/tortuga a flote) */
-    int divetimer;  /* fase del ciclo de buceo de una tortuga (ver
-                     * entityupdates.h); -1 = tronco, nunca se hunde */
+    int supporting; // sirve para determinar si la rana esta siendo sostenida por el soporte
+    int divetimer;  // fase del ciclo de buceo de una tortuga, si es -1 es tronco y no se unde
 
 } support_entity;
 

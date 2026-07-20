@@ -1,5 +1,4 @@
 #include "gamestate.h"
-#include "checking.h"
 
 game_state * createGame(void){
 
