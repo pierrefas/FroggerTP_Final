@@ -1,19 +1,15 @@
 /*
- * sprites.h
+ * a_map.h
  *
- * Created on: Jul 9, 2026
- * Author: peterfas
+ * Dibujo del fondo del mapa (agua, huecos-meta, franjas seguras y calle)
+ * para el front-end de Allegro. Solo primitivas: no depende de que el
+ * spritesheet haya cargado.
  */
 
-#ifndef a_SPRITES_H
-#define a_SPRITES_H
+#ifndef A_MAP_H
+#define A_MAP_H
 
-#include <allegro5/allegro_image.h>
-#include <stdio.h>
+/* Dibuja el mapa en el target actual (no cambia el target). */
+void a_disp_map(void);
 
-#include "a_sprites.h"
-#include "a_PC_display.h"
-
-void a_disp_map (void);
-
-#endif /* a_SPRITES_H */
+#endif /* A_MAP_H */

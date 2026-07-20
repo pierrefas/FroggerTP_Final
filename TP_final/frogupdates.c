@@ -6,39 +6,62 @@
 //  al jugador y resguardan que este permanezaca en la zona         //
 //  jugable                                                         //
 //                                                                  //
-//                                                                  //
 //////////////////////////////////////////////////////////////////////
-
-
-
-
 
 #include "frogupdates.h"
 
-int FollowingSupp = 0;
-int FlagDied = 0;
-int MovedUP = 0;
-int MovedDOWN = 0;
-int MovedRIGHT = 0;
-int MovedLEFT = 0;
+/* Columna donde arranca la rana (centro de la fila de salida) */
+#define FROG_START_COL 6
+
+int resetFrogPos(game_state * game){
+
+    if(game == NULL || game->prana == NULL){
+        return ERROR_NULL_POINTER;
+    }
+
+    game->prana->height = 0;
+    game->prana->startcoord = ADJCOORDFROG(FROG_START_COL);
+    game->prana->endcoord = game->prana->startcoord + ADJCOORDFROG(1);
+    game->prana->orientation = 0;
+
+    return 0;
+
+}
+
+int loseLife(game_state * game){
+
+    if(game == NULL || game->prana == NULL){
+        return ERROR_NULL_POINTER;
+    }
+
+    game->prana->lives--;
+    resetFrogPos(game);
+
+    return game->prana->lives < 1;
+
+}
 
 int followSupport(game_state * game){
 
-    if(game == NULL||game->psoport == NULL||game->prana == NULL){
-
+    if(game == NULL || game->psoport == NULL || game->prana == NULL || game->pspeedheight == NULL){
         return ERROR_NULL_POINTER;
-
     }
 
-    if(isDeadLake(game) == 0){//Si esta sobre un soporte hacer que siga dicho soporte
-        
-        game->prana->startcoord+=(game->pspeedheight)[game->prana->height];
-        game->prana->endcoord+=(game->pspeedheight)[game->prana->height];
+    if(game->prana->height < STARTLAKE || game->prana->height > ENDLAKE){
+        return 0; //Solo aplica en las filas del lago
+    }
 
-        if(!isInBounds(game)){
+    if(isDeadLake(game) == 0){ //Si esta sobre un soporte, la arrastra con su velocidad
 
-            game->prana->startcoord-=(game->pspeedheight)[game->prana->height];
-            game->prana->endcoord-=(game->pspeedheight)[game->prana->height];
+        int speed = (game->pspeedheight)[game->prana->height];
+
+        game->prana->startcoord += speed;
+        game->prana->endcoord += speed;
+
+        if(!isInBounds(game)){ //En el borde del mundo se queda clavada (el soporte sigue)
+
+            game->prana->startcoord -= speed;
+            game->prana->endcoord -= speed;
 
         }
 
@@ -48,45 +71,17 @@ int followSupport(game_state * game){
 
 }
 
-int deathOfFrog(game_state * game){
-
-    if(game->psoport == NULL|| game->penemies == NULL || game == NULL || game->prana == NULL){
-
-        return ERROR_NULL_POINTER;
-
-    }
-
-
-
-    if(isDeadFromEnemy(game) == 1||isDeadLake(game) == 1){
-
-        game->prana->lives--;
-        game->prana->height = 0;
-        game->prana->startcoord = ADJCOORDFROG(3);
-        game->prana->endcoord = game->prana->startcoord + ADJCOORDFROG(1);
-        FlagDied = 1;
-    }
-
-    return 0;
-
-}
-
 int frogStepUp(game_state * game){
 
-   if(game->prana == NULL || game == NULL){
-
+    if(game == NULL || game->prana == NULL){
         return ERROR_NULL_POINTER;
-
     }
-   
-    MovedUP = 1;
+
     game->prana->height++;
     game->prana->orientation = 0;
 
     if(!isInBounds(game)){
-
         game->prana->height--;
-
     }
 
     return 0;
@@ -95,20 +90,15 @@ int frogStepUp(game_state * game){
 
 int frogStepDown(game_state * game){
 
-    if(game->prana == NULL || game == NULL){
-
+    if(game == NULL || game->prana == NULL){
         return ERROR_NULL_POINTER;
-
     }
 
-    MovedDOWN = 1;
     game->prana->height--;
     game->prana->orientation = 2;
 
     if(!isInBounds(game)){
-
         game->prana->height++;
-
     }
 
     return 0;
@@ -117,47 +107,37 @@ int frogStepDown(game_state * game){
 
 int frogStepRight(game_state * game){
 
-    if(game->prana == NULL || game == NULL){
-
+    if(game == NULL || game->prana == NULL){
         return ERROR_NULL_POINTER;
-
     }
-    MovedRIGHT = 1;
+
     game->prana->orientation = 1;
-    game->prana->startcoord+=ADJCOORDFROG(1);
-    game->prana->endcoord+=ADJCOORDFROG(1);
+    game->prana->startcoord += ADJCOORDFROG(1);
+    game->prana->endcoord += ADJCOORDFROG(1);
 
     if(!isInBounds(game)){
-
-        game->prana->startcoord-=ADJCOORDFROG(1);
-        game->prana->endcoord-=ADJCOORDFROG(1);
-
+        game->prana->startcoord -= ADJCOORDFROG(1);
+        game->prana->endcoord -= ADJCOORDFROG(1);
     }
 
     return 0;
-
 
 }
 
 int frogStepLeft(game_state * game){
 
-    if(game->prana == NULL || game == NULL){
-
+    if(game == NULL || game->prana == NULL){
         return ERROR_NULL_POINTER;
-
     }
-    MovedLEFT = 1;
-    game->prana->orientation = 2;
-    game->prana->startcoord-=ADJCOORDFROG(1);
-    game->prana->endcoord-=ADJCOORDFROG(1);
+
+    game->prana->orientation = 3;
+    game->prana->startcoord -= ADJCOORDFROG(1);
+    game->prana->endcoord -= ADJCOORDFROG(1);
 
     if(!isInBounds(game)){
-
-        game->prana->startcoord+=ADJCOORDFROG(1);
-        game->prana->endcoord+=ADJCOORDFROG(1);
-
+        game->prana->startcoord += ADJCOORDFROG(1);
+        game->prana->endcoord += ADJCOORDFROG(1);
     }
-
 
     return 0;
 
@@ -165,15 +145,29 @@ int frogStepLeft(game_state * game){
 
 int isInBounds(game_state * game){
 
-    if((game->prana->startcoord<0)||(game->prana->endcoord>ENDWORLD)||(game->prana->height<0)||(!isAtEnd(game))){
-
+    if(game == NULL || game->prana == NULL || game->safespaces == NULL){
         return 0;
+    }
+
+    frog_player * rana = game->prana;
+
+    if(rana->startcoord < 0 || rana->endcoord > ENDWORLD ||
+       rana->height < 0 || rana->height > GOALROW){
+        return 0;
+    }
+
+    /* A la fila de llegada solo se puede subir cayendo en un hueco-meta
+     * libre; en cualquier otra posicion el movimiento es invalido. */
+    if(rana->height == GOALROW){
+
+        int slot = goalSlotAt(rana);
+
+        if(slot < 0 || (game->safespaces)[slot] != 0){
+            return 0;
+        }
 
     }
-    else{
 
-        return 1;
-
-    }
+    return 1;
 
 }

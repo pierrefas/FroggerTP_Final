@@ -1,62 +1,69 @@
 #include "highscores.h"
 
-int compare_scores(const void *a, const void *b){
-    return ((ScoreEntry *)b)->score - ((ScoreEntry *)a)->score;
-}
+int readHighScores(ScoreEntry * list, int max){
 
-int updateHighScores(const char *new_initials, int new_score){
-    
-    ScoreEntry list[11];
+    if(list == NULL || max <= 0){
+        return 0;
+    }
 
     int count = 0;
 
-    // Leemos y guardamos las puntuaciones del archivo
+    FILE * file = fopen(HS_FILE, "r");
 
-    FILE *file = fopen("highscores.txt", "r");
-    
-    if (file != NULL) {
-
-        while (count < 11 && fscanf(file, "%3s %d", list[count].initials, &list[count].score) == 2) {
-
-            count++;
-
-        }
-
-        fclose(file);
-
-    }
-    else{
-
-        return FILENOTFOUND;
-
-    }
-    
-    // Añado la nueva puntuacion
-    strncpy(list[count].initials, new_initials, 3);
-    list[count].initials[3] = '\0'; // Ensure null-termination
-    list[count].score = new_score;
-    count++;
-
-    // Ordeno
-    qsort(list, count, sizeof(ScoreEntry), compare_scores);
-
-    // Reescribo el archivo
-
-    file = fopen("highscores.txt", "w");
-
-    if (file == NULL) {
-
-        return FILENOTFOUND;
+    if(file == NULL){
+        return 0; //Sin archivo todavia: lista vacia (primer uso)
     }
 
-    // Si tenemos menos de 10 puntuaciones escribo esa cantidad
-    int limit = (count < 10) ? count : 10;
-    
-    for (int i = 0; i < limit; i++) {
-
-        fprintf(file, "%s %d\n", list[i].initials, list[i].score);
-
+    while(count < max && fscanf(file, "%3s %d", list[count].initials, &list[count].score) == 2){
+        count++;
     }
 
     fclose(file);
+
+    return count;
+
+}
+
+int updateHighScores(const char * new_initials, int new_score){
+
+    ScoreEntry list[HS_MAX_SCORES + 1];
+    int count = readHighScores(list, HS_MAX_SCORES);
+    int i;
+
+    /* Busco el puesto del puntaje nuevo (a igualdad, queda debajo) */
+    int pos = 0;
+
+    while(pos < count && list[pos].score >= new_score){
+        pos++;
+    }
+
+    /* Desplazo hacia abajo e inserto */
+    for(i = count; i > pos; i--){
+        list[i] = list[i - 1];
+    }
+
+    strncpy(list[pos].initials, (new_initials != NULL) ? new_initials : "---", 3);
+    list[pos].initials[3] = '\0';
+    list[pos].score = new_score;
+
+    count++;
+
+    if(count > HS_MAX_SCORES){
+        count = HS_MAX_SCORES; //Solo persisten los mejores 10
+    }
+
+    FILE * file = fopen(HS_FILE, "w");
+
+    if(file == NULL){
+        return HS_FILE_ERROR;
+    }
+
+    for(i = 0; i < count; i++){
+        fprintf(file, "%s %d\n", list[i].initials, list[i].score);
+    }
+
+    fclose(file);
+
+    return (pos < HS_MAX_SCORES) ? pos : -1;
+
 }

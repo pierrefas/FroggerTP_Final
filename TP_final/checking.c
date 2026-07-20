@@ -6,17 +6,38 @@
 //  si el jugador esta vivo o muerto, y si esta en una casilla      //
 //  segura del final                                                //
 //                                                                  //
-//                                                                  //
 //////////////////////////////////////////////////////////////////////
 #include "checking.h"
 
+/* Margen de perdon (en px) al chocar con un enemigo: rozar el borde de un
+ * auto no cuenta como atropello. */
+#define HITBOX_MARGIN 2
+
+int goalSlotAt(const frog_player * rana){
+
+    if(rana == NULL){
+        return -1;
+    }
+
+    int center = rana->startcoord + ADJCOORDFROG(1) / 2;
+    int i;
+
+    for(i = 0; i < NUM_GOAL_SLOTS; i++){
+
+        if(center >= GOAL_SLOT_X(i) && center < GOAL_SLOT_X(i) + ADJCOORDFROG(1)){
+            return i;
+        }
+
+    }
+
+    return -1;
+
+}
 
 int isDeadFromEnemy(game_state * state){
 
     if(!state || !state->penemies || !state->prana){
-
-        return ERROR_NULL_POINTER; //Chequeo que los posibles obstaculos y la rana sean validos
-
+        return ERROR_NULL_POINTER;
     }
 
     frog_player * rana = state->prana;
@@ -24,9 +45,13 @@ int isDeadFromEnemy(game_state * state){
 
     for(i = 0; (state->penemies + i)->type != -1; i++){
 
-        if ((rana->height == (state->penemies + i)->height) && (rana->endcoord >= (state->penemies + i)->startcoord) && (rana->startcoord <= (state->penemies + i)->endcoord)){
+        enemy_entity * enemigo = state->penemies + i;
 
-            return 1; //Si esta en el mismo lugar que un enemigo muere, esto es independiente de donde este en el juego
+        if(rana->height == enemigo->height &&
+           rana->endcoord - HITBOX_MARGIN > enemigo->startcoord &&
+           rana->startcoord + HITBOX_MARGIN < enemigo->endcoord){
+
+            return 1; //Si se solapa con un enemigo de su misma fila, muere
 
         }
 
@@ -39,103 +64,70 @@ int isDeadFromEnemy(game_state * state){
 int isDeadLake(game_state * state){
 
     if(!state || !state->psoport || !state->prana){
-
-        return ERROR_NULL_POINTER; //Chequeo que los posibles soportes y la rana sean validos
-
+        return ERROR_NULL_POINTER;
     }
 
     frog_player * rana = state->prana;
-    int i;
 
+    if(rana->height < STARTLAKE || rana->height > ENDLAKE){
+        return 0; //Fuera del lago no se puede ahogar
+    }
+
+    int center = rana->startcoord + ADJCOORDFROG(1) / 2;
+    int i;
 
     for(i = 0; (state->psoport + i)->type != -1; i++){
 
-        if((rana->height < STARTLAKE) || ((state->psoport + i)->supporting && (rana->startcoord >= (state->psoport + i)->startcoord) && (rana->endcoord <= (state->psoport + i)->endcoord) && (rana->height == (state->psoport + i)->height))){
+        support_entity * soporte = state->psoport + i;
 
-            return 0; //Si estando en el lago esta sobre un soporte vive
+        if(soporte->supporting && rana->height == soporte->height &&
+           center >= soporte->startcoord && center <= soporte->endcoord){
+
+            return 0; //El centro de la rana esta sobre un soporte: flota
 
         }
 
     }
-    
-    return 1; //Si esta en el lago y no esta sobre un soporte muere
+
+    return 1; //Esta en el lago y sin soporte debajo: se ahoga
 
 }
 
-int isAtEnd(game_state* state){
+int isAtEnd(game_state * state){
 
-    if(!state || !state->prana){
-
+    if(!state || !state->prana || !state->safespaces){
         return ERROR_NULL_POINTER;
-
     }
 
-    frog_player * rana = state->prana;
-
-    if(ISINSAFEZONE(rana)){
-
-        if((state->prana->startcoord>=12)&&(state->prana->endcoord<=28)&&((state->safespaces)[0] != 1)){
-
-            (state->safespaces)[0] = 1;
-            return 1;
-
-        }
-        else if((state->prana->startcoord>=52)&&(state->prana->endcoord<=68)&&((state->safespaces)[1] != 1)){
-
-            (state->safespaces)[1] = 1;
-            return 1;
-
-        }
-        else if((state->prana->startcoord>=92)&&(state->prana->endcoord<=108)&&((state->safespaces)[2] != 1)){
-
-            (state->safespaces)[2] = 1;
-            return 1;
-
-        }
-        else if((state->prana->startcoord>=132)&&(state->prana->endcoord<=148)&&((state->safespaces)[3] != 1)){
-
-            (state->safespaces)[3] = 1;
-            return 1;
-
-        }
-        else if((state->prana->startcoord>=172)&&(state->prana->endcoord<=188)&&((state->safespaces)[4] != 1)){
-
-            (state->safespaces)[4] = 1;
-            return 1;
-
-        }
-        else{
-
-            return 0;
-
-        }
-        
-
-    }
-    else{
-
+    if(state->prana->height < GOALROW){
         return 0;
+    }
+
+    int slot = goalSlotAt(state->prana);
+
+    if(slot >= 0 && (state->safespaces)[slot] == 0){
+
+        (state->safespaces)[slot] = 1; //Reclamo el hueco-meta
+        return 1;
 
     }
+
+    return 0;
+
 }
 
 int isLevelFinished(game_state * game){
 
     if(game == NULL || game->safespaces == NULL){
-
         return ERROR_NULL_POINTER;
-
     }
 
     int i;
 
-
-    for(i = 0; i < 5; i++){
+    for(i = 0; i < NUM_GOAL_SLOTS; i++){
 
         if((game->safespaces)[i] == 0){
-
             return 0;
-
         }
 
     }

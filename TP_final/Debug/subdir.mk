@@ -6,20 +6,27 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 
-HDMI1 := $(shell cat /sys/class/drm/card0-HDMI-A-1/status 2>/dev/null)
-HDMI2 := $(shell cat /sys/class/drm/card0-HDMI-A-2/status 2>/dev/null)
+ifeq ($(IS_PI), 0)
+  HDMI1 := $(shell cat /sys/class/drm/card0-HDMI-A-1/status 2>/dev/null)
+  HDMI2 := $(shell cat /sys/class/drm/card0-HDMI-A-2/status 2>/dev/null)
 
-ifeq ($(HDMI1),connected)
+  ifeq ($(HDMI1),connected)
     HDMI_CONNECTED := yes
-else ifeq ($(HDMI2),connected)
-    HDMI_CONNECTED := yes
+  else
+    ifeq ($(HDMI2),connected)
+      HDMI_CONNECTED := yes
+    else
+      HDMI_CONNECTED := no
+    endif
+  endif
 else
-    HDMI_CONNECTED := no
+  HDMI_CONNECTED := no
 endif
 
 C_SRCS += \
 ../a_alphanum.c \
 ../a_PC_display.c \
+../a_render.c \
 ../a_sprites.c \
 ../a_map.c \
 ../a_pause.c \
@@ -35,6 +42,7 @@ C_SRCS += \
 C_DEPS += \
 ./a_alphanum.d \
 ./a_PC_display.d \
+./a_render.d \
 ./a_sprites.d \
 ./a_map.d \
 ./a_pause.d \
@@ -50,6 +58,7 @@ C_DEPS += \
 OBJS += \
 ./a_alphanum.o \
 ./a_PC_display.o \
+./a_render.o \
 ./a_sprites.o \
 ./a_map.o \
 ./a_pause.o \

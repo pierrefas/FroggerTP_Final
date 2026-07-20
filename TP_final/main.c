@@ -4,29 +4,38 @@
  *  Created on: Jul 9, 2026
  *      Author: peterfas
  */
-#include "a_PC_display.h"
 
-#include <stdio.h> 
+#include <stdio.h>
 
 #ifndef HEADLESS
-  // si el hdmi esta conectado entonces se incluyen las libs
-  #include <allegro5/allegro.h>
-  #include <allegro5/allegro_font.h>
+  /* build de PC (o Pi con HDMI): interfaz grafica con Allegro */
+  #include "a_PC_display.h"
 #elif defined(IS_PI)
-  // sin hdmi pero en la Raspberry Pi: gameloop.o (con disdrv.o/joydrv.o)
-  // solo existe en el build cuando IS_PI=1, asi que solo la llamamos ahi.
+  /* build de Raspberry Pi sin HDMI: display de LEDs + joystick.
+   * gameloop.o solo existe en el build cuando IS_PI=1. */
   #include "gameloop.h"
 #endif
 
-int main (void){
+int main(void)
+{
+#ifndef HEADLESS
 
-	#ifndef HEADLESS
-	init_alegro(); // inicializo todo lo de alegro en esta funcion
-  printf("\n");
-  display();
-	#elif defined(IS_PI)
-	run_headless_game();
-	#endif
+    if (!init_alegro()) {
+        fprintf(stderr, "No se pudo inicializar Allegro\n");
+        return 1;
+    }
 
-	return 0;
+    return display() ? 0 : 1;
+
+#elif defined(IS_PI)
+
+    return (run_headless_game() == 0) ? 0 : 1;
+
+#else
+
+    fprintf(stderr, "Build HEADLESS en PC: no hay interfaz disponible.\n"
+                    "Recompilar con FORCE_ALLEGRO=yes para la version grafica.\n");
+    return 1;
+
+#endif
 }

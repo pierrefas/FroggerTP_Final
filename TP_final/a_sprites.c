@@ -14,32 +14,26 @@
 
 /* Default spritesheet path (change if needed) */
 #ifndef DEFAULT_SPRITESHEET_FILE
-#define DEFAULT_SPRITESHEET_FILE "assets/spritesheet.png"
+#define DEFAULT_SPRITESHEET_FILE "sprites.png"
 #endif
-
-/* Frame size in pixels: set these to the tile/frame size in your sheet */
-#ifndef FRAME_W
-#define FRAME_W 16
-#endif
-#ifndef FRAME_H
-#define FRAME_H 16
-#endif
-
-/* Layout assumption (change logic below if your sheet differs):
-   - rows 0..NUM_ENEMY_TYPES-1 : each row contains ENEMY_FRAMES frames for that enemy type
-       (columns 0..ENEMY_FRAMES-1)
-   - rows NUM_ENEMY_TYPES .. NUM_ENEMY_TYPES+NUM_FROG_FRAMES-1 : each row contains one frog frame
-       (we take the first column for frog frames)
-   If your spritesheet packs frames differently (multiple cols for frog frames, or different row order),
-   modify the x/y calculations in load_sprites accordingly.
-*/
 
 /* Parent spritesheet bitmap (kept private) */
 static ALLEGRO_BITMAP *spritesheet = NULL;
 
+/* Optional exported simple tiles (may remain NULL) */
+ALLEGRO_BITMAP *bush_0 = NULL;
+ALLEGRO_BITMAP *bush_1 = NULL;
+ALLEGRO_BITMAP *tile_0 = NULL;
+
 /* Exported sub-bitmaps */
 ALLEGRO_BITMAP *enemy_sprites[NUM_ENEMY_TYPES][ENEMY_FRAMES] = { { NULL } };
 ALLEGRO_BITMAP *frog_sprites[NUM_FROG_FRAMES] = { NULL };
+
+/* Getter for raw sheet */
+ALLEGRO_BITMAP *get_spritesheet(void)
+{
+    return spritesheet;
+}
 
 /* Load the spritesheet and create sub-bitmaps.
    Caller must have called al_init() and al_init_image_addon(). */
@@ -64,6 +58,14 @@ int load_sprites(const char *filename)
                 sheet_w, sheet_h, needed_w, needed_h);
         goto error;
     }
+
+    ALLEGRO_COLOR mask_color = al_map_rgb( 64, 64, 64);
+
+    al_convert_mask_to_alpha(spritesheet, mask_color);
+
+    mask_color = al_map_rgb( 0, 0, 0);
+
+    al_convert_mask_to_alpha( spritesheet, mask_color);
 
     /* Create enemy sub-bitmaps: each enemy type occupies a row, frames per columns */
     for (int t = 0; t < NUM_ENEMY_TYPES; ++t) {
@@ -91,6 +93,17 @@ int load_sprites(const char *filename)
         }
     }
 
+    bush_0 = al_create_sub_bitmap( spritesheet, 1, 188, FRAME_W * 2, (FRAME_H / 2) * 3 );    
+
+    bush_1 = al_create_sub_bitmap( spritesheet, 35, 188, FRAME_W, (FRAME_H / 2) * 3);
+
+    tile_0 = al_create_sub_bitmap( spritesheet, 135, 196, FRAME_W, FRAME_H);
+
+
+
+    /* Optional: leave bush_0/bush_1/tile_0 as NULL; modules may use get_spritesheet and draw regions
+       or you can create these sub-bitmaps here if your spritesheet layout is fixed. */
+
     return 0;
 
 error:
@@ -109,6 +122,9 @@ error:
             frog_sprites[f] = NULL;
         }
     }
+    if (bush_0) { al_destroy_bitmap(bush_0); bush_0 = NULL; }
+    if (bush_1) { al_destroy_bitmap(bush_1); bush_1 = NULL; }
+    if (tile_0) { al_destroy_bitmap(tile_0); tile_0 = NULL; }
     if (spritesheet) {
         al_destroy_bitmap(spritesheet);
         spritesheet = NULL;
@@ -119,6 +135,10 @@ error:
 /* Destroy sub-bitmaps first, then the parent spritesheet */
 void destroy_sprites(void)
 {
+    if (bush_0) { al_destroy_bitmap(bush_0); bush_0 = NULL; }
+    if (bush_1) { al_destroy_bitmap(bush_1); bush_1 = NULL; }
+    if (tile_0) { al_destroy_bitmap(tile_0); tile_0 = NULL; }
+
     for (int t = 0; t < NUM_ENEMY_TYPES; ++t) {
         for (int f = 0; f < ENEMY_FRAMES; ++f) {
             if (enemy_sprites[t][f]) {

@@ -5,21 +5,16 @@
 //  En este archivo van a estar todas las funciones que actualizan  //
 //  el estado de las entidades del juego                            //
 //                                                                  //
-//                                                                  //
-//                                                                  //
 //////////////////////////////////////////////////////////////////////
 
 #include "entityupdates.h"
-
 
 int stepEntites(game_state * game){
 
     int i;
 
-    if(game->penemies == NULL || game->psoport == NULL || game->pspeedheight == NULL || game == NULL){
-
+    if(game == NULL || game->penemies == NULL || game->psoport == NULL || game->pspeedheight == NULL){
         return ERROR_NULL_POINTER;
-
     }
 
     for(i = 0; (game->psoport + i)->type != -1; i++){
@@ -28,13 +23,13 @@ int stepEntites(game_state * game){
         (game->psoport + i)->endcoord += (game->pspeedheight)[(game->psoport + i)->height];
 
     }
+
     for(i = 0; (game->penemies + i)->type != -1; i++){
 
         (game->penemies + i)->startcoord += (game->pspeedheight)[(game->penemies + i)->height];
         (game->penemies + i)->endcoord += (game->pspeedheight)[(game->penemies + i)->height];
 
     }
-
 
     return 0;
 
@@ -50,55 +45,43 @@ int resetEntites(game_state * game){
 
     for(i = 0; (game->psoport + i)->type != -1; i++){
 
-        if(game->pspeedheight[(game->psoport + i)->height] < 0){
+        support_entity * soporte = game->psoport + i;
+        int len = soporte->endcoord - soporte->startcoord;
+        int speed = (game->pspeedheight)[soporte->height];
 
-            if((game->psoport + i)->endcoord < 0){
+        if(speed < 0 && soporte->endcoord < 0){
 
-                int temp = (game->psoport + i)->startcoord - (game->psoport + i)->endcoord; 
-
-                (game->psoport + i)->startcoord = ENDWORLD;
-                (game->psoport + i)->endcoord = ENDWORLD + temp;
-
-
-            }
+            /* Salio por la izquierda: reaparece pegado al borde derecho */
+            soporte->startcoord = ENDWORLD;
+            soporte->endcoord = ENDWORLD + len;
 
         }
-        else if(game->pspeedheight[(game->psoport + i)->height] > 0){
+        else if(speed > 0 && soporte->startcoord > ENDWORLD){
 
-            if((game->psoport + i)->startcoord > ENDWORLD){
-
-                int temp = (game->psoport + i)->endcoord - (game->psoport + i)->startcoord; 
-
-                (game->psoport + i)->endcoord = 0;
-                (game->psoport + i)->startcoord = 0 - temp;
-
-            }
+            /* Salio por la derecha: reaparece pegado al borde izquierdo */
+            soporte->endcoord = 0;
+            soporte->startcoord = -len;
 
         }
 
     }
+
     for(i = 0; (game->penemies + i)->type != -1; i++){
 
-        if(game->pspeedheight[(game->penemies + i)->height] < 0){
+        enemy_entity * enemigo = game->penemies + i;
+        int len = enemigo->endcoord - enemigo->startcoord;
+        int speed = (game->pspeedheight)[enemigo->height];
 
-            if((game->penemies + i)->endcoord < 0){
+        if(speed < 0 && enemigo->endcoord < 0){
 
-                int temp = (game->penemies + i)->startcoord - (game->penemies + i)->endcoord; 
+            enemigo->startcoord = ENDWORLD;
+            enemigo->endcoord = ENDWORLD + len;
 
-                (game->penemies + i)->startcoord = ENDWORLD;
-                (game->penemies + i)->endcoord = ENDWORLD + temp;
-            }
         }
-        else if(game->pspeedheight[(game->penemies + i)->height] > 0){
+        else if(speed > 0 && enemigo->startcoord > ENDWORLD){
 
-            if((game->penemies + i)->startcoord > ENDWORLD){
-
-                int temp = (game->penemies + i)->endcoord - (game->penemies + i)->startcoord; 
-
-                (game->penemies + i)->endcoord = 0;
-                (game->penemies + i)->startcoord = 0 - temp;
-
-            }
+            enemigo->endcoord = 0;
+            enemigo->startcoord = -len;
 
         }
 

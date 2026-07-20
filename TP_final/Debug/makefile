@@ -1,6 +1,11 @@
 
 -include ../makefile.init
 
+# subdir.mk define su target "clean" antes de que este archivo llegue a
+# definir "all"; sin esta linea, el goal por defecto de "make" a secas
+# terminaba siendo clean (make toma el primer target que lee).
+.DEFAULT_GOAL := all
+
 RM := rm -rf
 
 # IS_PI tiene que calcularse ANTES de meter subdir.mk: ese archivo lo
