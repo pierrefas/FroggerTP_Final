@@ -222,6 +222,20 @@ static int setupLevel(game_state * game){
     (game->pspeedheight)[SAFEROW] = 0;
     (game->pspeedheight)[GOALROW] = 0;
 
+    /* 3ra linea del lago : un extra de
+     * velocidad fijo para que no quede igual a las demas filas, algo
+     * que en el nivel 1 pasaba siempre y me molestaba, xq siempre te quedaba que tenias q esperar que ambos troncos coincidan. */
+    {
+        int s9 = (game->pspeedheight)[9];
+        int mag = (s9 < 0 ? -s9 : s9) + 1;
+
+        if(mag > MAX_ROW_SPEED){
+            mag = MAX_ROW_SPEED;
+        }
+
+        (game->pspeedheight)[9] = (s9 < 0) ? -mag : mag;
+    }
+
     for(i = 0; i < 3; i++){
 
         createEnemy(game->penemies, 0, 1);
