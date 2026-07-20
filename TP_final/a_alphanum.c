@@ -16,16 +16,35 @@ int index_disp(const char *text, int start_x, int start_y, int color)
 {
     if (!text) return -1;
     ALLEGRO_BITMAP *sheet = get_spritesheet();
-    if (!sheet) return -2;
 
-    if (start_x < 0 || start_y < 0) return -3;
-    if (color < 0) color = 0;
-    if (color >= NUM_FONT_COLORS) color = NUM_FONT_COLORS - 1;
+    if (!sheet){
+        
+        return -2;
+    }
+
+    if (start_x < 0 || start_y < 0){ 
+        
+        return -3;
+    
+    }
+    
+    if (color < 0){ 
+        
+        color = 0;
+    
+    }
+
+    if (color >= NUM_FONT_COLORS){ 
+        
+        color = NUM_FONT_COLORS - 1;
+    
+    }
 
     int x = start_x;
     int y = start_y;
 
-    for (size_t i = 0; text[i] != '\0'; ++i) {
+    for (size_t i = 0; text[i] != '\0'; ++i){
+
         unsigned char ch = (unsigned char) text[i];
 
         if (ch == '\n') {
@@ -67,7 +86,8 @@ int index_disp(const char *text, int start_x, int start_y, int color)
     return 0;
 }
 
-int index_disp_len(const char *text)
-{
+int index_disp_len(const char *text){
+
     return text ? (int)strlen(text) * GLYPH_ADVANCE : 0;
+
 }

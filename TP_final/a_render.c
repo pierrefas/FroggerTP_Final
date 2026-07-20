@@ -13,8 +13,7 @@
  * del jugador lo va gastando. */
 static int frog_jump_ticks = 0;
 
-void frog_anim_jump(void)
-{
+void frog_anim_jump(void){
     frog_jump_ticks = FROG_JUMP_FRAMES;
 }
 

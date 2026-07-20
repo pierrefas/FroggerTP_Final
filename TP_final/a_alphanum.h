@@ -35,11 +35,6 @@
 #define NUM_FONT_COLORS   5
 
 int index_disp(const char *text, int x, int y, int color);
-
-/**
- * @brief Ancho en pixeles que ocuparia text dibujado con index_disp
- * (para centrar). 0 si text es NULL.
- */
 int index_disp_len(const char *text);
 
-#endif // FROGGER_TEXT_H
+#endif 
