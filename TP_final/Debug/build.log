@@ -1,11 +1,13 @@
 Building with Allegro support (HDMI detected or forced).
-Building file: ../a_sprites.c
+Building file: ../a_PC_display.c
 Invoking: GCC C Compiler
-gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_sprites.d" -MT"a_sprites.o" -o "a_sprites.o" "../a_sprites.c"
-Finished building: ../a_sprites.c
- 
-Building target: TP_final
-Invoking: GCC C Linker
-gcc  -o "TP_final" ./a_alphanum.o ./a_PC_display.o ./a_render.o ./a_sprites.o ./a_map.o ./a_pause.o ./checking.o ./entityupdates.o ./frogupdates.o ./gamestate.o ./levelset.o ./scores.o ./highscores.o ./main.o   -lallegro -lallegro_font -lallegro_image -lallegro_primitives
-Finished building target: TP_final
- 
+gcc  -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"a_PC_display.d" -MT"a_PC_display.o" -o "a_PC_display.o" "../a_PC_display.c"
+../a_PC_display.c: In function ‘display’:
+../a_PC_display.c:175:17: error: too few arguments to function ‘pause_menu’; expected 1, have 0
+  175 |                 pause_menu();
+      |                 ^~~~~~~~~~
+In file included from ../a_PC_display.c:11:
+../a_pause.h:20:5: note: declared here
+   20 | int pause_menu(game_state *gs);
+      |     ^~~~~~~~~~
+make: *** [subdir.mk:111: a_PC_display.o] Error 1
