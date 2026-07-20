@@ -24,6 +24,7 @@
 #include "levelset.h"
 #include "frogupdates.h"
 #include "highscores.h"
+#include "game_audio.h"
 
 #define FPS 30
 
@@ -215,6 +216,11 @@ int display(void)
         fprintf(stderr, "aviso: sin spritesheet, se dibuja con primitivas\n");
     }
 
+    /* el audio es opcional: sin el, el juego sigue jugable en silencio */
+    if (audio_init() != 0) {
+        fprintf(stderr, "aviso: sin audio, el juego sigue sin sonido\n");
+    }
+
     game_state * gs = createGame();
     if (!gs) {
         fprintf(stderr, "Failed to create game state\n");
@@ -268,6 +274,7 @@ int display(void)
 
                     if (death_frames == 0 && death_then_gameover) {
                         death_then_gameover = 0;
+                        audio_play(SND_GAMEOVER);
                         if (hsQualifies(gs->score)) {
                             initials[0] = initials[1] = initials[2] = 'A';
                             initials_pos = 0;
@@ -302,9 +309,11 @@ int display(void)
                         death_row = frog_row;
                         death_then_gameover = (result == GAME_OVER);
                         time_left = LEVEL_TIME_TICKS;
+                        audio_play(SND_DEATH);
                     } else if (result == LEVEL_UP) {
                         time_left = LEVEL_TIME_TICKS;
                         level_msg_frames = LEVEL_MSG_FRAMES;
+                        audio_play(SND_NEXTLEVEL);
                     } else if (result != LEVEL_RUNNING) {
                         time_left = LEVEL_TIME_TICKS; /* cruzo: barra de nuevo */
                     }
@@ -337,6 +346,7 @@ int display(void)
                     death_frames = 0;
                     death_then_gameover = 0;
                     level_msg_frames = 0;
+                    audio_play(SND_START);
                     screen = SCREEN_PLAYING;
                 } else if (key == ALLEGRO_KEY_ESCAPE || key == ALLEGRO_KEY_Q) {
                     running = 0;
@@ -347,15 +357,16 @@ int display(void)
                 /* mientras corre la animacion de muerte no hay rana que
                  * mover ni nivel que saltear; solo se puede pausar */
                 if (death_frames == 0) {
-                    if (key == ALLEGRO_KEY_UP || key == ALLEGRO_KEY_W) { frogStepUp(gs); frog_anim_jump(); }
-                    else if (key == ALLEGRO_KEY_DOWN || key == ALLEGRO_KEY_S) { frogStepDown(gs); frog_anim_jump(); }
-                    else if (key == ALLEGRO_KEY_RIGHT || key == ALLEGRO_KEY_D) { frogStepRight(gs); frog_anim_jump(); }
-                    else if (key == ALLEGRO_KEY_LEFT || key == ALLEGRO_KEY_A) { frogStepLeft(gs); frog_anim_jump(); }
+                    if (key == ALLEGRO_KEY_UP || key == ALLEGRO_KEY_W) { frogStepUp(gs); frog_anim_jump(); audio_play(SND_JUMP); }
+                    else if (key == ALLEGRO_KEY_DOWN || key == ALLEGRO_KEY_S) { frogStepDown(gs); frog_anim_jump(); audio_play(SND_JUMP); }
+                    else if (key == ALLEGRO_KEY_RIGHT || key == ALLEGRO_KEY_D) { frogStepRight(gs); frog_anim_jump(); audio_play(SND_JUMP); }
+                    else if (key == ALLEGRO_KEY_LEFT || key == ALLEGRO_KEY_A) { frogStepLeft(gs); frog_anim_jump(); audio_play(SND_JUMP); }
                     else if (key == ALLEGRO_KEY_E) {
                         /* cheat/debug: saltear el nivel */
                         skipLevel(gs);
                         time_left = LEVEL_TIME_TICKS;
                         level_msg_frames = LEVEL_MSG_FRAMES;
+                        audio_play(SND_NEXTLEVEL);
                     }
                 }
                 if (key == ALLEGRO_KEY_ESCAPE || key == ALLEGRO_KEY_P) screen = SCREEN_PAUSED;
@@ -370,8 +381,10 @@ int display(void)
                     death_frames = 0;
                     death_then_gameover = 0;
                     level_msg_frames = 0;
+                    audio_play(SND_START);
                     screen = SCREEN_PLAYING;
                 } else if (key == ALLEGRO_KEY_M) {
+                    audio_play(SND_SALIDA);
                     screen = SCREEN_MENU; /* salir del juego sin cerrar el programa */
                 }
                 break;
@@ -382,16 +395,19 @@ int display(void)
                     screen = SCREEN_GAMEOVER;
                 } else if (key == ALLEGRO_KEY_UP) {
                     initials[initials_pos] = (initials[initials_pos] == 'Z') ? 'A' : initials[initials_pos] + 1;
+                    audio_play(SND_LETRA);
                 } else if (key == ALLEGRO_KEY_DOWN) {
                     initials[initials_pos] = (initials[initials_pos] == 'A') ? 'Z' : initials[initials_pos] - 1;
+                    audio_play(SND_LETRA);
                 } else if (key == ALLEGRO_KEY_RIGHT) {
-                    if (initials_pos < 2) initials_pos++;
+                    if (initials_pos < 2) { initials_pos++; audio_play(SND_LETRA); }
                 } else if (key == ALLEGRO_KEY_LEFT) {
-                    if (initials_pos > 0) initials_pos--;
+                    if (initials_pos > 0) { initials_pos--; audio_play(SND_LETRA); }
                 } else if (key >= ALLEGRO_KEY_A && key <= ALLEGRO_KEY_Z) {
                     /* tipear la letra directamente tambien vale */
                     initials[initials_pos] = 'A' + (key - ALLEGRO_KEY_A);
                     if (initials_pos < 2) initials_pos++;
+                    audio_play(SND_LETRA);
                 }
                 break;
 
@@ -470,6 +486,7 @@ int display(void)
 
     /* cleanup */
     destroy_sprites();
+    audio_destroy();
     endGame(gs);
     al_destroy_font(font);
     al_destroy_bitmap(buffer);
