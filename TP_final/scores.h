@@ -3,11 +3,11 @@
 
 #include "gamestate.h"
 
-// addLevelScores nunca se implemento en scores.c; se deja declarada por si
-// la logica original la necesitaba, pero nada la llama hoy. Las que
-// existen de verdad son estas dos:
-int addLevelScores(game_state * game, int points);
+/* Suma los puntos de un cruce exitoso: base por nivel + bonus por el
+ * tiempo que quedaba en la barra (time_left sobre time_total). */
+int pointsForCross(game_state * game, int time_left, int time_total);
+
+/* Suma el premio por completar los 5 huecos-meta del nivel actual. */
 int pointForFinishingLevel(game_state * game);
-int pointsForTime(game_state * game, int time);
 
 #endif

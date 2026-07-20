@@ -1,27 +1,37 @@
 #ifndef LEVELSET_H
 #define LEVELSET_H
 
-// "int level;" (sin extern) definia una variable nueva en cada .c que
-// incluyera este header; con gcc moderno (-fno-common) eso rompe el link
-// con "multiple definition of level" apenas un segundo archivo lo incluye.
-// La definicion real ahora vive en levelset.c.
-extern int level;
-
 #include "gamestate.h"
 #include "checking.h"
+
+/* Nivel actual del juego. La definicion real vive en levelset.c;
+ * firstLevel() lo resetea a 1 y updateLevel() lo incrementa. */
+extern int level;
+
+#define STARTING_LIVES 3
 
 #define ERROR_NIVEL_INVALIDO -404
 #define ERROR_TIPO_INVALIDO -405
 #define ERROR_ALTURA_INVALIDA -406
 #define ERROR_ENTIDAD_INCOLOCABLE -137
 
-// Codigo de retorno de updateLevel() para indicarle al llamador que el
-// juego termino: en esa rama updateLevel ya llamo a endGame(game) y liberó
-// toda la memoria, asi que el llamador no debe volver a tocar `game`.
+/* Codigos de retorno de updateLevel(). El llamador (front-end) los usa
+ * para reiniciar la barra de tiempo o cortar la partida. updateLevel NO
+ * libera memoria: tras GAME_OVER el game_state sigue vivo (para mostrar
+ * el puntaje final) y el duenio debe llamar a endGame() cuando termine. */
+#define LEVEL_RUNNING 0
 #define GAME_OVER 1
+#define FROG_DIED 2
+#define FROG_CROSSED 3
+#define LEVEL_UP 4
 
-int nextLevel(game_state*);
-int firstLevel(game_state*);
-int updateLevel(game_state*,int);
+int firstLevel(game_state *);
+int nextLevel(game_state *);
+
+/* Avanza un tick de juego: mueve entidades, arrastra a la rana en los
+ * troncos, resuelve muertes/cruces y el cambio de nivel.
+ * time_left/time_total: estado de la barra de tiempo del front-end
+ * (se usa para el bonus de puntaje al cruzar). */
+int updateLevel(game_state *, int time_left, int time_total);
 
 #endif

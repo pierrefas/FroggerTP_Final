@@ -1,4 +1,7 @@
-a_render.o: ../a_render.c ../a_render.h ../gamestate.h ../a_sprites.h
+a_render.o: ../a_render.c ../a_render.h ../gamestate.h ../checking.h \
+ ../a_PC_display.h ../levelset.h
 ../a_render.h:
 ../gamestate.h:
-../a_sprites.h:
+../checking.h:
+../a_PC_display.h:
+../levelset.h:

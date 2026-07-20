@@ -1,79 +1,44 @@
-#include <allegro5/allegro_image.h>
+#include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
-#include <stdio.h>
 
-#include "a_sprites.h"
-#include "a_PC_display.h"
+#include "a_map.h"
+#include "a_render.h" /* ROW_TO_Y + geometria de checking.h */
 
-#ifndef TILE_W
-#define TILE_W 16
-#endif
-#ifndef TILE_H
-#define TILE_H 16
-#endif
+void a_disp_map(void)
+{
+    ALLEGRO_COLOR water = al_map_rgb(10, 10, 90);
+    ALLEGRO_COLOR grass = al_map_rgb(20, 110, 40);
+    ALLEGRO_COLOR strip = al_map_rgb(120, 40, 140); /* franjas seguras violetas */
+    ALLEGRO_COLOR road = al_map_rgb(35, 35, 35);
+    ALLEGRO_COLOR lane = al_map_rgb(200, 200, 200);
 
-/* Source coordinates on the sheet for fallback; adjust if needed */
-#ifndef SRC_BUSH_0_X
-#define SRC_BUSH_0_X 0
-#endif
-#ifndef SRC_BUSH_0_Y
-#define SRC_BUSH_0_Y 0
-#endif
-#ifndef SRC_BUSH_1_X
-#define SRC_BUSH_1_X 8
-#endif
-#ifndef SRC_BUSH_1_Y
-#define SRC_BUSH_1_Y 0
-#endif
-#ifndef SRC_TILE_0_X
-#define SRC_TILE_0_X 0
-#endif
-#ifndef SRC_TILE_0_Y
-#define SRC_TILE_0_Y 32
-#endif
+    /* agua: de la fila de llegada al final del lago */
+    al_draw_filled_rectangle(0, ROW_TO_Y(GOALROW), GAME_WIDTH,
+                             ROW_TO_Y(STARTLAKE) + ADJCOORDFROG(1), water);
 
-void a_disp_map (void){
-
-    int midpoint_y =  GAME_HEIGHT / 2;
-    al_draw_filled_rectangle(0, 0, GAME_WIDTH, midpoint_y, al_map_rgb(0, 0, 150));
-
-    int tiles_across = (GAME_WIDTH + (TILE_W/2) - 1) / (TILE_W/2);
-
-    /* draw some foliage/bush pattern */
-    ALLEGRO_BITMAP *sheet = get_spritesheet();
-    for (int i = 0; i < tiles_across; ++i) {
-        int sx = i * (TILE_W / 2);
-        int sy = 0;
-        if (bush_0 && bush_1) {
-            if (i % 6 == 0) 
-            {
-                al_draw_bitmap(bush_0, sx, sy, 0);
-                i+=3;
-            }
-            else 
-            {
-                al_draw_bitmap(bush_1, sx, sy, 0);
-            }
-        } else if (sheet) {
-            if (i % 6 == 0) al_draw_bitmap_region(sheet, SRC_BUSH_0_X, SRC_BUSH_0_Y, TILE_W/2, TILE_H/2, sx, sy, 0);
-            else al_draw_bitmap_region(sheet, SRC_BUSH_1_X, SRC_BUSH_1_Y, TILE_W/2, TILE_H/2, sx, sy, 0);
-        }
+    /* fila de llegada: pasto con los 5 huecos-meta de agua */
+    int gy = ROW_TO_Y(GOALROW);
+    int prev = 0;
+    int i;
+    for (i = 0; i < NUM_GOAL_SLOTS; i++) {
+        al_draw_filled_rectangle(prev, gy, GOAL_SLOT_X(i), gy + ADJCOORDFROG(1), grass);
+        prev = GOAL_SLOT_X(i) + ADJCOORDFROG(1);
     }
+    al_draw_filled_rectangle(prev, gy, GAME_WIDTH, gy + ADJCOORDFROG(1), grass);
 
-    const int ROW_TOP_Y = 128;
-    const int ROW_BOTTOM_Y = 240;
-    int tiles_full = (GAME_WIDTH + TILE_W - 1) / TILE_W;
-    for (int i = 0; i < tiles_full; ++i) {
-        int x = i * TILE_W;
-        if (tile_0) {
-            al_draw_bitmap(tile_0, x, ROW_TOP_Y, 0);
-            al_draw_bitmap(tile_0, x, ROW_BOTTOM_Y, 0);
-        } else if (sheet) {
-            al_draw_bitmap_region(sheet, SRC_TILE_0_X, SRC_TILE_0_Y, TILE_W, TILE_H, x, ROW_TOP_Y, 0);
-            al_draw_bitmap_region(sheet, SRC_TILE_0_X, SRC_TILE_0_Y, TILE_W, TILE_H, x, ROW_BOTTOM_Y, 0);
-        } else {
-            al_draw_filled_rectangle(x, ROW_TOP_Y, x + TILE_W, ROW_TOP_Y + TILE_H, al_map_rgb(100,100,100));
-            al_draw_filled_rectangle(x, ROW_BOTTOM_Y, x + TILE_W, ROW_BOTTOM_Y + TILE_H, al_map_rgb(100,100,100));
+    /* franja segura del medio y fila de salida */
+    al_draw_filled_rectangle(0, ROW_TO_Y(SAFEROW), GAME_WIDTH,
+                             ROW_TO_Y(SAFEROW) + ADJCOORDFROG(1), strip);
+    al_draw_filled_rectangle(0, ROW_TO_Y(0), GAME_WIDTH,
+                             ROW_TO_Y(0) + ADJCOORDFROG(1), strip);
+
+    /* calle (filas 1..5) con lineas de carril punteadas */
+    al_draw_filled_rectangle(0, ROW_TO_Y(5), GAME_WIDTH, ROW_TO_Y(1) + ADJCOORDFROG(1), road);
+    int h, x;
+    for (h = 1; h < 5; h++) {
+        int y = ROW_TO_Y(h); /* borde entre la fila h y la h+1 */
+        for (x = 0; x < GAME_WIDTH; x += 24) {
+            al_draw_filled_rectangle(x, y - 1, x + 12, y + 1, lane);
         }
     }
 }

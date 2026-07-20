@@ -1,94 +1,28 @@
 /*
  * a_pause.c
  *
- * Very small pause menu implementation using Allegro 5.
- * Draws a translucent overlay and waits for resume/quit keys.
+ * Overlay de pausa: un velo oscuro translucido con las opciones. No tiene
+ * loop de eventos propio ni corta el programa; eso lo decide el loop
+ * principal segun la tecla que reciba.
  */
 
 #include <allegro5/allegro.h>
-#include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "a_pause.h"
+#include "a_PC_display.h"
 
-void pause_menu(void)
+void draw_pause_overlay(ALLEGRO_FONT * font)
 {
-    ALLEGRO_DISPLAY *disp = al_get_current_display();
-    ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
-    if (!queue) return;
+    al_draw_filled_rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, al_map_rgba(0, 0, 0, 170));
 
-    /* Register keyboard and display events (display may be NULL in headless) */
-    al_register_event_source(queue, al_get_keyboard_event_source());
-    if (disp) al_register_event_source(queue, al_get_display_event_source(disp));
+    if (!font) return;
 
-    ALLEGRO_FONT *font = al_create_builtin_font();
-    if (!font) {
-        /* We can still wait for input even without a font */
-    }
+    ALLEGRO_COLOR title = al_map_rgb(255, 255, 255);
+    ALLEGRO_COLOR item = al_map_rgb(200, 200, 200);
 
-    int running = 1;
-    ALLEGRO_EVENT ev;
-
-    /* Draw initial overlay once so user sees immediate feedback */
-    if (disp) {
-        al_set_target_backbuffer(disp);
-        int w = al_get_display_width(disp);
-        int h = al_get_display_height(disp);
-        al_draw_filled_rectangle(0, 0, w, h, al_map_rgba(0, 0, 0, 160));
-        if (font) {
-            al_draw_text(font, al_map_rgb(255,255,255), w/2, h/2 - 12, ALLEGRO_ALIGN_CENTER, "PAUSED");
-            al_draw_text(font, al_map_rgb(200,200,200), w/2, h/2 + 8, ALLEGRO_ALIGN_CENTER,
-                         "Press Enter/Space/Esc to resume, Q to quit");
-        }
-        al_flip_display();
-    }
-
-    while (running) {
-        al_wait_for_event(queue, &ev);
-
-        if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
-            switch (ev.keyboard.keycode) {
-            case ALLEGRO_KEY_ESCAPE:
-            case ALLEGRO_KEY_ENTER:
-            case ALLEGRO_KEY_SPACE:
-                running = 0; /* resume */
-                break;
-            case ALLEGRO_KEY_Q:
-                /* Quit the whole application (frontend loop will not continue). */
-                al_destroy_event_queue(queue);
-                if (font) al_destroy_font(font);
-                exit(0);
-                break;
-            default:
-                break;
-            }
-        } else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-            /* treat display close as quit */
-            al_destroy_event_queue(queue);
-            if (font) al_destroy_font(font);
-            exit(0);
-        }
-
-        /* redraw overlay so the display doesn't time out while paused */
-        if (disp) {
-            al_set_target_backbuffer(disp);
-            int w = al_get_display_width(disp);
-            int h = al_get_display_height(disp);
-            al_draw_filled_rectangle(0, 0, w, h, al_map_rgba(0, 0, 0, 160));
-            if (font) {
-                al_draw_text(font, al_map_rgb(255,255,255), w/2, h/2 - 12, ALLEGRO_ALIGN_CENTER, "PAUSED");
-                al_draw_text(font, al_map_rgb(200,200,200), w/2, h/2 + 8, ALLEGRO_ALIGN_CENTER,
-                             "Press Enter/Space/Esc to resume, Q to quit");
-            }
-            al_flip_display();
-        }
-    }
-
-    /* cleanup */
-    al_unregister_event_source(queue, al_get_keyboard_event_source());
-    if (disp) al_unregister_event_source(queue, al_get_display_event_source(disp));
-    al_destroy_event_queue(queue);
-    if (font) al_destroy_font(font);
+    al_draw_text(font, title, CENTER_X, CENTER_Y - 32, ALLEGRO_ALIGN_CENTER, "PAUSA");
+    al_draw_text(font, item, CENTER_X, CENTER_Y - 8, ALLEGRO_ALIGN_CENTER, "ENTER/ESC  SEGUIR");
+    al_draw_text(font, item, CENTER_X, CENTER_Y + 6, ALLEGRO_ALIGN_CENTER, "R  REINICIAR");
+    al_draw_text(font, item, CENTER_X, CENTER_Y + 20, ALLEGRO_ALIGN_CENTER, "M  SALIR AL MENU");
 }
