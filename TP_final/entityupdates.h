@@ -3,6 +3,7 @@
 
 #include "gamestate.h"
 
+<<<<<<< HEAD
 /*******************************************************************************
  * CICLO DE BUCEO DE LAS TORTUGAS
  *
@@ -18,17 +19,32 @@
 #define DIVE_CYCLE_TICKS 210
 #define DIVE_FLOAT_TICKS 120 /* a flote y firme */
 #define DIVE_WARN_TICKS  30  /* hundiendose; el resto del ciclo esta sumergida */
+=======
+
+#define SUPPORT_IS_TURTLE(type) ((type) >= 8)
+
+#define DIVE_CYCLE_TICKS 210
+#define DIVE_FLOAT_TICKS 120 
+#define DIVE_WARN_TICKS  30 
+>>>>>>> 046f257db908d7a4cdae0a785937beace1eab9f8
 
 typedef enum {
     SUPPORT_FLOATING,
     SUPPORT_SINKING,
     SUPPORT_DIVED,
+<<<<<<< HEAD
     SUPPORT_LOG /* tronco: nunca se hunde */
+=======
+    SUPPORT_LOG 
+>>>>>>> 046f257db908d7a4cdae0a785937beace1eab9f8
 } dive_phase;
 
 int stepEntites(game_state*);
 int resetEntites(game_state*);
+int updateSupportDive(game_state*);
+dive_phase supportDivePhase(const support_entity*);
 
+<<<<<<< HEAD
 /* Avanza un tick el ciclo de buceo de cada tortuga y actualiza su flag
  * supporting. Llamar una vez por tick desde updateLevel(). */
 int updateSupportDive(game_state*);
@@ -37,4 +53,6 @@ int updateSupportDive(game_state*);
  * dibujar el parpadeo de aviso). */
 dive_phase supportDivePhase(const support_entity*);
 
+=======
+>>>>>>> 046f257db908d7a4cdae0a785937beace1eab9f8
 #endif

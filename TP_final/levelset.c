@@ -9,14 +9,10 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "levelset.h"
-#include "scores.h"
-#include "entityupdates.h"
-#include "frogupdates.h"
-#include <time.h>
-#include <stdlib.h>
 
 int level;
 
+<<<<<<< HEAD
 /* Largo (en casilleros) de cada tipo de entidad: 0..4 enemigos, 5..9
  * soportes (8 = grupo de 3 tortugas, 9 = grupo de 2 tortugas).
  * drawleds.c (Raspberry Pi) tambien lo usa via extern. */
@@ -33,6 +29,10 @@ int lentypes[] = {1, 1, 1, 1, 2, 3, 3, 7, 3, 2};
  * 10 ahora mete 5 grupos de tortugas y queda apretada: con 50 intentos a
  * veces alguno no entraba y esa fila salia despoblada. */
 #define PLACE_ATTEMPTS 200
+=======
+
+int lentypes[] = {1, 1, 1, 1, 2, 3, 3, 7, 3, 2}; //Los largos de cada entidad segun su fila
+>>>>>>> 046f257db908d7a4cdae0a785937beace1eab9f8
 
 static int createEnemy(enemy_entity * enemigo, int tipo, int height);
 static int createSupport(support_entity * soporte, int tipo, int height, int can_dive);
@@ -78,15 +78,11 @@ static int createEnemy(enemy_entity * enemigo, int tipo, int height){
 
         for(temp = enemigo; temp->type != -1; temp++){
 
-            if(temp == new_enemy){
-                continue; //No compararse consigo mismo
-            }
-
-            if(temp->height == height &&
+            if(temp != new_enemy && temp->height == height &&
                new_enemy->startcoord <= temp->endcoord + ENTITY_MIN_GAP &&
                new_enemy->endcoord >= temp->startcoord - ENTITY_MIN_GAP){
 
-                placed = 0; //Pisa a otro de su fila: reintento en otra posicion
+                placed = 0; //Pisa a otro de su fila reintento en otra posicion, tambien me aseguro de que no sea la misma entidad
                 break;
 
             }
@@ -132,8 +128,12 @@ static int createSupport(support_entity * soporte, int tipo, int height, int can
      * (ver entityupdates.h): setupLevel habilita UNA por fila, con fase
      * inicial al azar. El resto (y los troncos) queda en -1: a flote
      * para siempre. */
+<<<<<<< HEAD
     new_support->divetimer = (SUPPORT_IS_TURTLE(tipo) && can_dive)
                                  ? rand() % DIVE_CYCLE_TICKS : -1;
+=======
+    new_support->divetimer = (SUPPORT_IS_TURTLE(tipo) && can_dive) ? rand() % DIVE_CYCLE_TICKS : -1;
+>>>>>>> 046f257db908d7a4cdae0a785937beace1eab9f8
 
     (new_support + 1)->type = -1;
 
@@ -152,11 +152,7 @@ static int createSupport(support_entity * soporte, int tipo, int height, int can
 
         for(temp = soporte; temp->type != -1; temp++){
 
-            if(temp == new_support){
-                continue;
-            }
-
-            if(temp->height == height &&
+            if(temp != new_support && temp->height == height &&
                new_support->startcoord <= temp->endcoord + ENTITY_MIN_GAP &&
                new_support->endcoord >= temp->startcoord - ENTITY_MIN_GAP){
 
@@ -178,10 +174,13 @@ static int createSupport(support_entity * soporte, int tipo, int height, int can
 
 }
 
-/* Velocidad aleatoria de una fila: el rango crece con el nivel. */
 static int rowSpeed(void){
 
+<<<<<<< HEAD
     int speed = 1 + rand() % (level);
+=======
+    int speed = 1 + level/2 + rand() % (level) ;
+>>>>>>> 046f257db908d7a4cdae0a785937beace1eab9f8
 
     if(speed > MAX_ROW_SPEED){
         speed = MAX_ROW_SPEED;
@@ -191,8 +190,6 @@ static int rowSpeed(void){
 
 }
 
-/* Arma un nivel: limpia listas y huecos-meta, repone la rana, sortea
- * velocidades y crea las entidades. Comun a firstLevel y nextLevel. */
 static int setupLevel(game_state * game){
 
     if(game == NULL || game->penemies == NULL || game->psoport == NULL ||
@@ -210,15 +207,14 @@ static int setupLevel(game_state * game){
     int i;
 
     for(i = 0; i < NUM_GOAL_SLOTS; i++){
-        (game->safespaces)[i] = 0;
+        (game->safespaces)[i] = 0; //Libero las endozones
     }
 
     for(i = 0; i < NUM_HEIGHT_LEVELS; i++){
         (game->pspeedheight)[i] = rowSpeed();
     }
 
-    /* Las filas seguras no arrastran nada */
-    (game->pspeedheight)[0] = 0;
+    (game->pspeedheight)[0] = 0; //Claramente las filas seguras no se mueven
     (game->pspeedheight)[SAFEROW] = 0;
     (game->pspeedheight)[GOALROW] = 0;
 
@@ -238,11 +234,21 @@ static int setupLevel(game_state * game){
 
     for(i = 0; i < 3; i++){
 
-        createEnemy(game->penemies, 0, 1);
+        createEnemy(game->penemies, 0, 1); //Los autos y los camiones de la ultima calle
         createEnemy(game->penemies, 1, 2);
         createEnemy(game->penemies, 2, 3);
         createEnemy(game->penemies, 3, 4);
         createEnemy(game->penemies, 4, 5);
+<<<<<<< HEAD
+=======
+
+    }
+
+    for(i = 0; i < 3; i++){
+
+        createSupport(game->psoport, 8, 7, i == 0);  //3 grupos de 3 tortugas
+        createSupport(game->psoport, 6, 8, 0);       //3 troncos de 3
+>>>>>>> 046f257db908d7a4cdae0a785937beace1eab9f8
 
     }
 
@@ -256,6 +262,7 @@ static int setupLevel(game_state * game){
     }
 
     for(i = 0; i < 2; i++){
+<<<<<<< HEAD
         createSupport(game->psoport, 7, 9, 0);       //2 troncos largos de 7
     }
 
@@ -265,6 +272,23 @@ static int setupLevel(game_state * game){
 
     for(i = 0; i < 4; i++){
         createSupport(game->psoport, 5, 11, 0);      //4 troncos de 3
+=======
+
+        createSupport(game->psoport, 7, 9, 0);       //2 troncos largos de 7
+
+    }
+
+    for(i = 0; i < 5; i++){
+
+        createSupport(game->psoport, 9, 10, i == 0); //5 grupos de 2 tortugas
+
+    }
+
+    for(i = 0; i < 4; i++){
+
+        createSupport(game->psoport, 5, 11, 0);      //4 troncos de 3
+
+>>>>>>> 046f257db908d7a4cdae0a785937beace1eab9f8
     }
 
     return 0;
@@ -289,6 +313,8 @@ int firstLevel(game_state * game){
 
 int nextLevel(game_state * game){
 
+    level ++;
+
     return setupLevel(game);
 
 }
@@ -299,9 +325,12 @@ int skipLevel(game_state * game){
         return ERROR_NULL_POINTER;
     }
 
+<<<<<<< HEAD
     /* Cheat/debug: pasa de nivel sin puntos de premio. */
     level++;
 
+=======
+>>>>>>> 046f257db908d7a4cdae0a785937beace1eab9f8
     return nextLevel(game);
 
 }
@@ -335,7 +364,6 @@ int updateLevel(game_state * game, int time_left, int time_total){
         if(isLevelFinished(game) == 1){
 
             pointForFinishingLevel(game);
-            level++;
             nextLevel(game);
 
             return LEVEL_UP;

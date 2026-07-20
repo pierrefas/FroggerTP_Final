@@ -9,9 +9,6 @@
 //////////////////////////////////////////////////////////////////////
 #include "checking.h"
 
-/* Margen de perdon (en px) al chocar con un enemigo: rozar el borde de un
- * auto no cuenta como atropello. */
-#define HITBOX_MARGIN 2
 
 int goalSlotAt(const frog_player * rana){
 
@@ -19,12 +16,11 @@ int goalSlotAt(const frog_player * rana){
         return -1;
     }
 
-    int center = rana->startcoord + ADJCOORDFROG(1) / 2;
     int i;
 
     for(i = 0; i < NUM_GOAL_SLOTS; i++){
 
-        if(center >= GOAL_SLOT_X(i) && center < GOAL_SLOT_X(i) + ADJCOORDFROG(1)){
+        if(rana->startcoord + HITBOX_MARGIN >= GOAL_SLOT_X(i) && rana->endcoord - HITBOX_MARGIN < GOAL_SLOT_X(i) + ADJCOORDFROG(1)){
             return i;
         }
 
