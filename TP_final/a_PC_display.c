@@ -88,7 +88,8 @@ static void draw_title_retro(ALLEGRO_FONT * font, const char * txt, int y,
 {
     if (get_spritesheet()) {
         index_disp(txt, CENTER_X - index_disp_len(txt) / 2, y, color);
-    } else {
+    }
+     else {
         al_draw_text(font, fallback_col, CENTER_X, y, ALLEGRO_ALIGN_CENTER, txt);
     }
 }
@@ -146,10 +147,11 @@ static void draw_initials_screen(ALLEGRO_FONT * font, int score,
             char letra[2] = {initials[i], '\0'};
             if (get_spritesheet()) {
                 index_disp(letra, x - 4, CENTER_Y - 4, 1);
-            } else {
+            } 
+            else {
                 al_draw_text(font, al_map_rgb(90, 230, 90), x, CENTER_Y - 4,
                              ALLEGRO_ALIGN_CENTER, letra);
-            }
+                }
         }
         if (i == pos) {
             al_draw_filled_rectangle(x - 6, CENTER_Y + 8, x + 6, CENTER_Y + 10,
@@ -285,7 +287,8 @@ int display(void)
                         }
                     }
 
-                } else {
+                } 
+                else {
 
                     /* donde esta la rana ANTES del update: si muere, la
                      * animacion va ahi (updateLevel ya la repone en la salida) */
@@ -310,12 +313,14 @@ int display(void)
                         death_then_gameover = (result == GAME_OVER);
                         time_left = LEVEL_TIME_TICKS;
                         audio_play(SND_DEATH);
-                    } else if (result == LEVEL_UP) {
+                    } 
+                    else if (result == LEVEL_UP) {
                         time_left = LEVEL_TIME_TICKS;
                         level_msg_frames = LEVEL_MSG_FRAMES;
                         audio_play(SND_NEXTLEVEL);
-                    } else if (result != LEVEL_RUNNING) {
-                        time_left = LEVEL_TIME_TICKS; /* cruzo: barra de nuevo */
+                    } 
+                    else if (result != LEVEL_RUNNING) {
+                        time_left = LEVEL_TIME_TICKS; 
                     }
 
                 }
@@ -328,12 +333,11 @@ int display(void)
 
             anim++;
             redraw = 1;
-
-        } else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-
+        } 
+        else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             running = 0;
-
-        } else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
+            } 
+        else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
 
             int key = event.keyboard.keycode;
 
@@ -348,44 +352,62 @@ int display(void)
                     level_msg_frames = 0;
                     audio_play(SND_START);
                     screen = SCREEN_PLAYING;
-                } else if (key == ALLEGRO_KEY_ESCAPE || key == ALLEGRO_KEY_Q) {
+                }
+                 else if (key == ALLEGRO_KEY_ESCAPE || key == ALLEGRO_KEY_Q) {
                     running = 0;
                 }
                 break;
 
-            case SCREEN_PLAYING:
-                /* mientras corre la animacion de muerte no hay rana que
-                 * mover ni nivel que saltear; solo se puede pausar */
+            case SCREEN_PLAYING: 
                 if (death_frames == 0) {
-                    if (key == ALLEGRO_KEY_UP || key == ALLEGRO_KEY_W) { frogStepUp(gs); frog_anim_jump(); audio_play(SND_JUMP); }
-                    else if (key == ALLEGRO_KEY_DOWN || key == ALLEGRO_KEY_S) { frogStepDown(gs); frog_anim_jump(); audio_play(SND_JUMP); }
-                    else if (key == ALLEGRO_KEY_RIGHT || key == ALLEGRO_KEY_D) { frogStepRight(gs); frog_anim_jump(); audio_play(SND_JUMP); }
-                    else if (key == ALLEGRO_KEY_LEFT || key == ALLEGRO_KEY_A) { frogStepLeft(gs); frog_anim_jump(); audio_play(SND_JUMP); }
-                    else if (key == ALLEGRO_KEY_E) {
-                        /* cheat/debug: saltear el nivel */
+                    if (key == ALLEGRO_KEY_UP || key == ALLEGRO_KEY_W){
+                           frogStepUp(gs); 
+                           frog_anim_jump();
+                           audio_play(SND_JUMP); 
+                        }
+                    else if (key == ALLEGRO_KEY_DOWN || key == ALLEGRO_KEY_S) { 
+                        frogStepDown(gs); 
+                        frog_anim_jump();
+                         audio_play(SND_JUMP);
+                        }
+                    else if (key == ALLEGRO_KEY_RIGHT || key == ALLEGRO_KEY_D) {
+                         frogStepRight(gs);
+                         frog_anim_jump();
+                         audio_play(SND_JUMP); 
+                        }
+                    else if (key == ALLEGRO_KEY_LEFT || key == ALLEGRO_KEY_A) { 
+                        frogStepLeft(gs);
+                        frog_anim_jump();
+                        audio_play(SND_JUMP);
+                        }
+                    else if (key == ALLEGRO_KEY_E) {//Tecla para saltar el nivel
                         skipLevel(gs);
                         time_left = LEVEL_TIME_TICKS;
                         level_msg_frames = LEVEL_MSG_FRAMES;
                         audio_play(SND_NEXTLEVEL);
                     }
                 }
-                if (key == ALLEGRO_KEY_ESCAPE || key == ALLEGRO_KEY_P) screen = SCREEN_PAUSED;
+                if (key == ALLEGRO_KEY_ESCAPE || key == ALLEGRO_KEY_P){
+                    screen = SCREEN_PAUSED;
+                }
                 break;
 
             case SCREEN_PAUSED:
                 if (key == ALLEGRO_KEY_ESCAPE || key == ALLEGRO_KEY_ENTER) {
                     screen = SCREEN_PLAYING;
-                } else if (key == ALLEGRO_KEY_R) {
-                    firstLevel(gs); /* reiniciar la partida */
+                 }
+                 else if (key == ALLEGRO_KEY_R) {
+                    firstLevel(gs); //reinicia el nivel
                     time_left = LEVEL_TIME_TICKS;
                     death_frames = 0;
                     death_then_gameover = 0;
                     level_msg_frames = 0;
                     audio_play(SND_START);
                     screen = SCREEN_PLAYING;
-                } else if (key == ALLEGRO_KEY_M) {
+                } 
+                else if (key == ALLEGRO_KEY_M) {
                     audio_play(SND_SALIDA);
-                    screen = SCREEN_MENU; /* salir del juego sin cerrar el programa */
+                    screen = SCREEN_MENU; // sale del juego sin salir del programa
                 }
                 break;
 
@@ -393,20 +415,28 @@ int display(void)
                 if (key == ALLEGRO_KEY_ENTER) {
                     hs_rank = updateHighScores(initials, gs->score);
                     screen = SCREEN_GAMEOVER;
-                } else if (key == ALLEGRO_KEY_UP) {
+                } 
+                else if (key == ALLEGRO_KEY_UP) {
                     initials[initials_pos] = (initials[initials_pos] == 'Z') ? 'A' : initials[initials_pos] + 1;
                     audio_play(SND_LETRA);
-                } else if (key == ALLEGRO_KEY_DOWN) {
+                } 
+                else if (key == ALLEGRO_KEY_DOWN) {
                     initials[initials_pos] = (initials[initials_pos] == 'A') ? 'Z' : initials[initials_pos] - 1;
                     audio_play(SND_LETRA);
-                } else if (key == ALLEGRO_KEY_RIGHT) {
+                } 
+                else if (key == ALLEGRO_KEY_RIGHT) {
                     if (initials_pos < 2) { initials_pos++; audio_play(SND_LETRA); }
-                } else if (key == ALLEGRO_KEY_LEFT) {
-                    if (initials_pos > 0) { initials_pos--; audio_play(SND_LETRA); }
-                } else if (key >= ALLEGRO_KEY_A && key <= ALLEGRO_KEY_Z) {
-                    /* tipear la letra directamente tambien vale */
+                }
+                 else if (key == ALLEGRO_KEY_LEFT) {
+                    if (initials_pos > 0) {
+                         initials_pos--; 
+                         audio_play(SND_LETRA);
+                         }
+                } 
+                else if (key >= ALLEGRO_KEY_A && key <= ALLEGRO_KEY_Z) { //vale tipear las letras directamente también
                     initials[initials_pos] = 'A' + (key - ALLEGRO_KEY_A);
-                    if (initials_pos < 2) initials_pos++;
+                    if (initials_pos < 2) 
+                    initials_pos++;
                     audio_play(SND_LETRA);
                 }
                 break;
@@ -414,7 +444,8 @@ int display(void)
             case SCREEN_GAMEOVER:
                 if (key == ALLEGRO_KEY_ENTER || key == ALLEGRO_KEY_SPACE) {
                     screen = SCREEN_MENU;
-                } else if (key == ALLEGRO_KEY_ESCAPE || key == ALLEGRO_KEY_Q) {
+                } 
+                else if (key == ALLEGRO_KEY_ESCAPE || key == ALLEGRO_KEY_Q) {
                     running = 0;
                 }
                 break;
@@ -438,8 +469,7 @@ int display(void)
             case SCREEN_PAUSED:
                 a_disp_map();
 
-                /* muriendo: el mundo queda quieto, la rana se reemplaza
-                 * por la animacion de muerte donde la atropellaron/ahogo */
+                //se pausa el mundo, y se reemplaza la rana por la animación de muerte
                 draw_game_state(gs, death_frames > 0);
                 if (death_frames > 0) {
                     draw_death_at(death_x, death_row,
@@ -471,7 +501,7 @@ int display(void)
 
             }
 
-            /* escalo el buffer de baja resolucion a la ventana */
+            // escalo el buffer de baja resolucion a la ventana 
             al_set_target_bitmap(al_get_backbuffer(disp));
             al_clear_to_color(al_map_rgb(0, 0, 0));
             al_draw_scaled_bitmap(buffer, 0, 0, GAME_WIDTH, GAME_HEIGHT,
@@ -484,7 +514,7 @@ int display(void)
 
     }
 
-    /* cleanup */
+    // limpieza 
     destroy_sprites();
     audio_destroy();
     endGame(gs);

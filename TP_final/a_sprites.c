@@ -28,7 +28,7 @@ ALLEGRO_BITMAP *turtle_sprite = NULL, *turtle_dive = NULL;
 ALLEGRO_BITMAP *home_frog = NULL;
 ALLEGRO_BITMAP *sidewalk_tile = NULL, *bush_arch = NULL, *bush_fill = NULL;
 
-/* Region de la hoja + puntero destino, para recortar todo en un loop. */
+/* Region de la hoja + puntero destino, para recortar todo en un fruityloopy. */
 typedef struct {
     ALLEGRO_BITMAP **dst;
     int x, y, w, h;
