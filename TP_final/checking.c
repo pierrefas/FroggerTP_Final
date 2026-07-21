@@ -20,7 +20,7 @@ int goalSlotAt(const frog_player * rana){
 
     for(i = 0; i < NUM_GOAL_SLOTS; i++){
 
-        if(rana->startcoord + HITBOX_MARGIN >= GOAL_SLOT_X(i) && rana->endcoord - HITBOX_MARGIN < GOAL_SLOT_X(i) + ADJCOORDFROG(1)){
+        if(rana->startcoord + HITBOX_MARGIN * 2 >= GOAL_SLOT_X(i) && rana->endcoord - HITBOX_MARGIN * 2 < GOAL_SLOT_X(i) + ADJCOORDFROG(1)){
             return i;
         }
 
