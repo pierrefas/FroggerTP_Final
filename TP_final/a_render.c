@@ -143,8 +143,8 @@ static void draw_support(support_entity * s){
     }
 }
 
-static void draw_enemy(game_state * g, enemy_entity * e)
-{
+static void draw_enemy(game_state * g, enemy_entity * e){
+
     int y = ROW_TO_Y(e->height);
 
     if (e->type >= 0 && e->type < NUM_VEHICLE_TYPES && vehicle_sprites[e->type]){
@@ -253,8 +253,9 @@ void draw_death_at(int x, int row, int step){
 void draw_hud(game_state * g, ALLEGRO_FONT * font, int time_left, int time_total){
 
     if (!g || !font){ 
-        
+
         return;
+        
     }
 
     al_draw_textf(font, al_map_rgb(255, 255, 255), 4, 4, 0, "SCORE %d", g->score);
