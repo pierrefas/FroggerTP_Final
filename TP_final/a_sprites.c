@@ -34,6 +34,11 @@ typedef struct {
     int x, y, w, h;
 } sheet_region;
 
+/*
+    la siguiente estructura fue crada con ia ( claudia ), para agilizar la creacion de sub_bitmaps 
+    y ademas dada la monotoneidad de definir cada item del mismo array
+*/
+
 static const sheet_region regions[] = {
     // rana sentada mirando: arriba, derecha, abajo, izquierda 
     { &frog_sprites[0],     3,   4, 12,  9 },
@@ -98,9 +103,7 @@ int load_sprites(const char *filename){
 
     for (i = 0; i < NUM_REGIONS; i++) {
 
-        *regions[i].dst = al_create_sub_bitmap(spritesheet, regions[i].x,
-                                               regions[i].y, regions[i].w,
-                                               regions[i].h);
+        *regions[i].dst = al_create_sub_bitmap(spritesheet, regions[i].x, regions[i].y, regions[i].w, regions[i].h);
 
         if (*regions[i].dst == NULL) {
             fprintf(stderr, "a_sprites: Failed to create sub-bitmap %d\n", i);
