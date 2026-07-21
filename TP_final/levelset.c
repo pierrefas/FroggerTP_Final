@@ -195,7 +195,7 @@ static int setupLevel(game_state * game){
     }
 
     if(level == 1){ //En el nivel 1 todas las filas comparten velocidad 1, distingo la 2da hilera de troncos (altura 9) de la 1ra (altura 8)
-        (game->pspeedheight)[9] = ((game->pspeedheight)[8] > 0) ? (game->pspeedheight)[8] + 1 : (game->pspeedheight)[8] - 1;
+        (game->pspeedheight)[9] = ((game->pspeedheight)[8] > 0) ? (game->pspeedheight)[8] + 1 : (game->pspeedheight)[8];
     }
 
     for(i = 0; i < 3; i++){
