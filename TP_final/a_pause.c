@@ -12,8 +12,8 @@
 #include "a_pause.h"
 #include "a_PC_display.h"
 
-void draw_pause_overlay(ALLEGRO_FONT * font)
-{
+void draw_pause_overlay(ALLEGRO_FONT * font){
+    
     al_draw_filled_rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, al_map_rgba(0, 0, 0, 170));
 
     if (!font) return;
