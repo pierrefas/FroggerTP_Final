@@ -83,9 +83,9 @@ int init_alegro(void)
 /* Titulo/encabezado centrado: con spritesheet usa la fuente del arcade
  * (index_disp, color 0 blanco / 1 amarillo / 2 rojo / 3 magenta / 4 cian);
  * sin hoja cae a la fuente builtin con fallback_col. */
-static void draw_title_retro(ALLEGRO_FONT * font, const char * txt, int y,
-                             int color, ALLEGRO_COLOR fallback_col)
-{
+static void draw_title_retro(ALLEGRO_FONT * font, const char * txt, int y, int color, ALLEGRO_COLOR fallback_col){
+
+    
     if (get_spritesheet()) {
         index_disp(txt, CENTER_X - index_disp_len(txt) / 2, y, color);
     }
