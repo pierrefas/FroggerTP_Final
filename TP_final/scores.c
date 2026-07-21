@@ -27,3 +27,4 @@ int pointForFinishingLevel(game_state * game){
     return 1;
 
 }
+//Guardapuntos al avanazar o al terminar
