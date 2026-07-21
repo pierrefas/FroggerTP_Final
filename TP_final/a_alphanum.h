@@ -1,3 +1,12 @@
+/*
+ * a_alphanum.h
+ *
+ * Texto en pantalla para el front-end de PC, usando la fuente propia del
+ * spritesheet del arcade (glifos de 7x7 recortados de la zona y=250 de la
+ * hoja, en 5 colores) en vez de una fuente de sistema. La usan el menu,
+ * el HUD y la pantalla de carga de iniciales.
+ */
+
 #ifndef FROGGER_TEXT_H
 #define FROGGER_TEXT_H
 

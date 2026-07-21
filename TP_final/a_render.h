@@ -1,3 +1,13 @@
+/*
+ * a_render.h
+ *
+ * Dibujo de todo lo que se mueve en el front-end de PC: la rana, los
+ * autos/camiones, los troncos/tortugas y la animacion de muerte, mas el
+ * HUD (puntaje, nivel, vidas y barra de tiempo). Usa los sprites del
+ * arcade cuando el spritesheet cargo y cae a primitivas (rectangulos,
+ * circulos) si no.
+ */
+
 #ifndef A_RENDER_H
 #define A_RENDER_H
 

@@ -1,3 +1,12 @@
+/*
+ * joystick.h
+ *
+ * Traduce las lecturas crudas del joystick (joydrv.h) en cuatro flags de
+ * direccion con enclave: una vez detectada una direccion se mantiene fija
+ * hasta que el stick vuelve a la zona muerta, para que un solo empujon no
+ * se lea como varios pasos seguidos.
+ */
+
 #ifndef JOYSTICK_H
 #define JOYSTICK_H
 #define DEADZONE 100 // zona muerta del joystick

@@ -1,3 +1,14 @@
+/*
+ * gamestate.h
+ *
+ * Modelo de datos central del juego: los structs de la rana
+ * (frog_player), los enemigos (enemy_entity), los soportes del lago
+ * (support_entity) y el contenedor que los agrupa (game_state), mas la
+ * macro ADJCOORDFROG para pasar de casilleros a pixeles. gamestate.c solo
+ * se encarga de reservar y liberar toda esa memoria (createGame/endGame);
+ * llenarla con un nivel jugable es tarea de levelset.c.
+ */
+
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 

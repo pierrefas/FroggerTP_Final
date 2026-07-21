@@ -1,3 +1,16 @@
+/*
+ * levelset.h
+ *
+ * Arma cada nivel: coloca autos y camiones en las calles y troncos/
+ * tortugas en el lago sin que se pisen entre si (createEnemy/
+ * createSupport, con reintentos), sortea la velocidad de cada fila segun
+ * el nivel actual (rowSpeed, con techo en MAX_ROW_SPEED) y habilita una
+ * tortuga por grupo para que se hunda ciclicamente. updateLevel() es el
+ * tick del backend: mueve las entidades, chequea muerte/llegada y
+ * devuelve un codigo (LEVEL_RUNNING/GAME_OVER/FROG_DIED/FROG_CROSSED/
+ * LEVEL_UP) que interpreta el front-end activo.
+ */
+
 #ifndef LEVELSET_H
 #define LEVELSET_H
 

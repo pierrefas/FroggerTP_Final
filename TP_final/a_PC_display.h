@@ -1,10 +1,12 @@
 /*
- * display.h
+ * a_PC_display.h
  *
- *  Created on: Jul 9, 2026
- *      Author: peterfas
+ * Front-end de PC (Allegro 5): crea la ventana escalada, corre el loop de
+ * eventos a 30 FPS y es la unica pieza que toca teclado/pantalla. Traduce
+ * las teclas en movimientos de la rana (via frogupdates) y el game_state
+ * en dibujo (via a_map/a_render/a_sprites), alternando entre las
+ * pantallas de menu, juego, pausa, carga de iniciales y game over.
  */
-
 
 #ifndef a_PC_DISPLAY_H
 #define a_PC_DISPLAY_H

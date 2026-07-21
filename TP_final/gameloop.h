@@ -1,8 +1,13 @@
 /*
  * gameloop.h
- * integración de joystick.c drawleds.c, frogupdates.c, entityupdates.c
- * y levelupdtates.c para correr el juego en la raspberry hasta que el 
- * jugador se queda sin vidas
+ *
+ * Front-end headless de Raspberry Pi: el equivalente de a_PC_display.c
+ * pero para el panel de LEDs + joystick en vez de una ventana Allegro.
+ * Corre el mismo backend (gamestate/checking/frogupdates/levelset/
+ * highscores) y traduce joystick -> movimientos y estado -> LEDs (via
+ * drawleds.c/disdrv.h), alternando entre menu, juego, pausa, cartel de
+ * nivel, carga de iniciales y game over. Solo se compila en el build de
+ * Pi (IS_PI=1); ver main.c.
  */
 
 #ifndef GAMELOOP_H

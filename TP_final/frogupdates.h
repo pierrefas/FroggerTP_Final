@@ -1,3 +1,14 @@
+/*
+ * frogupdates.h
+ *
+ * Movimiento de la rana: los cuatro pasos direccionales, arrastrarla
+ * junto con el soporte cuando esta sobre el lago (followSupport), volver
+ * a la fila de salida al morir o al cruzar (resetFrogPos) y descontar una
+ * vida (loseLife). isInBounds centraliza el chequeo de limites (no salir
+ * del mundo ni pisar un hueco-meta ya ocupado) que usa cada paso antes de
+ * confirmarse.
+ */
+
 #ifndef FUPDATE_H
 #define FUPDATE_H
 
