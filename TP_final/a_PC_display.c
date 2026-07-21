@@ -85,7 +85,7 @@ int init_alegro(void)
  * sin hoja cae a la fuente builtin con fallback_col. */
 static void draw_title_retro(ALLEGRO_FONT * font, const char * txt, int y, int color, ALLEGRO_COLOR fallback_col){
 
-    
+
     if (get_spritesheet()) {
         index_disp(txt, CENTER_X - index_disp_len(txt) / 2, y, color);
     }
@@ -460,27 +460,30 @@ int display(void)
                 //se pausa el mundo, y se reemplaza la rana por la animación de muerte
                 draw_game_state(gs, death_frames > 0);
                 if (death_frames > 0) {
-                    draw_death_at(death_x, death_row,
-                                  (DEATH_ANIM_FRAMES - death_frames) / DEATH_FRAME_DIV);
+
+                    draw_death_at(death_x, death_row,  (DEATH_ANIM_FRAMES - death_frames) / DEATH_FRAME_DIV);
+
                 }
 
                 draw_hud(gs, font, time_left, LEVEL_TIME_TICKS);
 
                 if (level_msg_frames > 0) {
+
                     char level_msg[16];
                     sprintf(level_msg, "NIVEL %d", level);
-                    draw_title_retro(font, level_msg, CENTER_Y - 24, 1,
-                                     al_map_rgb(235, 220, 60));
+                    draw_title_retro(font, level_msg, CENTER_Y - 24, 1, al_map_rgb(235, 220, 60));
+
                 }
 
                 if (screen == SCREEN_PAUSED) {
+
                     draw_pause_overlay(font);
+
                 }
                 break;
 
             case SCREEN_INITIALS:
-                draw_initials_screen(font, gs->score, initials, initials_pos,
-                                     (anim / INITIALS_BLINK_FRAMES) % 2 == 0);
+                draw_initials_screen(font, gs->score, initials, initials_pos, (anim / INITIALS_BLINK_FRAMES) % 2 == 0);
                 break;
 
             case SCREEN_GAMEOVER:
@@ -492,8 +495,7 @@ int display(void)
             // escalo el buffer de baja resolucion a la ventana 
             al_set_target_bitmap(al_get_backbuffer(disp));
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            al_draw_scaled_bitmap(buffer, 0, 0, GAME_WIDTH, GAME_HEIGHT,
-                                  0, 0, scaled_w, scaled_h, 0);
+            al_draw_scaled_bitmap(buffer, 0, 0, GAME_WIDTH, GAME_HEIGHT, 0, 0, scaled_w, scaled_h, 0);
             al_flip_display();
 
             redraw = 0;
