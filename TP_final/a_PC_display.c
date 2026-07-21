@@ -100,14 +100,10 @@ static void draw_menu(ALLEGRO_FONT * font)
 
     draw_title_retro(font, "F R O G G E R", 28, 1, al_map_rgb(90, 230, 90));
 
-    al_draw_text(font, al_map_rgb(255, 255, 255), CENTER_X, 56,
-                 ALLEGRO_ALIGN_CENTER, "ENTER  JUGAR");
-    al_draw_text(font, al_map_rgb(255, 255, 255), CENTER_X, 68,
-                 ALLEGRO_ALIGN_CENTER, "ESC    SALIR");
-    al_draw_text(font, al_map_rgb(160, 160, 160), CENTER_X, 88,
-                 ALLEGRO_ALIGN_CENTER, "FLECHAS O WASD PARA MOVERSE");
-    al_draw_text(font, al_map_rgb(160, 160, 160), CENTER_X, 100,
-                 ALLEGRO_ALIGN_CENTER, "ESC PAUSA DURANTE EL JUEGO");
+    al_draw_text(font, al_map_rgb(255, 255, 255), CENTER_X, 56, ALLEGRO_ALIGN_CENTER, "ENTER  JUGAR");
+    al_draw_text(font, al_map_rgb(255, 255, 255), CENTER_X, 68, ALLEGRO_ALIGN_CENTER, "ESC    SALIR");
+    al_draw_text(font, al_map_rgb(160, 160, 160), CENTER_X, 88, ALLEGRO_ALIGN_CENTER, "FLECHAS O WASD PARA MOVERSE");
+    al_draw_text(font, al_map_rgb(160, 160, 160), CENTER_X, 100, ALLEGRO_ALIGN_CENTER, "ESC PAUSA DURANTE EL JUEGO");
 
     /* top 10 */
     ScoreEntry list[HS_MAX_SCORES];
@@ -117,25 +113,19 @@ static void draw_menu(ALLEGRO_FONT * font)
     draw_title_retro(font, "MEJORES PUNTAJES", 124, 1, al_map_rgb(235, 220, 60));
 
     if (n == 0) {
-        al_draw_text(font, al_map_rgb(160, 160, 160), CENTER_X, 140,
-                     ALLEGRO_ALIGN_CENTER, "TODAVIA NO HAY");
+        al_draw_text(font, al_map_rgb(160, 160, 160), CENTER_X, 140, ALLEGRO_ALIGN_CENTER, "TODAVIA NO HAY");
     }
     for (i = 0; i < n; i++) {
-        al_draw_textf(font, al_map_rgb(255, 255, 255), CENTER_X, 140 + i * 10,
-                      ALLEGRO_ALIGN_CENTER, "%2d  %-3s  %d",
-                      i + 1, list[i].initials, list[i].score);
+        al_draw_textf(font, al_map_rgb(255, 255, 255), CENTER_X, 140 + i * 10, ALLEGRO_ALIGN_CENTER, "%2d  %-3s  %d", i + 1, list[i].initials, list[i].score);
     }
 }
 
-static void draw_initials_screen(ALLEGRO_FONT * font, int score,
-                                 const char * initials, int pos, int blink_on)
+static void draw_initials_screen(ALLEGRO_FONT * font, int score, const char * initials, int pos, int blink_on)
 {
     al_draw_filled_rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, al_map_rgb(0, 20, 40));
 
-    draw_title_retro(font, "ENTRASTE AL TOP 10", CENTER_Y - 56, 1,
-                     al_map_rgb(235, 220, 60));
-    al_draw_textf(font, al_map_rgb(255, 255, 255), CENTER_X, CENTER_Y - 36,
-                  ALLEGRO_ALIGN_CENTER, "PUNTAJE  %d", score);
+    draw_title_retro(font, "ENTRASTE AL TOP 10", CENTER_Y - 56, 1, al_map_rgb(235, 220, 60));
+    al_draw_textf(font, al_map_rgb(255, 255, 255), CENTER_X, CENTER_Y - 36, ALLEGRO_ALIGN_CENTER, "PUNTAJE  %d", score);
 
     /* las tres iniciales, espaciadas; la activa parpadea y va subrayada */
     int i;
@@ -149,20 +139,16 @@ static void draw_initials_screen(ALLEGRO_FONT * font, int score,
                 index_disp(letra, x - 4, CENTER_Y - 4, 1);
             } 
             else {
-                al_draw_text(font, al_map_rgb(90, 230, 90), x, CENTER_Y - 4,
-                             ALLEGRO_ALIGN_CENTER, letra);
+                al_draw_text(font, al_map_rgb(90, 230, 90), x, CENTER_Y - 4, ALLEGRO_ALIGN_CENTER, letra);
                 }
         }
         if (i == pos) {
-            al_draw_filled_rectangle(x - 6, CENTER_Y + 8, x + 6, CENTER_Y + 10,
-                                     al_map_rgb(90, 230, 90));
+            al_draw_filled_rectangle(x - 6, CENTER_Y + 8, x + 6, CENTER_Y + 10, al_map_rgb(90, 230, 90));
         }
     }
 
-    al_draw_text(font, al_map_rgb(200, 200, 200), CENTER_X, CENTER_Y + 32,
-                 ALLEGRO_ALIGN_CENTER, "FLECHAS O LETRAS PARA ELEGIR");
-    al_draw_text(font, al_map_rgb(200, 200, 200), CENTER_X, CENTER_Y + 44,
-                 ALLEGRO_ALIGN_CENTER, "ENTER  CONFIRMAR");
+    al_draw_text(font, al_map_rgb(200, 200, 200), CENTER_X, CENTER_Y + 32, ALLEGRO_ALIGN_CENTER, "FLECHAS O LETRAS PARA ELEGIR");
+    al_draw_text(font, al_map_rgb(200, 200, 200), CENTER_X, CENTER_Y + 44, ALLEGRO_ALIGN_CENTER, "ENTER  CONFIRMAR");
 }
 
 static void draw_gameover(ALLEGRO_FONT * font, int score, int hs_rank)
@@ -170,16 +156,13 @@ static void draw_gameover(ALLEGRO_FONT * font, int score, int hs_rank)
     al_draw_filled_rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, al_map_rgb(40, 0, 0));
 
     draw_title_retro(font, "GAME OVER", CENTER_Y - 48, 2, al_map_rgb(230, 70, 70));
-    al_draw_textf(font, al_map_rgb(255, 255, 255), CENTER_X, CENTER_Y - 20,
-                  ALLEGRO_ALIGN_CENTER, "PUNTAJE  %d", score);
+    al_draw_textf(font, al_map_rgb(255, 255, 255), CENTER_X, CENTER_Y - 20, ALLEGRO_ALIGN_CENTER, "PUNTAJE  %d", score);
 
     if (hs_rank >= 0) {
-        al_draw_textf(font, al_map_rgb(235, 220, 60), CENTER_X, CENTER_Y - 4,
-                      ALLEGRO_ALIGN_CENTER, "ENTRASTE AL TOP 10: PUESTO %d", hs_rank + 1);
+        al_draw_textf(font, al_map_rgb(235, 220, 60), CENTER_X, CENTER_Y - 4, ALLEGRO_ALIGN_CENTER, "ENTRASTE AL TOP 10: PUESTO %d", hs_rank + 1);
     }
 
-    al_draw_text(font, al_map_rgb(200, 200, 200), CENTER_X, CENTER_Y + 24,
-                 ALLEGRO_ALIGN_CENTER, "ENTER  VOLVER AL MENU");
+    al_draw_text(font, al_map_rgb(200, 200, 200), CENTER_X, CENTER_Y + 24, ALLEGRO_ALIGN_CENTER, "ENTER  VOLVER AL MENU");
 }
 
 int display(void)

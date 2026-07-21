@@ -72,8 +72,8 @@ void led_draw_lives(int lives_val);
 // de los glifos en top_row.
 void led_draw_text(const char * msg, int x, int top_row);
 
-/* Marquesina no bloqueante: el mensaje entra por la derecha, cruza el
- * display y sale por la izquierda. No tiene loop propio: el ciclo de juego
+/* El mensaje entra por la derecha, cruza el
+ * display y sale por la  zquierda. No tiene loop propio: el ciclo de juego
  * llama a led_scroll_step() una vez por tick entre disp_clear() y
  * disp_update(), asi el joystick se sigue leyendo mientras el texto pasa. */
 typedef struct {

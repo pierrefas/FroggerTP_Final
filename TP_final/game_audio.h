@@ -5,7 +5,8 @@
  * sonido (game_sound) y las tres funciones que cualquier backend debe
  * implementar (audio_init/audio_play/audio_destroy). a_audio.c la
  * implementa con Allegro para el build de PC; se suponía que también se
- *  implementaria con Simple-SDL2-Audio para el build headless de la Raspberry Pi. El
+ *  implementaria con Simple-SDL2-Audio para el build headless de la Raspberry Pi, pero no lo hicimos 
+ * porque no conseguimos un jack para probar la salida de audio de la Raspberry Pi. El
  * build activo elige cual de los dos se compila (ver Debug/subdir.mk),
  * asi se evitaban errores de linkeo.
  */
