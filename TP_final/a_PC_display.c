@@ -185,12 +185,17 @@ static void draw_gameover(ALLEGRO_FONT * font, int score, int hs_rank)
 int display(void)
 {
     ALLEGRO_MONITOR_INFO info;
-    al_get_monitor_info(0, &info);
-    int desktop_h = info.y2 - info.y1;
+    int scale = 1;
 
-    /* escala entera para que el pixel art quede nitido */
-    int scale = (desktop_h / 2) / GAME_HEIGHT;
-    if (scale < 1) scale = 1;
+    if (al_get_monitor_info(0, &info)) {
+
+        int desktop_h = info.y2 - info.y1;
+
+        /* escala entera para que el pixel art quede nitido */
+        scale = (desktop_h / 2) / GAME_HEIGHT;
+        if (scale < 1) scale = 1;
+
+    }
 
     int scaled_w = GAME_WIDTH * scale;
     int scaled_h = GAME_HEIGHT * scale;
