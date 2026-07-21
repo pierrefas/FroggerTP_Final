@@ -5,3 +5,6 @@
     para simplicidad aca dejo el bash para copiar y compilar mas facilmente:
 
     make TP_final FORCE_ALLEGRO=yes
+
+    aparte de esto es fundamental hacer un make clean entre versiones (raspi a PC y biceversa)
+    para que no se acumulen los codigos objetos y dependencias de las respectivas versiones
