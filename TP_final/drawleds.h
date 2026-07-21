@@ -1,3 +1,14 @@
+/*
+ * drawleds.h
+ *
+ * Traduce el estado del juego (game_state, en pixeles/casilleros) al
+ * panel de 16x16 LEDs de la Raspberry Pi: dibuja la rana, autos, troncos
+ * y tortugas, el agua del lago, la barra de tiempo, las vidas y el texto
+ * 3x3 (incluida la marquesina que se usa en menu/pausa/game over). Es la
+ * unica capa del juego que llama a disp_write (via disdrv.h): nada mas
+ * escribe LEDs directo.
+ */
+
 #ifndef DRAWLEDS_H
 #define DRAWLEDS_H
 

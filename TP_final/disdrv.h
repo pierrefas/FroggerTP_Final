@@ -7,6 +7,13 @@
  *  Daniel Jacoby
  *  Nicolas Magliola
  *  Pablo Vacatello
+ *(Comentario modificado para entender )
+ * Maneja el panel de LEDs de 16x16 de la Raspberry Pi a bajo nivel: un
+ * buffer en memoria que se va prendiendo/apagando punto por punto con
+ * disp_write(), y recien se manda al hardware de una vez con
+ * disp_update(). El resto del proyecto (drawleds.c) nunca escribe LEDs
+ * directo: siempre pasa por esta interfaz. Provisto por la catedra: no
+ * hay .c en este repo, solo el objeto ya compilado (Debug/disdrv.o).
  */
 
 #ifndef DISDRV_H

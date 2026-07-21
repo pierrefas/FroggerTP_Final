@@ -1,3 +1,12 @@
+/*
+ * scores.h
+ *
+ * Puntaje durante una partida: bonus por cruzar (proporcional al nivel y
+ * al tiempo restante) y premio por completar los 5 huecos-meta de un
+ * nivel. No toca la tabla de mejores puntajes historicos (eso es
+ * highscores.c); solo va acumulando game->score mientras se juega.
+ */
+
 #ifndef SCORES_H
 #define SCORES_H
 

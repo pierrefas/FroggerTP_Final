@@ -1,3 +1,14 @@
+/*
+ * checking.h
+ *
+ * Condiciones de vida o muerte del jugador: si choco contra un enemigo,
+ * si se ahogo en el lago por no tener un soporte debajo, si llego a un
+ * hueco-meta libre y si ya completo los 5 huecos del nivel. Solo evalua
+ * el game_state; no lo modifica (salvo marcar el hueco-meta como
+ * ocupado). El movimiento en si lo deciden frogupdates.c y el front-end
+ * activo segun la entrada del jugador.
+ */
+
 #ifndef CHECKING_H
 #define CHECKING_H
 

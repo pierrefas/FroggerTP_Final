@@ -1,3 +1,14 @@
+/*
+ * entityupdates.h
+ *
+ * Fisica de autos, troncos y tortugas en cada tick: los desplaza segun la
+ * velocidad de su fila (stepEntites), los hace reaparecer del otro lado
+ * cuando salen del mundo (resetEntites) y avanza el ciclo de
+ * flote/hundimiento de las tortugas (updateSupportDive/
+ * supportDivePhase). No conoce a la rana: eso lo resuelven frogupdates.c
+ * y checking.c a partir de las posiciones que este modulo actualiza.
+ */
+
 #ifndef EUPDATE_H
 #define EUPDATE_H
 
