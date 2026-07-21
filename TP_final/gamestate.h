@@ -17,7 +17,7 @@
 #include <stdio.h>
 
 
-#define ADJCOORDFROG(n) ((n) * 16) //Comvierte casilleros a pixeles, sirve para los saltos de la rana
+#define ADJCOORDFROG(n) ((n) * 16) //Convierte casilleros a pixeles, sirve para los saltos de la rana
 
 #define ERROR_NULL_POINTER -67
 #define ENDWORLD ADJCOORDFROG(14)
@@ -25,6 +25,7 @@
 
 #define NUM_HEIGHT_LEVELS 13
 #define MAX_ENTITIES 40
+#define NUM_GOAL_SLOTS 5 
 
 typedef struct {
 
