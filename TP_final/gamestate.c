@@ -22,7 +22,7 @@ game_state * createGame(void){
 
     }
 
-    /* Listas vacias y estado neutro hasta que firstLevel() arme el nivel */
+    // Listas vacias y estado neutro hasta que firstLevel() arme el nivel 
     newgame->penemies->type = -1;
     newgame->psoport->type = -1;
     newgame->score = 0;
