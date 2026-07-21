@@ -190,7 +190,7 @@ static int setupLevel(game_state * game){
     (game->pspeedheight)[SAFEROW] = 0;
     (game->pspeedheight)[GOALROW] = 0;
 
-    if(((game->pspeedheight)[10] > 0) == ((game->pspeedheight)[11] > 0)){ 
+    if(((game->pspeedheight)[10] > 0) == ((game->pspeedheight)[11] > 0)||((game->pspeedheight)[10] < 0) == ((game->pspeedheight)[11] < 0)){ 
         (game->pspeedheight)[11] = -(game->pspeedheight)[11];
     }
 
