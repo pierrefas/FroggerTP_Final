@@ -190,6 +190,10 @@ static int setupLevel(game_state * game){
     (game->pspeedheight)[SAFEROW] = 0;
     (game->pspeedheight)[GOALROW] = 0;
 
+    if(((game->pspeedheight)[10] > 0) == ((game->pspeedheight)[11] > 0)){ 
+        (game->pspeedheight)[11] = -(game->pspeedheight)[11];
+    }
+
     if(level == 1){ //En el nivel 1 todas las filas comparten velocidad 1, distingo la 2da hilera de troncos (altura 9) de la 1ra (altura 8)
         (game->pspeedheight)[9] = ((game->pspeedheight)[8] > 0) ? (game->pspeedheight)[8] + 1 : (game->pspeedheight)[8] - 1;
     }
