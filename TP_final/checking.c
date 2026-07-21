@@ -20,7 +20,7 @@ int goalSlotAt(const frog_player * rana){
 
     for(i = 0; i < NUM_GOAL_SLOTS; i++){
 
-        if(rana->startcoord + HITBOX_MARGIN * 2 >= GOAL_SLOT_X(i) && rana->endcoord - HITBOX_MARGIN * 2 < GOAL_SLOT_X(i) + ADJCOORDFROG(1)){
+        if(rana->startcoord + HITBOX_MARGIN*4  >= GOAL_SLOT_X(i) && rana->endcoord - HITBOX_MARGIN*4 < GOAL_SLOT_X(i) + ADJCOORDFROG(1)){
             return i;
         }
 
@@ -43,8 +43,7 @@ int isDeadFromEnemy(game_state * state){
 
         enemy_entity * enemigo = state->penemies + i;
 
-        if(rana->height == enemigo->height &&
-           rana->endcoord - HITBOX_MARGIN > enemigo->startcoord &&
+        if(rana->height == enemigo->height && rana->endcoord - HITBOX_MARGIN > enemigo->startcoord &&
            rana->startcoord + HITBOX_MARGIN < enemigo->endcoord){
 
             return 1; //Si se solapa con un enemigo de su misma fila, muere
