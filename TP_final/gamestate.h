@@ -14,6 +14,7 @@
 
 #define NUM_HEIGHT_LEVELS 13
 #define MAX_ENTITIES 40
+#define NUM_GOAL_SLOTS 5 
 
 typedef struct {
 

@@ -12,7 +12,6 @@
 #define HITBOX_MARGIN 2 //Nos dimos cuenta que el entrar a la casilla final era muy dificl asi que le dimos un margen para que puedan entrar
 
 
-#define NUM_GOAL_SLOTS 5
 #define GOAL_SLOT_X(i) (ADJCOORDFROG(1)/2 + (i) * ADJCOORDFROG(3)) //Defino el inicio de las zonas de llegada
 
 
